@@ -1,0 +1,14 @@
+coverage/
+
+src/
+
+.eslintignore
+.eslintrc.js
+
+.prettierrc
+
+jest.config.js
+
+Makefile
+
+tsconfig.json

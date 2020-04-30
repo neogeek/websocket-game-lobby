@@ -1,0 +1,157 @@
+import WebSocketEventWrapper from 'websocket-event-wrapper';
+
+import qs from 'qs';
+
+import { EphemeralDataStore } from './datastore/ephemeral';
+
+import { removeArrayItem } from '../utils';
+
+export class WebSocketGameLobbyServer {
+    wss: any;
+
+    datastore: DataStore;
+
+    listeners: any;
+
+    constructor({
+        port,
+        server,
+        datastore
+    }: {
+        port: number;
+        server: object;
+        datastore: DataStore;
+    }) {
+        this.wss = new WebSocketEventWrapper({
+            port,
+            server,
+            onConnect: (client: any, request: any): void => {
+                const { gameId, playerId } = qs.parse(
+                    request.url.replace(/^\//, ''),
+                    {
+                        ignoreQueryPrefix: true
+                    }
+                );
+
+                client.gameId = gameId;
+                client.playerId = playerId;
+
+                this.sendUpdate(client);
+            }
+        });
+
+        if (datastore) {
+            this.datastore = datastore;
+        } else {
+            this.datastore = new EphemeralDataStore();
+        }
+
+        this.listeners = Object.freeze({
+            create: [],
+            join: [],
+            start: [],
+            leave: [],
+            end: []
+        });
+
+        this.wss.addEventListener(
+            (
+                {
+                    type,
+                    gameId,
+                    playerId,
+                    ...rest
+                }: { type: string; gameId: string; playerId: string },
+                client: any
+            ) => {
+                if (!(type in this.listeners)) {
+                    return;
+                }
+
+                const game =
+                    this.datastore.findGame(gameId) ||
+                    this.datastore.findGameWithCode(gameId) ||
+                    this.datastore.createGame(playerId);
+                let player =
+                    this.datastore.findPlayer(game.gameId, playerId) ||
+                    this.datastore.findSpectator(game.gameId, playerId);
+
+                if (!player) {
+                    player = !game.started
+                        ? this.datastore.createPlayer(playerId)
+                        : this.datastore.createSpectator(playerId);
+                    this.datastore.joinGame(gameId, player);
+                }
+
+                client.gameId = game.gameId;
+                client.playerId = player.playerId;
+
+                if (type === 'start') {
+                    this.datastore.startGame(gameId);
+                } else if (type === 'leave') {
+                    this.datastore.leaveGame(gameId, playerId);
+
+                    client.gameId = '';
+
+                    this.wss.send({}, client);
+                } else if (type === 'end') {
+                    this.datastore.endGame(gameId);
+
+                    client.gameId = '';
+
+                    this.wss.send({}, client);
+                }
+
+                this.listeners[
+                    type
+                ].forEach(
+                    (callback: (client: any, datastore: DataStore) => {}) =>
+                        callback(
+                            { type, gameId, playerId, ...rest },
+                            this.datastore
+                        )
+                );
+
+                this.broadcastUpdate(game.gameId);
+            }
+        );
+    }
+
+    addEventListener(type: string, callback: () => {}): void {
+        if (!(type in this.listeners)) {
+            this.listeners = Object.freeze({ ...this.listeners, [type]: [] });
+        }
+        this.listeners[type].push(callback);
+    }
+
+    removeEventListener(type: string, callback: () => {}): void {
+        if (type in this.listeners) {
+            removeArrayItem(this.listeners[type], callback);
+        }
+    }
+
+    sendUpdate(client: any): void {
+        const game =
+            this.datastore.findGame(client.gameId) ||
+            this.datastore.findGameWithCode(client.gameId);
+        const player =
+            this.datastore.findPlayer(client.gameId, client.playerId) ||
+            this.datastore.findSpectator(client.gameId, client.playerId);
+        const turn = this.datastore.currentTurn(client.gameId);
+
+        if (game && player) {
+            this.wss.send({ game, player, turn }, client);
+        } else {
+            client.gameId = '';
+            client.playerId = '';
+
+            this.wss.send({}, client);
+        }
+    }
+    broadcastUpdate(gameId: string): void {
+        this.wss.broadcast(
+            (client: any) => this.sendUpdate(client),
+            (client: any) => client.gameId === gameId
+        );
+    }
+}

@@ -1,0 +1,14 @@
+game:
+  gameId: string
+  gameCode: string
+  started: boolean
+  players: [player]
+  spectators: [player]
+  turns: [turn]
+
+player:
+  playerId: string
+  name: string
+
+turn:
+  turnId: string
