@@ -2,6 +2,8 @@
 
 > Simple API for building games using WebSockets.
 
+[![Build Status](https://travis-ci.com/neogeek/websocket-game-lobby.svg?branch=master)](https://travis-ci.com/neogeek/websocket-game-lobby)
+
 ## Install
 
 ```bash
