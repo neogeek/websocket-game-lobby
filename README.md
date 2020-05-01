@@ -4,6 +4,7 @@
 
 [![NPM Version](http://img.shields.io/npm/v/websocket-game-lobby.svg?style=flat)](https://www.npmjs.org/package/websocket-game-lobby)
 [![Build Status](https://travis-ci.com/neogeek/websocket-game-lobby.svg?branch=master)](https://travis-ci.com/neogeek/websocket-game-lobby)
+[![codecov](https://img.shields.io/codecov/c/github/neogeek/websocket-game-lobby/master.svg)](https://codecov.io/gh/neogeek/websocket-game-lobby)
 
 ## Install
 

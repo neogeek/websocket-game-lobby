@@ -5,4 +5,7 @@ after_success:
     - node --version
     - npm --version
     - npm test
+after_success:
+    - npm run coverage
+    - bash <(curl -s https://codecov.io/bash)
 sudo: false
