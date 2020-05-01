@@ -1,6 +1,15 @@
 # Changelog
 
-## [v1.1.0](https://github.com/neogeek/websocket-game-lobby/tree/v1.1.0) (2020-04-30)
+## [v1.2.0](https://github.com/neogeek/websocket-game-lobby/tree/v1.2.0)
+
+[Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v1.1.0...v1.2.0)
+
+**Merged pull requests:**
+
+- \[feat\] Updated removeArrayItem to take a primative or a method. [\#3](https://github.com/neogeek/websocket-game-lobby/pull/3) ([neogeek](https://github.com/neogeek))
+- \[hotfix\] Ignore port if missing. [\#2](https://github.com/neogeek/websocket-game-lobby/pull/2) ([neogeek](https://github.com/neogeek))
+
+## [v1.1.0](https://github.com/neogeek/websocket-game-lobby/tree/v1.1.0) (2020-05-01)
 
 [Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v1.0.0...v1.1.0)
 
