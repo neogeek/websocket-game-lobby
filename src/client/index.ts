@@ -25,7 +25,7 @@ export class WebSocketGameLobbyClient {
         this.wss = new ReconnectingWebSocket(
             `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${
                 window.location.hostname
-            }:${port}?${qs.stringify({
+            }${port ? `:${port}` : ''}?${qs.stringify({
                 gameId,
                 playerId
             })}`,
