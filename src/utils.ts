@@ -11,11 +11,11 @@ export const generateRandomString = (length = 4): string =>
         )
         .join('');
 
-export const removeArrayItem = (
-    array: any[],
-    filter: (item: any) => {}
-): boolean => {
-    const itemIndex = array.findIndex(filter);
+export const removeArrayItem = (array: any[], filter: any): boolean => {
+    const itemIndex =
+        typeof filter === 'function'
+            ? array.findIndex(filter)
+            : array.indexOf(filter);
 
     if (itemIndex !== -1) {
         array.splice(itemIndex, 1);

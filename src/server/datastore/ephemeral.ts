@@ -67,10 +67,13 @@ export class EphemeralDataStore implements DataStore {
             return;
         }
 
-        removeArrayItem(game.players, player => player.playerId === playerId);
+        removeArrayItem(
+            game.players,
+            (player: any) => player.playerId === playerId
+        );
         removeArrayItem(
             game.spectators,
-            player => player.playerId === playerId
+            (player: any) => player.playerId === playerId
         );
 
         return;
@@ -90,7 +93,7 @@ export class EphemeralDataStore implements DataStore {
         return game;
     }
     endGame(gameId: string): void {
-        removeArrayItem(data, game => game.gameId === gameId);
+        removeArrayItem(data, (game: any) => game.gameId === gameId);
         return;
     }
 
