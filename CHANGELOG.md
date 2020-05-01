@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.1.0](https://github.com/neogeek/websocket-game-lobby/tree/v1.1.0) (2020-04-30)
+
+[Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v1.0.0...v1.1.0)
+
+**Merged pull requests:**
+
+- \[feat\] Added options with maxRetries of 10 to client. [\#1](https://github.com/neogeek/websocket-game-lobby/pull/1) ([neogeek](https://github.com/neogeek))
+
 ## [v1.0.0](https://github.com/neogeek/websocket-game-lobby/tree/v1.0.0) (2020-04-30)
 
 [Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/f73e9de74596f6b104070518118af3ba30ccba42...v1.0.0)
