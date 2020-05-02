@@ -2,7 +2,7 @@ import WebSocketEventWrapper from 'websocket-event-wrapper';
 
 import qs from 'qs';
 
-import { EphemeralDataStore } from './datastore/ephemeral';
+import { EphemeralDataStore } from './datastore';
 
 import { removeArrayItem } from '../utils';
 
