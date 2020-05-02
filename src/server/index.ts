@@ -134,13 +134,18 @@ export class WebSocketGameLobbyServer {
         const game =
             this.datastore.findGame(client.gameId) ||
             this.datastore.findGameWithCode(client.gameId);
-        const player =
-            this.datastore.findPlayer(client.gameId, client.playerId) ||
-            this.datastore.findSpectator(client.gameId, client.playerId);
+        const player = this.datastore.findPlayer(
+            client.gameId,
+            client.playerId
+        );
+        const spectator = this.datastore.findSpectator(
+            client.gameId,
+            client.playerId
+        );
         const turn = this.datastore.currentTurn(client.gameId);
 
-        if (game && player) {
-            this.wss.send({ game, player, turn }, client);
+        if (game && (player || spectator)) {
+            this.wss.send({ game, player, spectator, turn }, client);
         } else {
             client.gameId = '';
             client.playerId = '';
