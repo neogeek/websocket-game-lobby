@@ -1,24 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { generateRandomString, removeArrayItem } from '../../utils';
+import { createUniqueGameCode, removeArrayItem } from '../../utils';
 
 const data: Game[] = [];
-
-const createUniqueGameCode = (): string => {
-    let gameCode = generateRandomString();
-
-    while (data.find((game: Game) => game.gameCode === gameCode)) {
-        gameCode = generateRandomString();
-    }
-
-    return gameCode;
-};
 
 export class EphemeralDataStore implements DataStore {
     createGame(playerId?: string): Game {
         const game: Game = {
             gameId: uuidv4(),
-            gameCode: createUniqueGameCode(),
+            gameCode: createUniqueGameCode(gameCode =>
+                Boolean(data.find((game: Game) => game.gameCode === gameCode))
+            ),
             started: false,
             players: [this.createPlayer(playerId)],
             spectators: [],

@@ -68,10 +68,19 @@ export class WebSocketGameLobbyServer {
                     return;
                 }
 
-                const game =
+                let game =
                     this.datastore.findGame(gameId) ||
-                    this.datastore.findGameWithCode(gameId) ||
-                    this.datastore.createGame(playerId);
+                    this.datastore.findGameWithCode(gameId);
+
+                if (!game) {
+                    try {
+                        game = this.datastore.createGame(playerId);
+                    } catch (e) {
+                        this.wss.send({ error: e.message }, client);
+
+                        return;
+                    }
+                }
 
                 client.gameId = game.gameId;
 
