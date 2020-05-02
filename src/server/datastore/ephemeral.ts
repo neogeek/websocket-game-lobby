@@ -43,20 +43,23 @@ export class EphemeralDataStore implements DataStore {
         }
         return game;
     }
-    joinGame(gameId: string, player: Player): Game | undefined {
+    joinGame(gameId: string, player: Player | Spectator): Game | undefined {
         const game = this.findGame(gameId) || this.findGameWithCode(gameId);
 
         if (!game) {
             return;
         }
 
-        if (!game.started && !this.findPlayer(gameId, player.playerId)) {
-            game.players.push(player);
+        if (
+            !game.started &&
+            !this.findPlayer(gameId, (player as Player).playerId)
+        ) {
+            game.players.push(player as Player);
         } else if (
             game.started &&
-            !this.findSpectator(gameId, player.playerId)
+            !this.findSpectator(gameId, (player as Spectator).spectatorId)
         ) {
-            game.spectators.push(player);
+            game.spectators.push(player as Spectator);
         }
         return game;
     }
@@ -69,11 +72,11 @@ export class EphemeralDataStore implements DataStore {
 
         removeArrayItem(
             game.players,
-            (player: any) => player.playerId === playerId
+            (player: Player) => player.playerId === playerId
         );
         removeArrayItem(
             game.spectators,
-            (player: any) => player.playerId === playerId
+            (spectator: Spectator) => spectator.spectatorId === playerId
         );
 
         return;
@@ -129,36 +132,36 @@ export class EphemeralDataStore implements DataStore {
         return player;
     }
 
-    createSpectator(playerId = uuidv4()): Player {
-        const player = {
-            playerId,
+    createSpectator(spectatorId = uuidv4()): Spectator {
+        const spectator = {
+            spectatorId,
             name: ''
         };
 
-        return player;
+        return spectator;
     }
-    findSpectator(gameId: string, playerId: string): Player | undefined {
+    findSpectator(gameId: string, spectatorId: string): Spectator | undefined {
         const game = this.findGame(gameId) || this.findGameWithCode(gameId);
 
         if (!game) {
             return;
         }
         return game.spectators.find(
-            (player: Player) => player.playerId === playerId
+            (spectator: Spectator) => spectator.spectatorId === spectatorId
         );
     }
     editSpectator(
         gameId: string,
-        playerId: string,
-        callback: (player: Player) => Player
-    ): Player | undefined {
-        const player = this.findSpectator(gameId, playerId);
+        spectatorId: string,
+        callback: (spectator: Spectator) => Spectator
+    ): Spectator | undefined {
+        const spectator = this.findSpectator(gameId, spectatorId);
 
-        if (player && typeof callback === 'function') {
-            return callback(player);
+        if (spectator && typeof callback === 'function') {
+            return callback(spectator);
         }
 
-        return player;
+        return spectator;
     }
 
     createTurn(): Turn {

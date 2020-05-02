@@ -72,47 +72,65 @@ export class WebSocketGameLobbyServer {
                     this.datastore.findGame(gameId) ||
                     this.datastore.findGameWithCode(gameId) ||
                     this.datastore.createGame(playerId);
-                let player =
-                    this.datastore.findPlayer(game.gameId, playerId) ||
-                    this.datastore.findSpectator(game.gameId, playerId);
-
-                if (!player) {
-                    player = !game.started
-                        ? this.datastore.createPlayer(playerId)
-                        : this.datastore.createSpectator(playerId);
-                    this.datastore.joinGame(gameId, player);
-                }
 
                 client.gameId = game.gameId;
-                client.playerId = player.playerId;
+
+                let player = this.datastore.findPlayer(client.gameId, playerId);
+                let spectator = this.datastore.findSpectator(
+                    client.gameId,
+                    client.playerId
+                );
+
+                if (player) {
+                    client.playerId = player.playerId;
+                } else if (spectator) {
+                    client.playerId = spectator.spectatorId;
+                } else if (game.started) {
+                    spectator = this.datastore.createSpectator(playerId);
+
+                    client.playerId = spectator.spectatorId;
+
+                    this.datastore.joinGame(client.gameId, spectator);
+                } else {
+                    player = this.datastore.createPlayer(playerId);
+
+                    client.playerId = player.playerId;
+
+                    this.datastore.joinGame(client.gameId, player);
+                }
 
                 if (type === 'start') {
-                    this.datastore.startGame(gameId);
+                    this.datastore.startGame(client.gameId);
                 } else if (type === 'leave') {
-                    this.datastore.leaveGame(gameId, playerId);
+                    this.datastore.leaveGame(client.gameId, client.playerId);
 
                     client.gameId = '';
+                    client.playerId = '';
 
                     this.wss.send({}, client);
                 } else if (type === 'end') {
-                    this.datastore.endGame(gameId);
+                    this.datastore.endGame(client.gameId);
 
                     client.gameId = '';
+                    client.playerId = '';
 
                     this.wss.send({}, client);
                 }
 
-                this.listeners[
-                    type
-                ].forEach(
+                this.listeners[type].forEach(
                     (callback: (client: any, datastore: DataStore) => {}) =>
                         callback(
-                            { type, gameId, playerId, ...rest },
+                            {
+                                type,
+                                gameId: client.gameId,
+                                playerId: client.playerId,
+                                ...rest
+                            },
                             this.datastore
                         )
                 );
 
-                this.broadcastUpdate(game.gameId);
+                this.broadcastUpdate(client.gameId);
             }
         );
     }

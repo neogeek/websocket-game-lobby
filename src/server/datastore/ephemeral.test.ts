@@ -83,23 +83,33 @@ describe('game', () => {
     it('join game as spectator', () => {
         const datastore = new EphemeralDataStore();
 
-        const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
+        const spectatorId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
         const game = datastore.createGame();
 
         datastore.startGame(game.gameId);
 
-        assert.ok(!game.players.find(player => player.playerId === playerId));
-
         assert.ok(
-            !game.spectators.find(player => player.playerId === playerId)
+            !game.players.find(player => player.playerId === spectatorId)
         );
 
-        datastore.joinGame(game.gameId, datastore.createPlayer(playerId));
+        assert.ok(
+            !game.spectators.find(
+                spectator => spectator.spectatorId === spectatorId
+            )
+        );
 
-        assert.ok(!game.players.find(player => player.playerId === playerId));
+        datastore.joinGame(game.gameId, datastore.createSpectator(spectatorId));
 
-        assert.ok(game.spectators.find(player => player.playerId === playerId));
+        assert.ok(
+            !game.players.find(player => player.playerId === spectatorId)
+        );
+
+        assert.ok(
+            game.spectators.find(
+                spectator => spectator.spectatorId === spectatorId
+            )
+        );
     });
     it('leave game as player', () => {
         const datastore = new EphemeralDataStore();
@@ -117,24 +127,32 @@ describe('game', () => {
     it('leave game as spectator', () => {
         const datastore = new EphemeralDataStore();
 
-        const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
+        const spectatorId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
         const game = datastore.createGame();
 
         datastore.startGame(game.gameId);
 
         assert.ok(
-            !game.spectators.find(player => player.playerId === playerId)
+            !game.spectators.find(
+                spectator => spectator.spectatorId === spectatorId
+            )
         );
 
-        datastore.joinGame(game.gameId, datastore.createPlayer(playerId));
-
-        assert.ok(game.spectators.find(player => player.playerId === playerId));
-
-        datastore.leaveGame(game.gameId, playerId);
+        datastore.joinGame(game.gameId, datastore.createSpectator(spectatorId));
 
         assert.ok(
-            !game.spectators.find(player => player.playerId === playerId)
+            game.spectators.find(
+                spectator => spectator.spectatorId === spectatorId
+            )
+        );
+
+        datastore.leaveGame(game.gameId, spectatorId);
+
+        assert.ok(
+            !game.spectators.find(
+                spectator => spectator.spectatorId === spectatorId
+            )
         );
     });
     it('start game', () => {
@@ -221,56 +239,60 @@ describe('spectator', () => {
 
         const spectator = datastore.createSpectator();
 
-        assert.ok(spectator.playerId);
+        assert.ok(spectator.spectatorId);
 
         assert.deepStrictEqual(
             Object.keys(spectator),
             Object.keys(
-                loadYaml(readFileSync(`${__dirname}/scheme.yaml`)).player
+                loadYaml(readFileSync(`${__dirname}/scheme.yaml`)).spectator
             )
         );
     });
     it('find spectator', () => {
         const datastore = new EphemeralDataStore();
 
-        const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
+        const spectatorId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
         const game = datastore.createGame();
 
         datastore.startGame(game.gameId);
 
-        datastore.joinGame(game.gameId, datastore.createSpectator(playerId));
+        datastore.joinGame(game.gameId, datastore.createSpectator(spectatorId));
 
-        assert.ok(!datastore.findPlayer(game.gameId, playerId));
+        assert.ok(!datastore.findPlayer(game.gameId, spectatorId));
 
         assert.equal(
-            datastore.findSpectator(game.gameId, playerId)?.playerId,
-            playerId
+            datastore.findSpectator(game.gameId, spectatorId)?.spectatorId,
+            spectatorId
         );
     });
     it('edit spectator', () => {
         const datastore = new EphemeralDataStore();
 
-        const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
+        const spectatorId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
         const game = datastore.createGame();
 
         datastore.startGame(game.gameId);
 
-        const player = datastore.createSpectator(playerId);
+        const spectator = datastore.createSpectator(spectatorId);
 
-        datastore.joinGame(game.gameId, player);
+        datastore.joinGame(game.gameId, spectator);
 
         const name = 'Scott';
 
-        assert.notEqual(player?.name, name);
+        assert.notEqual(spectator?.name, name);
 
-        const edited = datastore.editSpectator(game.gameId, playerId, data => {
-            data.name = name;
-            return data;
-        });
+        const edited = datastore.editSpectator(
+            game.gameId,
+            spectatorId,
+            data => {
+                data.name = name;
+                return data;
+            }
+        );
 
-        assert.equal(player?.name, name);
+        assert.equal(spectator?.name, name);
         assert.equal(edited?.name, name);
     });
 });

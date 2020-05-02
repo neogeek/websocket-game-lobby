@@ -3,11 +3,15 @@ game:
   gameCode: string
   started: boolean
   players: [player]
-  spectators: [player]
+  spectators: [spectator]
   turns: [turn]
 
 player:
   playerId: string
+  name: string
+
+spectator:
+  spectatorId: string
   name: string
 
 turn:
