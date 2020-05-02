@@ -1,6 +1,7 @@
-const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-export const generateRandomString = (length = 4): string =>
+export const generateRandomString = (
+    length = 4,
+    characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+): string =>
     new Array(length)
         .fill('a')
         .map(
@@ -22,4 +23,27 @@ export const removeArrayItem = (array: any[], filter: any): boolean => {
         return true;
     }
     return false;
+};
+
+export const createUniqueGameCode = (
+    filter: (gameCode: string) => boolean,
+    length = 4,
+    characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    iterations = 10
+): string => {
+    let gameCode = generateRandomString(length, characters);
+
+    let iterationsRemaining = iterations;
+
+    while (typeof filter === 'function' && filter(gameCode)) {
+        gameCode = generateRandomString(length, characters);
+
+        iterationsRemaining -= 1;
+
+        if (iterationsRemaining <= 0) {
+            throw new Error('Error creating unique game code.');
+        }
+    }
+
+    return gameCode;
 };

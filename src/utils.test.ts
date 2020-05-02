@@ -1,8 +1,35 @@
 import assert from 'assert';
 
-import { generateRandomString, removeArrayItem } from './utils';
+import {
+    createUniqueGameCode,
+    generateRandomString,
+    removeArrayItem
+} from './utils';
 
 describe('utils', () => {
+    describe('createUniqueGameCode', () => {
+        it('generate a unique game code', () => {
+            const gameCodes: string[] = [];
+
+            const generated = createUniqueGameCode(
+                gameCode => gameCodes.indexOf(gameCode) !== -1
+            );
+
+            assert.ok(generated);
+        });
+        it('fail to generate a unique game code', () => {
+            const gameCodes: string[] = ['A'];
+
+            assert.throws(() => {
+                createUniqueGameCode(
+                    gameCode => gameCodes.indexOf(gameCode) !== -1,
+                    1,
+                    'A',
+                    1
+                );
+            }, Error);
+        });
+    });
     describe('generateRandomString', () => {
         it('generate a random string', () => {
             const generated = generateRandomString();
