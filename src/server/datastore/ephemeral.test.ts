@@ -59,12 +59,13 @@ describe('game', () => {
 
         assert.notEqual(game.gameCode, gameCode);
 
-        datastore.editGame(game.gameId, data => {
+        const edited = datastore.editGame(game.gameId, data => {
             data.gameCode = gameCode;
             return data;
         });
 
         assert.equal(game.gameCode, gameCode);
+        assert.equal(edited?.gameCode, gameCode);
     });
     it('join game as player', () => {
         const datastore = new EphemeralDataStore();
@@ -204,12 +205,13 @@ describe('player', () => {
 
         assert.notEqual(player?.name, name);
 
-        datastore.editPlayer(game.gameId, playerId, data => {
+        const edited = datastore.editPlayer(game.gameId, playerId, data => {
             data.name = name;
             return data;
         });
 
         assert.equal(player?.name, name);
+        assert.equal(edited?.name, name);
     });
 });
 
@@ -263,12 +265,13 @@ describe('spectator', () => {
 
         assert.notEqual(player?.name, name);
 
-        datastore.editSpectator(game.gameId, playerId, data => {
+        const edited = datastore.editSpectator(game.gameId, playerId, data => {
             data.name = name;
             return data;
         });
 
         assert.equal(player?.name, name);
+        assert.equal(edited?.name, name);
     });
 });
 
@@ -320,12 +323,13 @@ describe('turn', () => {
 
         const turn = datastore.findTurn(game.gameId, turnId);
 
-        datastore.editTurn(game.gameId, turnId, data => {
+        const edited = datastore.editTurn(game.gameId, turnId, data => {
             (data as any).value = tempValue;
             return data;
         });
 
-        assert.equal((turn as any).value, tempValue);
+        assert.equal((turn as any)?.value, tempValue);
+        assert.equal((edited as any)?.value, tempValue);
     });
     it('end turn', () => {
         const datastore = new EphemeralDataStore();

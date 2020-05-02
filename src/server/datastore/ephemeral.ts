@@ -35,11 +35,11 @@ export class EphemeralDataStore implements DataStore {
     findGameWithCode(gameCode: string): Game | undefined {
         return data.find((game: Game) => game.gameCode === gameCode);
     }
-    editGame(gameId: string, callback: (game: Game) => {}): Game | undefined {
+    editGame(gameId: string, callback: (game: Game) => Game): Game | undefined {
         const game = this.findGame(gameId) || this.findGameWithCode(gameId);
 
         if (game && typeof callback === 'function') {
-            callback(game);
+            return callback(game);
         }
         return game;
     }
@@ -118,12 +118,12 @@ export class EphemeralDataStore implements DataStore {
     editPlayer(
         gameId: string,
         playerId: string,
-        callback: (player: Player) => {}
+        callback: (player: Player) => Player
     ): Player | undefined {
         const player = this.findPlayer(gameId, playerId);
 
         if (player && typeof callback === 'function') {
-            callback(player);
+            return callback(player);
         }
 
         return player;
@@ -150,12 +150,12 @@ export class EphemeralDataStore implements DataStore {
     editSpectator(
         gameId: string,
         playerId: string,
-        callback: (player: Player) => {}
+        callback: (player: Player) => Player
     ): Player | undefined {
         const player = this.findSpectator(gameId, playerId);
 
         if (player && typeof callback === 'function') {
-            callback(player);
+            return callback(player);
         }
 
         return player;
@@ -189,12 +189,12 @@ export class EphemeralDataStore implements DataStore {
     editTurn(
         gameId: string,
         turnId: string,
-        callback: (turn: Turn) => {}
+        callback: (turn: Turn) => Turn
     ): Turn | undefined {
         const turn = this.findTurn(gameId, turnId);
 
         if (turn && typeof callback === 'function') {
-            callback(turn);
+            return callback(turn);
         }
 
         return turn;
