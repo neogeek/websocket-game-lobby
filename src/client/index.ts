@@ -67,7 +67,11 @@ export class WebSocketGameLobbyClient {
 
     send(
         type: string,
-        { gameId, playerId, ...rest }: { gameId: string; playerId: string }
+        {
+            gameId,
+            playerId,
+            ...rest
+        }: { gameId?: string; playerId?: string } = {}
     ): void {
         this.wss.send(JSON.stringify({ type, gameId, playerId, ...rest }));
     }
