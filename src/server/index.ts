@@ -139,7 +139,7 @@ export class WebSocketGameLobbyServer {
                         )
                 );
 
-                this.broadcastUpdate(client.gameId);
+                this.broadcastUpdate(game.gameId);
             }
         );
     }
