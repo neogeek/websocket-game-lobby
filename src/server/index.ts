@@ -153,7 +153,10 @@ export class WebSocketGameLobbyServer {
 
     removeEventListener(type: string, callback: () => {}): void {
         if (type in this.listeners) {
-            removeArrayItem(this.listeners[type], callback);
+            removeArrayItem(
+                this.listeners[type],
+                (item: any) => item === callback
+            );
         }
     }
 
