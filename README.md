@@ -41,7 +41,7 @@ gameLobby.addEventListener('message', ({ data }) => {
     console.log(JSON.parse(data));
 });
 
-buttonElem.addEventListener('click', () => gameLobby.send('create', {}));
+buttonElem.addEventListener('click', () => gameLobby.send('create'));
 ```
 
 ## API
