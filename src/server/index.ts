@@ -128,18 +128,20 @@ export class WebSocketGameLobbyServer {
                     this.wss.send({}, client);
                 }
 
-                this.listeners[type].forEach(
-                    (callback: (client: any, datastore: DataStore) => {}) =>
-                        callback(
-                            {
-                                type,
-                                gameId: client.gameId,
-                                playerId: client.playerId,
-                                ...rest
-                            },
-                            this.datastore
-                        )
-                );
+                if (type in this.listeners) {
+                    this.listeners[type].forEach(
+                        (callback: (client: any, datastore: DataStore) => {}) =>
+                            callback(
+                                {
+                                    type,
+                                    gameId: client.gameId,
+                                    playerId: client.playerId,
+                                    ...rest
+                                },
+                                this.datastore
+                            )
+                    );
+                }
 
                 this.broadcastUpdate(game.gameId);
             }
