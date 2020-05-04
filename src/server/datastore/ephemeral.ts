@@ -32,7 +32,9 @@ export class EphemeralDataStore implements DataStore {
     editGame(gameId: string, callback: (game: Game) => Game): Game | undefined {
         const game = this.findGame(gameId) || this.findGameWithCode(gameId);
 
-        if (game && typeof callback === 'function') {
+        if (!game) {
+            return;
+        } else if (typeof callback === 'function') {
             return callback(game);
         }
         return game;
@@ -119,7 +121,9 @@ export class EphemeralDataStore implements DataStore {
     ): Player | undefined {
         const player = this.findPlayer(gameId, playerId);
 
-        if (player && typeof callback === 'function') {
+        if (!player) {
+            return;
+        } else if (typeof callback === 'function') {
             return callback(player);
         }
 
@@ -151,7 +155,9 @@ export class EphemeralDataStore implements DataStore {
     ): Spectator | undefined {
         const spectator = this.findSpectator(gameId, spectatorId);
 
-        if (spectator && typeof callback === 'function') {
+        if (!spectator) {
+            return;
+        } else if (typeof callback === 'function') {
             return callback(spectator);
         }
 
@@ -177,7 +183,9 @@ export class EphemeralDataStore implements DataStore {
     currentTurn(gameId: string): Turn | undefined {
         const game = this.findGame(gameId) || this.findGameWithCode(gameId);
 
-        if (game && game.turns.length > 0) {
+        if (!game) {
+            return;
+        } else if (game.turns.length > 0) {
             return game.turns[game.turns.length - 1];
         }
 
@@ -190,7 +198,9 @@ export class EphemeralDataStore implements DataStore {
     ): Turn | undefined {
         const turn = this.findTurn(gameId, turnId);
 
-        if (turn && typeof callback === 'function') {
+        if (!turn) {
+            return;
+        } else if (typeof callback === 'function') {
             return callback(turn);
         }
 
@@ -199,6 +209,10 @@ export class EphemeralDataStore implements DataStore {
     endTurn(gameId: string): void {
         const game = this.findGame(gameId) || this.findGameWithCode(gameId);
         const turn = this.createTurn();
+
+        if (!game) {
+            return;
+        }
 
         if (game && game.turns) {
             game.turns.push(turn);
