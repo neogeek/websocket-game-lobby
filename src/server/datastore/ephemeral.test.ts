@@ -33,7 +33,7 @@ describe('game', () => {
 
         datastore.joinGame(game.gameId, datastore.createPlayer(playerId));
 
-        assert.ok(game.players.find(player => player.playerId === playerId));
+        assert.ok(datastore.findPlayer(game.gameId, playerId));
     });
     it('find game with ID', () => {
         const datastore = new EphemeralDataStore();
@@ -76,11 +76,11 @@ describe('game', () => {
 
         const game = datastore.createGame();
 
-        assert.ok(!game.players.find(player => player.playerId === playerId));
+        assert.ok(!datastore.findPlayer(game.gameId, playerId));
 
         datastore.joinGame(game.gameId, datastore.createPlayer(playerId));
 
-        assert.ok(game.players.find(player => player.playerId === playerId));
+        assert.ok(datastore.findPlayer(game.gameId, playerId));
     });
     it('join game as spectator', () => {
         const datastore = new EphemeralDataStore();
@@ -91,27 +91,15 @@ describe('game', () => {
 
         datastore.startGame(game.gameId);
 
-        assert.ok(
-            !game.players.find(player => player.playerId === spectatorId)
-        );
+        assert.ok(!datastore.findPlayer(game.gameId, spectatorId));
 
-        assert.ok(
-            !game.spectators.find(
-                spectator => spectator.spectatorId === spectatorId
-            )
-        );
+        assert.ok(!datastore.findSpectator(game.gameId, spectatorId));
 
         datastore.joinGame(game.gameId, datastore.createSpectator(spectatorId));
 
-        assert.ok(
-            !game.players.find(player => player.playerId === spectatorId)
-        );
+        assert.ok(!datastore.findPlayer(game.gameId, spectatorId));
 
-        assert.ok(
-            game.spectators.find(
-                spectator => spectator.spectatorId === spectatorId
-            )
-        );
+        assert.ok(datastore.findSpectator(game.gameId, spectatorId));
     });
     it('leave game as player', () => {
         const datastore = new EphemeralDataStore();
@@ -122,11 +110,11 @@ describe('game', () => {
 
         datastore.joinGame(game.gameId, datastore.createPlayer(playerId));
 
-        assert.ok(game.players.find(player => player.playerId === playerId));
+        assert.ok(datastore.findPlayer(game.gameId, playerId));
 
         datastore.leaveGame(game.gameId, playerId);
 
-        assert.ok(!game.players.find(player => player.playerId === playerId));
+        assert.ok(!datastore.findPlayer(game.gameId, playerId));
     });
     it('leave game as spectator', () => {
         const datastore = new EphemeralDataStore();
@@ -137,27 +125,15 @@ describe('game', () => {
 
         datastore.startGame(game.gameId);
 
-        assert.ok(
-            !game.spectators.find(
-                spectator => spectator.spectatorId === spectatorId
-            )
-        );
+        assert.ok(!datastore.findSpectator(game.gameId, spectatorId));
 
         datastore.joinGame(game.gameId, datastore.createSpectator(spectatorId));
 
-        assert.ok(
-            game.spectators.find(
-                spectator => spectator.spectatorId === spectatorId
-            )
-        );
+        assert.ok(datastore.findSpectator(game.gameId, spectatorId));
 
         datastore.leaveGame(game.gameId, spectatorId);
 
-        assert.ok(
-            !game.spectators.find(
-                spectator => spectator.spectatorId === spectatorId
-            )
-        );
+        assert.ok(!datastore.findSpectator(game.gameId, spectatorId));
     });
     it('start game', () => {
         const datastore = new EphemeralDataStore();
@@ -357,8 +333,6 @@ describe('turn', () => {
     it('edit turn', () => {
         const datastore = new EphemeralDataStore();
 
-        const tempValue = 'example';
-
         const game = datastore.createGame();
 
         datastore.startGame(game.gameId);
@@ -366,6 +340,10 @@ describe('turn', () => {
         const turnId = game.turns[0].turnId;
 
         const turn = datastore.findTurn(game.gameId, turnId);
+
+        const tempValue = 'example';
+
+        assert.notEqual((turn as any)?.value, tempValue);
 
         const edited = datastore.editTurn(game.gameId, turnId, data => {
             (data as any).value = tempValue;

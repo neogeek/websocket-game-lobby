@@ -47,7 +47,10 @@ describe('utils', () => {
             const array = [1, 2, 3, 4];
             assert.equal(array.length, 4);
 
-            removeArrayItem(array, 1);
+            removeArrayItem(array, 2);
+
+            assert.equal(array[0], 1);
+            assert.equal(array[1], 3);
 
             assert.equal(array.length, 3);
         });
@@ -58,12 +61,16 @@ describe('utils', () => {
                 { value: 3 },
                 { value: 4 }
             ];
+
             assert.equal(array.length, 4);
 
             removeArrayItem(
                 array,
-                (item: { value: number }) => item.value === 1
+                (item: { value: number }) => item.value === 2
             );
+
+            assert.deepEqual(array[0], { value: 1 });
+            assert.deepEqual(array[1], { value: 3 });
 
             assert.equal(array.length, 3);
         });
