@@ -1,9 +1,7 @@
-import { EphemeralDataStore } from './server/datastore';
-import { WebSocketGameLobbyClient } from './client';
-import { WebSocketGameLobbyServer } from './server';
+export { EphemeralDataStore } from './server/datastore';
 
-export {
-    EphemeralDataStore,
-    WebSocketGameLobbyClient,
-    WebSocketGameLobbyServer
-};
+export { WebSocketGameLobbyClient } from './client';
+
+export { WebSocketGameLobbyServer } from './server';
+
+export { DataStore, Game, Player, Spectator, Turn } from './types';

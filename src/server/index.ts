@@ -6,6 +6,8 @@ import { EphemeralDataStore } from './datastore';
 
 import { removeArrayItem } from '../utils';
 
+import { DataStore } from '../types';
+
 export class WebSocketGameLobbyServer {
     wss: any;
 

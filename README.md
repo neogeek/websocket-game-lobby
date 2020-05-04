@@ -16,7 +16,7 @@ $ npm install websocket-game-lobby
 
 ### Server
 
-The `WebSocketGameLobbyServer` class uses an ephemeral service as it's default datastore. You can replace it with your own by extending the datastore interface found in [src/typings/global.d.ts](src/typings/global.d.ts).
+The `WebSocketGameLobbyServer` class uses an ephemeral service as it's default datastore. You can replace it with your own by extending the datastore interface found in [src/types.ts](src/types.ts).
 
 ```javascript
 const { WebSocketGameLobbyServer } = require('websocket-game-lobby');
