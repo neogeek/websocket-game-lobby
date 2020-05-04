@@ -110,8 +110,8 @@ gameLobby.addEventListener('message', ({ data }) => {
 });
 ```
 
-| Name      | Description                                  | Parameters          |
-| --------- | -------------------------------------------- | ------------------- |
-| `open`    | When a websocket connections is established. | `({data, ...rest})` |
-| `message` | When a message is received.                  | `({data, ...rest})` |
-| `close`   | When a websocket connection is lost.         | `({data, ...rest})` |
+| Name      | Description                                  | Parameters |
+| --------- | -------------------------------------------- | ---------- |
+| `open`    | When a websocket connections is established. | `({data})` |
+| `message` | When a message is received.                  | `({data})` |
+| `close`   | When a websocket connection is lost.         | `({data})` |
