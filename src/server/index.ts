@@ -89,7 +89,7 @@ export class WebSocketGameLobbyServer {
                 let player = this.datastore.findPlayer(client.gameId, playerId);
                 let spectator = this.datastore.findSpectator(
                     client.gameId,
-                    client.playerId
+                    playerId
                 );
 
                 if (player) {
