@@ -1,6 +1,24 @@
 # Changelog
 
-## [v1.2.0](https://github.com/neogeek/websocket-game-lobby/tree/v1.2.0)
+## [Unreleased](https://github.com/neogeek/websocket-game-lobby/tree/HEAD)
+
+[Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v1.2.0...HEAD)
+
+**Merged pull requests:**
+
+- \[hotfix\] Export types with package distribution [\#14](https://github.com/neogeek/websocket-game-lobby/pull/14) ([neogeek](https://github.com/neogeek))
+- \[hotfix\] Prevent empty playerId or spectatorId in create methods. [\#13](https://github.com/neogeek/websocket-game-lobby/pull/13) ([neogeek](https://github.com/neogeek))
+- \[hotfix\] Remove default player from createGame method. [\#12](https://github.com/neogeek/websocket-game-lobby/pull/12) ([neogeek](https://github.com/neogeek))
+- \[hotfix\] Changed gameId and playerId to optional properties in client send method. [\#11](https://github.com/neogeek/websocket-game-lobby/pull/11) ([neogeek](https://github.com/neogeek))
+- \[hotfix\] Fixed broadcast issue with leave and end events. [\#10](https://github.com/neogeek/websocket-game-lobby/pull/10) ([neogeek](https://github.com/neogeek))
+- \[hotfix\] Fixed issue removing event listener callback. [\#9](https://github.com/neogeek/websocket-game-lobby/pull/9) ([neogeek](https://github.com/neogeek))
+- \[hotfix\] Moved createUniqueGameCode into utilities file. [\#8](https://github.com/neogeek/websocket-game-lobby/pull/8) ([neogeek](https://github.com/neogeek))
+- \[hotfix\] Export ephemeral datastore. [\#7](https://github.com/neogeek/websocket-game-lobby/pull/7) ([neogeek](https://github.com/neogeek))
+- \[feat\] Added new Spectator type. [\#6](https://github.com/neogeek/websocket-game-lobby/pull/6) ([neogeek](https://github.com/neogeek))
+- \[hotfix\] Return value from callback in edit methods. [\#5](https://github.com/neogeek/websocket-game-lobby/pull/5) ([neogeek](https://github.com/neogeek))
+- \[hotfix\] Return player and spectator separately. [\#4](https://github.com/neogeek/websocket-game-lobby/pull/4) ([neogeek](https://github.com/neogeek))
+
+## [v1.2.0](https://github.com/neogeek/websocket-game-lobby/tree/v1.2.0) (2020-05-01)
 
 [Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v1.1.0...v1.2.0)
 
