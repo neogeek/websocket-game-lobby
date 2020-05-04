@@ -11,16 +11,16 @@ export class WebSocketGameLobbyClient {
 
     constructor({
         port,
-        gameId,
-        playerId,
         options = {
             maxRetries: 10
-        }
+        },
+        gameId,
+        playerId
     }: {
         port: number;
+        options: any;
         gameId: string;
         playerId: string;
-        options: any;
     }) {
         this.wss = new ReconnectingWebSocket(
             `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${
