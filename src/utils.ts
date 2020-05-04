@@ -3,7 +3,7 @@ export const generateRandomString = (
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 ): string =>
     new Array(length)
-        .fill('a')
+        .fill('')
         .map(
             () =>
                 characters.split('')[
