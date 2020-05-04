@@ -96,18 +96,18 @@ export class WebSocketGameLobbyServer {
                     client.playerId = player.playerId;
                 } else if (spectator) {
                     client.playerId = spectator.spectatorId;
-                } else if (game.started) {
-                    spectator = this.datastore.createSpectator(playerId);
-
-                    client.playerId = spectator.spectatorId;
-
-                    this.datastore.joinGame(client.gameId, spectator);
-                } else {
+                } else if (!game.started) {
                     player = this.datastore.createPlayer(playerId);
 
                     client.playerId = player.playerId;
 
                     this.datastore.joinGame(client.gameId, player);
+                } else {
+                    spectator = this.datastore.createSpectator(playerId);
+
+                    client.playerId = spectator.spectatorId;
+
+                    this.datastore.joinGame(client.gameId, spectator);
                 }
 
                 if (type === 'start') {
