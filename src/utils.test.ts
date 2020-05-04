@@ -60,7 +60,10 @@ describe('utils', () => {
             ];
             assert.equal(array.length, 4);
 
-            removeArrayItem(array, (item: any) => item.value === 1);
+            removeArrayItem(
+                array,
+                (item: { value: number }) => item.value === 1
+            );
 
             assert.equal(array.length, 3);
         });

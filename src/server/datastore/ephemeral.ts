@@ -88,7 +88,7 @@ export class EphemeralDataStore implements DataStore {
         return game;
     }
     endGame(gameId: string): void {
-        removeArrayItem(data, (game: any) => game.gameId === gameId);
+        removeArrayItem(data, (game: Game) => game.gameId === gameId);
         return;
     }
 
