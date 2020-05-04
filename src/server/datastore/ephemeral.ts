@@ -92,9 +92,9 @@ export class EphemeralDataStore implements DataStore {
         return;
     }
 
-    createPlayer(playerId = uuidv4()): Player {
+    createPlayer(playerId?: string): Player {
         const player = {
-            playerId,
+            playerId: playerId || uuidv4(),
             name: ''
         };
 
@@ -124,9 +124,9 @@ export class EphemeralDataStore implements DataStore {
         return player;
     }
 
-    createSpectator(spectatorId = uuidv4()): Spectator {
+    createSpectator(spectatorId?: string): Spectator {
         const spectator = {
-            spectatorId,
+            spectatorId: spectatorId || uuidv4(),
             name: ''
         };
 

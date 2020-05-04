@@ -200,6 +200,20 @@ describe('player', () => {
             )
         );
     });
+    it('create new player with falsy ID', () => {
+        const datastore = new EphemeralDataStore();
+
+        const player = datastore.createPlayer('');
+
+        assert.notEqual(player.playerId, '');
+
+        assert.deepStrictEqual(
+            Object.keys(player),
+            Object.keys(
+                loadYaml(readFileSync(`${__dirname}/scheme.yaml`)).player
+            )
+        );
+    });
     it('find player', () => {
         const datastore = new EphemeralDataStore();
 
@@ -248,6 +262,20 @@ describe('spectator', () => {
         const spectator = datastore.createSpectator();
 
         assert.ok(spectator.spectatorId);
+
+        assert.deepStrictEqual(
+            Object.keys(spectator),
+            Object.keys(
+                loadYaml(readFileSync(`${__dirname}/scheme.yaml`)).spectator
+            )
+        );
+    });
+    it('create new spectator with falsy ID', () => {
+        const datastore = new EphemeralDataStore();
+
+        const spectator = datastore.createSpectator('');
+
+        assert.notEqual(spectator.spectatorId, '');
 
         assert.deepStrictEqual(
             Object.keys(spectator),
