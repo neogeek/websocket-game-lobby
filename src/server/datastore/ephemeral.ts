@@ -5,14 +5,14 @@ import { createUniqueGameCode, removeArrayItem } from '../../utils';
 const data: Game[] = [];
 
 export class EphemeralDataStore implements DataStore {
-    createGame(playerId?: string): Game {
+    createGame(): Game {
         const game: Game = {
             gameId: uuidv4(),
             gameCode: createUniqueGameCode(gameCode =>
                 Boolean(data.find((game: Game) => game.gameCode === gameCode))
             ),
             started: false,
-            players: [this.createPlayer(playerId)],
+            players: [],
             spectators: [],
             turns: []
         };

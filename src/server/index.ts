@@ -74,7 +74,7 @@ export class WebSocketGameLobbyServer {
 
                 if (!game) {
                     try {
-                        game = this.datastore.createGame(playerId);
+                        game = this.datastore.createGame();
                     } catch (e) {
                         this.wss.send({ error: e.message }, client);
 

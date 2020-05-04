@@ -1,5 +1,5 @@
 interface DataStore {
-    createGame(playerId?: string): Game;
+    createGame(): Game;
     findGame(gameId: string): Game | undefined;
     findGameWithCode(gameCode: string): Game | undefined;
     editGame(gameId: string, callback: (game: Game) => {}): Game | undefined;

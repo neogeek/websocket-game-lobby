@@ -6,7 +6,7 @@ import { load as loadYaml } from 'js-yaml';
 import { EphemeralDataStore } from './ephemeral';
 
 describe('game', () => {
-    it('create new game with one player', () => {
+    it('create new game', () => {
         const datastore = new EphemeralDataStore();
 
         const game = datastore.createGame();
@@ -18,7 +18,7 @@ describe('game', () => {
             Object.keys(loadYaml(readFileSync(`${__dirname}/scheme.yaml`)).game)
         );
 
-        assert.equal(game.players.length, 1);
+        assert.equal(game.players.length, 0);
         assert.equal(game.spectators.length, 0);
         assert.equal(game.turns.length, 0);
     });
@@ -27,9 +27,11 @@ describe('game', () => {
 
         const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
-        const game = datastore.createGame(playerId);
+        const game = datastore.createGame();
 
         assert.ok(game.gameId);
+
+        datastore.joinGame(game.gameId, datastore.createPlayer(playerId));
 
         assert.ok(game.players.find(player => player.playerId === playerId));
     });
@@ -116,7 +118,9 @@ describe('game', () => {
 
         const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
-        const game = datastore.createGame(playerId);
+        const game = datastore.createGame();
+
+        datastore.joinGame(game.gameId, datastore.createPlayer(playerId));
 
         assert.ok(game.players.find(player => player.playerId === playerId));
 
@@ -201,7 +205,9 @@ describe('player', () => {
 
         const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
-        const game = datastore.createGame(playerId);
+        const game = datastore.createGame();
+
+        datastore.joinGame(game.gameId, datastore.createPlayer(playerId));
 
         assert.ok(!datastore.findSpectator(game.gameId, playerId));
 
@@ -215,7 +221,9 @@ describe('player', () => {
 
         const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
-        const game = datastore.createGame(playerId);
+        const game = datastore.createGame();
+
+        datastore.joinGame(game.gameId, datastore.createPlayer(playerId));
 
         const player = datastore.findPlayer(game.gameId, playerId);
 
