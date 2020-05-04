@@ -213,14 +213,13 @@ export class EphemeralDataStore implements DataStore {
     }
     endTurn(gameId: string): void {
         const game = this.findGame(gameId) || this.findGameWithCode(gameId);
-        const turn = this.createTurn();
 
         if (!game) {
             return;
         }
 
         if (game && game.turns) {
-            game.turns.push(turn);
+            game.turns.push(this.createTurn());
         }
 
         return;
