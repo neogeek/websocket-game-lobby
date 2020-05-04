@@ -1,4 +1,4 @@
-interface DataStore {
+export interface DataStore {
     createGame(): Game;
     findGame(gameId: string): Game | undefined;
     findGameWithCode(gameCode: string): Game | undefined;
@@ -35,7 +35,7 @@ interface DataStore {
     endTurn(gameId: string): void;
 }
 
-interface Game {
+export interface Game {
     gameId: string;
     gameCode: string;
     started: boolean;
@@ -44,16 +44,16 @@ interface Game {
     turns: Turn[];
 }
 
-interface Player {
+export interface Player {
     playerId: string;
     name: string;
 }
 
-interface Spectator {
+export interface Spectator {
     spectatorId: string;
     name: string;
 }
 
-interface Turn {
+export interface Turn {
     turnId: string;
 }

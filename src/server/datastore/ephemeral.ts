@@ -2,6 +2,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { createUniqueGameCode, removeArrayItem } from '../../utils';
 
+import { DataStore, Game, Player, Spectator, Turn } from '../../types';
+
 const data: Game[] = [];
 
 export class EphemeralDataStore implements DataStore {
