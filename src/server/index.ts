@@ -185,6 +185,7 @@ export class WebSocketGameLobbyServer {
             this.wss.send({}, client);
         }
     }
+
     broadcastUpdate(gameId: string): void {
         this.wss.broadcast(
             (client: any) => this.sendUpdate(client),

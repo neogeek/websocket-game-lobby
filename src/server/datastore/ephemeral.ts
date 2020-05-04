@@ -37,6 +37,7 @@ export class EphemeralDataStore implements DataStore {
         } else if (typeof callback === 'function') {
             return callback(game);
         }
+
         return game;
     }
     joinGame(gameId: string, player: Player | Spectator): Game | undefined {
@@ -57,6 +58,7 @@ export class EphemeralDataStore implements DataStore {
         ) {
             game.spectators.push(player as Spectator);
         }
+
         return game;
     }
     leaveGame(gameId: string, playerId: string): void {
@@ -87,6 +89,7 @@ export class EphemeralDataStore implements DataStore {
         const turn = this.createTurn();
 
         game.turns.push(turn);
+
         game.started = true;
 
         return game;
@@ -110,6 +113,7 @@ export class EphemeralDataStore implements DataStore {
         if (!game) {
             return;
         }
+
         return game.players.find(
             (player: Player) => player.playerId === playerId
         );
@@ -144,6 +148,7 @@ export class EphemeralDataStore implements DataStore {
         if (!game) {
             return;
         }
+
         return game.spectators.find(
             (spectator: Spectator) => spectator.spectatorId === spectatorId
         );
