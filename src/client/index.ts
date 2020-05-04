@@ -42,7 +42,9 @@ export class WebSocketGameLobbyClient {
         Object.keys(this.listeners).map(type => {
             this.wss.addEventListener(type, (message: any) => {
                 if (type in this.listeners) {
-                    this.listeners[type].map((callback: (message: any) => {}) =>
+                    this.listeners[
+                        type
+                    ].map((callback: (message: any) => void) =>
                         callback(message)
                     );
                 }
@@ -50,13 +52,13 @@ export class WebSocketGameLobbyClient {
         });
     }
 
-    addEventListener(type: string, callback: () => {}): void {
+    addEventListener(type: string, callback: () => void): void {
         if (type in this.listeners) {
             this.listeners[type].push(callback);
         }
     }
 
-    removeEventListener(type: string, callback: () => {}): void {
+    removeEventListener(type: string, callback: () => void): void {
         if (type in this.listeners) {
             removeArrayItem(
                 this.listeners[type],

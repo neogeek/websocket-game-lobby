@@ -146,14 +146,14 @@ export class WebSocketGameLobbyServer {
         );
     }
 
-    addEventListener(type: string, callback: () => {}): void {
+    addEventListener(type: string, callback: () => void): void {
         if (!(type in this.listeners)) {
             this.listeners = Object.freeze({ ...this.listeners, [type]: [] });
         }
         this.listeners[type].push(callback);
     }
 
-    removeEventListener(type: string, callback: () => {}): void {
+    removeEventListener(type: string, callback: () => void): void {
         if (type in this.listeners) {
             removeArrayItem(
                 this.listeners[type],

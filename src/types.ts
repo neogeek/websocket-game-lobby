@@ -2,7 +2,7 @@ export interface DataStore {
     createGame(): Game;
     findGame(gameId: string): Game | undefined;
     findGameWithCode(gameCode: string): Game | undefined;
-    editGame(gameId: string, callback: (game: Game) => {}): Game | undefined;
+    editGame(gameId: string, callback: (game: Game) => Game): Game | undefined;
     joinGame(gameId: string, player: Player | Spectator): Game | undefined;
     leaveGame(gameId: string, playerId: string): void;
     startGame(gameId: string): Game | undefined;
@@ -13,7 +13,7 @@ export interface DataStore {
     editPlayer(
         gameId: string,
         playerId: string,
-        callback: (player: Player) => {}
+        callback: (player: Player) => Player
     ): Player | undefined;
 
     createSpectator(spectatorId?: string): Spectator;
@@ -21,7 +21,7 @@ export interface DataStore {
     editSpectator(
         gameId: string,
         spectatorId: string,
-        callback: (spectator: Spectator) => {}
+        callback: (spectator: Spectator) => Spectator
     ): Spectator | undefined;
 
     createTurn(): Turn;
@@ -30,7 +30,7 @@ export interface DataStore {
     editTurn(
         gameId: string,
         turnId: string,
-        callback: (turn: Turn) => {}
+        callback: (turn: Turn) => Turn
     ): Turn | undefined;
     endTurn(gameId: string): void;
 }
