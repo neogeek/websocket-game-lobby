@@ -1,5 +1,13 @@
 # Changelog
 
+## [v2.0.1](https://github.com/neogeek/websocket-game-lobby/tree/v2.0.1)
+
+[Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v2.0.0...v2.0.1)
+
+**Merged pull requests:**
+
+- \[hotfix\] Set options as optional. [\#15](https://github.com/neogeek/websocket-game-lobby/pull/15) ([neogeek](https://github.com/neogeek))
+
 ## [v2.0.0](https://github.com/neogeek/websocket-game-lobby/tree/v2.0.0) (2020-05-04)
 
 [Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v1.2.0...v2.0.0)
