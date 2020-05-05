@@ -1,6 +1,14 @@
 # Changelog
 
-## [v2.0.2](https://github.com/neogeek/websocket-game-lobby/tree/v2.0.2)
+## [v2.0.3](https://github.com/neogeek/websocket-game-lobby/tree/v2.0.3) (2020-05-05)
+
+[Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v2.0.2...v2.0.3)
+
+**Merged pull requests:**
+
+- \[hotfix\] Accept both gameId and gameCode from connection and messages. [\#18](https://github.com/neogeek/websocket-game-lobby/pull/18) ([neogeek](https://github.com/neogeek))
+
+## [v2.0.2](https://github.com/neogeek/websocket-game-lobby/tree/v2.0.2) (2020-05-05)
 
 [Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v2.0.1...v2.0.2)
 
