@@ -17,7 +17,7 @@ export class WebSocketGameLobbyClient {
         gameId,
         playerId
     }: {
-        port: number;
+        port?: number | null;
         options?: any;
         gameId: string;
         playerId: string;
