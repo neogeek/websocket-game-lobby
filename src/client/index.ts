@@ -19,16 +19,19 @@ export class WebSocketGameLobbyClient {
     }: {
         port?: number | null;
         options?: any;
-        gameId: string;
-        playerId: string;
+        gameId?: string;
+        playerId?: string;
     }) {
         this.wss = new ReconnectingWebSocket(
             `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${
                 window.location.hostname
-            }${port ? `:${port}` : ''}?${qs.stringify({
-                gameId,
-                playerId
-            })}`,
+            }${port ? `:${port}` : ''}?${qs.stringify(
+                {
+                    gameId,
+                    playerId
+                },
+                { skipNulls: true }
+            )}`,
             [],
             options
         );
