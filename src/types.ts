@@ -1,7 +1,7 @@
 export interface DataStore {
     createGame(): Game;
-    findGame(gameId: string): Game | undefined;
-    findGameWithCode(gameCode: string): Game | undefined;
+    findGame(gameId: string | undefined): Game | undefined;
+    findGameWithCode(gameCode: string | undefined): Game | undefined;
     editGame(gameId: string, callback: (game: Game) => Game): Game | undefined;
     joinGame(gameId: string, player: Player | Spectator): Game | undefined;
     leaveGame(gameId: string, playerId: string): void;

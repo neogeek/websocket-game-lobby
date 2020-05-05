@@ -28,14 +28,14 @@ export class WebSocketGameLobbyServer {
             port,
             server,
             onConnect: (client: any, request: any): void => {
-                const { gameId, playerId } = qs.parse(
+                const { gameId, gameCode, playerId } = qs.parse(
                     request.url.replace(/^\//, ''),
                     {
                         ignoreQueryPrefix: true
                     }
                 );
 
-                client.gameId = gameId;
+                client.gameId = gameId || gameCode;
                 client.playerId = playerId;
 
                 this.sendUpdate(client);
@@ -61,9 +61,15 @@ export class WebSocketGameLobbyServer {
                 {
                     type,
                     gameId,
+                    gameCode,
                     playerId,
                     ...rest
-                }: { type: string; gameId: string; playerId: string },
+                }: {
+                    type: string;
+                    gameId?: string;
+                    gameCode?: string;
+                    playerId: string;
+                },
                 client: any
             ) => {
                 if (!(type in this.listeners)) {
@@ -72,7 +78,7 @@ export class WebSocketGameLobbyServer {
 
                 let game =
                     this.datastore.findGame(gameId) ||
-                    this.datastore.findGameWithCode(gameId);
+                    this.datastore.findGameWithCode(gameCode);
 
                 if (!game) {
                     try {

@@ -15,11 +15,13 @@ export class WebSocketGameLobbyClient {
             maxRetries: 10
         },
         gameId,
+        gameCode,
         playerId
     }: {
         port?: number | null;
         options?: any;
         gameId?: string;
+        gameCode?: string;
         playerId?: string;
     }) {
         this.wss = new ReconnectingWebSocket(
@@ -28,6 +30,7 @@ export class WebSocketGameLobbyClient {
             }${port ? `:${port}` : ''}?${qs.stringify(
                 {
                     gameId,
+                    gameCode,
                     playerId
                 },
                 { skipNulls: true }
@@ -74,10 +77,13 @@ export class WebSocketGameLobbyClient {
         type: string,
         {
             gameId,
+            gameCode,
             playerId,
             ...rest
-        }: { gameId?: string; playerId?: string } = {}
+        }: { gameId?: string; gameCode?: string; playerId?: string } = {}
     ): void {
-        this.wss.send(JSON.stringify({ type, gameId, playerId, ...rest }));
+        this.wss.send(
+            JSON.stringify({ type, gameId, gameCode, playerId, ...rest })
+        );
     }
 }
