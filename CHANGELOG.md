@@ -1,6 +1,15 @@
 # Changelog
 
-## [v2.0.1](https://github.com/neogeek/websocket-game-lobby/tree/v2.0.1)
+## [v2.0.2](https://github.com/neogeek/websocket-game-lobby/tree/v2.0.2)
+
+[Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v2.0.1...v2.0.2)
+
+**Merged pull requests:**
+
+- \[hotfix\] Set gameId and playerId as optional. [\#17](https://github.com/neogeek/websocket-game-lobby/pull/17) ([neogeek](https://github.com/neogeek))
+- \[hotfix\] Set port as optional and to accept a number or null as a value. [\#16](https://github.com/neogeek/websocket-game-lobby/pull/16) ([neogeek](https://github.com/neogeek))
+
+## [v2.0.1](https://github.com/neogeek/websocket-game-lobby/tree/v2.0.1) (2020-05-05)
 
 [Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v2.0.0...v2.0.1)
 
