@@ -23,11 +23,14 @@ const { WebSocketGameLobbyServer } = require('websocket-game-lobby');
 
 const gameLobby = new WebSocketGameLobbyServer({ port: 5000 });
 
-gameLobby.addEventListener('create', ({ gameId, playerId }, datastore) => {
-    datastore.editGame(gameId, data => {
-        data.test = 'test';
-    });
-});
+gameLobby.addEventListener(
+    'create',
+    async ({ gameId, playerId }, datastore) => {
+        await datastore.editGame(gameId, data => {
+            data.test = 'test';
+        });
+    }
+);
 ```
 
 ### Client
