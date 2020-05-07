@@ -1,38 +1,47 @@
 export interface DataStore {
-    createGame(): Game;
-    findGame(gameId: string | undefined): Game | undefined;
-    findGameWithCode(gameCode: string | undefined): Game | undefined;
-    editGame(gameId: string, callback: (game: Game) => Game): Game | undefined;
-    joinGame(gameId: string, player: Player | Spectator): Game | undefined;
-    leaveGame(gameId: string, playerId: string): void;
-    startGame(gameId: string): Game | undefined;
-    endGame(gameId: string): void;
+    createGame(): Promise<Game>;
+    findGame(gameId: string | undefined): Promise<Game | undefined>;
+    findGameWithCode(gameCode: string | undefined): Promise<Game | undefined>;
+    editGame(
+        gameId: string,
+        callback: (game: Game) => Game
+    ): Promise<Game | undefined>;
+    joinGame(
+        gameId: string,
+        player: Player | Spectator
+    ): Promise<Game | undefined>;
+    leaveGame(gameId: string, playerId: string): Promise<void>;
+    startGame(gameId: string): Promise<Game | undefined>;
+    endGame(gameId: string): Promise<void>;
 
-    createPlayer(playerId?: string): Player;
-    findPlayer(gameId: string, playerId: string): Player | undefined;
+    createPlayer(playerId?: string): Promise<Player>;
+    findPlayer(gameId: string, playerId: string): Promise<Player | undefined>;
     editPlayer(
         gameId: string,
         playerId: string,
         callback: (player: Player) => Player
-    ): Player | undefined;
+    ): Promise<Player | undefined>;
 
-    createSpectator(spectatorId?: string): Spectator;
-    findSpectator(gameId: string, spectatorId: string): Spectator | undefined;
+    createSpectator(spectatorId?: string): Promise<Spectator>;
+    findSpectator(
+        gameId: string,
+        spectatorId: string
+    ): Promise<Spectator | undefined>;
     editSpectator(
         gameId: string,
         spectatorId: string,
         callback: (spectator: Spectator) => Spectator
-    ): Spectator | undefined;
+    ): Promise<Spectator | undefined>;
 
-    createTurn(): Turn;
-    findTurn(gameId: string, turnId: string): Turn | undefined;
-    currentTurn(gameId: string): Turn | undefined;
+    createTurn(): Promise<Turn>;
+    findTurn(gameId: string, turnId: string): Promise<Turn | undefined>;
+    currentTurn(gameId: string): Promise<Turn | undefined>;
     editTurn(
         gameId: string,
         turnId: string,
         callback: (turn: Turn) => Turn
-    ): Turn | undefined;
-    endTurn(gameId: string): void;
+    ): Promise<Turn | undefined>;
+    endTurn(gameId: string): Promise<void>;
 }
 
 export interface Game {

@@ -7,7 +7,7 @@ import { DataStore, Game, Player, Spectator, Turn } from '../../types';
 const data: Game[] = [];
 
 export class EphemeralDataStore implements DataStore {
-    createGame(): Game {
+    async createGame(): Promise<Game> {
         const game: Game = {
             gameId: uuidv4(),
             gameCode: createUniqueGameCode(gameCode =>
@@ -23,25 +23,35 @@ export class EphemeralDataStore implements DataStore {
 
         return game;
     }
-    findGame(gameId: string): Game | undefined {
+    async findGame(gameId: string): Promise<Game | undefined> {
         return data.find((game: Game) => game.gameId === gameId);
     }
-    findGameWithCode(gameCode: string): Game | undefined {
+    async findGameWithCode(gameCode: string): Promise<Game | undefined> {
         return data.find((game: Game) => game.gameCode === gameCode);
     }
-    editGame(gameId: string, callback: (game: Game) => Game): Game | undefined {
-        const game = this.findGame(gameId) || this.findGameWithCode(gameId);
+    async editGame(
+        gameId: string,
+        callback: (game: Game) => Game
+    ): Promise<Game | undefined> {
+        const game =
+            (await this.findGame(gameId)) ||
+            (await this.findGameWithCode(gameId));
 
         if (!game) {
             return;
         } else if (typeof callback === 'function') {
-            return callback(game);
+            return await callback(game);
         }
 
         return game;
     }
-    joinGame(gameId: string, player: Player | Spectator): Game | undefined {
-        const game = this.findGame(gameId) || this.findGameWithCode(gameId);
+    async joinGame(
+        gameId: string,
+        player: Player | Spectator
+    ): Promise<Game | undefined> {
+        const game =
+            (await this.findGame(gameId)) ||
+            (await this.findGameWithCode(gameId));
 
         if (!game) {
             return;
@@ -49,20 +59,25 @@ export class EphemeralDataStore implements DataStore {
 
         if (
             !game.started &&
-            !this.findPlayer(gameId, (player as Player).playerId)
+            !(await this.findPlayer(gameId, (player as Player).playerId))
         ) {
             game.players.push(player as Player);
         } else if (
             game.started &&
-            !this.findSpectator(gameId, (player as Spectator).spectatorId)
+            !(await this.findSpectator(
+                gameId,
+                (player as Spectator).spectatorId
+            ))
         ) {
             game.spectators.push(player as Spectator);
         }
 
         return game;
     }
-    leaveGame(gameId: string, playerId: string): void {
-        const game = this.findGame(gameId) || this.findGameWithCode(gameId);
+    async leaveGame(gameId: string, playerId: string): Promise<void> {
+        const game =
+            (await this.findGame(gameId)) ||
+            (await this.findGameWithCode(gameId));
 
         if (!game) {
             return;
@@ -79,14 +94,16 @@ export class EphemeralDataStore implements DataStore {
 
         return;
     }
-    startGame(gameId: string): Game | undefined {
-        const game = this.findGame(gameId) || this.findGameWithCode(gameId);
+    async startGame(gameId: string): Promise<Game | undefined> {
+        const game =
+            (await this.findGame(gameId)) ||
+            (await this.findGameWithCode(gameId));
 
         if (!game) {
             return;
         }
 
-        const turn = this.createTurn();
+        const turn = await this.createTurn();
 
         game.turns.push(turn);
 
@@ -94,12 +111,12 @@ export class EphemeralDataStore implements DataStore {
 
         return game;
     }
-    endGame(gameId: string): void {
+    async endGame(gameId: string): Promise<void> {
         removeArrayItem(data, (game: Game) => game.gameId === gameId);
         return;
     }
 
-    createPlayer(playerId?: string): Player {
+    async createPlayer(playerId?: string): Promise<Player> {
         const player = {
             playerId: playerId || uuidv4(),
             name: ''
@@ -107,8 +124,13 @@ export class EphemeralDataStore implements DataStore {
 
         return player;
     }
-    findPlayer(gameId: string, playerId: string): Player | undefined {
-        const game = this.findGame(gameId) || this.findGameWithCode(gameId);
+    async findPlayer(
+        gameId: string,
+        playerId: string
+    ): Promise<Player | undefined> {
+        const game =
+            (await this.findGame(gameId)) ||
+            (await this.findGameWithCode(gameId));
 
         if (!game) {
             return;
@@ -118,23 +140,23 @@ export class EphemeralDataStore implements DataStore {
             (player: Player) => player.playerId === playerId
         );
     }
-    editPlayer(
+    async editPlayer(
         gameId: string,
         playerId: string,
         callback: (player: Player) => Player
-    ): Player | undefined {
-        const player = this.findPlayer(gameId, playerId);
+    ): Promise<Player | undefined> {
+        const player = await this.findPlayer(gameId, playerId);
 
         if (!player) {
             return;
         } else if (typeof callback === 'function') {
-            return callback(player);
+            return await callback(player);
         }
 
         return player;
     }
 
-    createSpectator(spectatorId?: string): Spectator {
+    async createSpectator(spectatorId?: string): Promise<Spectator> {
         const spectator = {
             spectatorId: spectatorId || uuidv4(),
             name: ''
@@ -142,8 +164,13 @@ export class EphemeralDataStore implements DataStore {
 
         return spectator;
     }
-    findSpectator(gameId: string, spectatorId: string): Spectator | undefined {
-        const game = this.findGame(gameId) || this.findGameWithCode(gameId);
+    async findSpectator(
+        gameId: string,
+        spectatorId: string
+    ): Promise<Spectator | undefined> {
+        const game =
+            (await this.findGame(gameId)) ||
+            (await this.findGameWithCode(gameId));
 
         if (!game) {
             return;
@@ -153,31 +180,33 @@ export class EphemeralDataStore implements DataStore {
             (spectator: Spectator) => spectator.spectatorId === spectatorId
         );
     }
-    editSpectator(
+    async editSpectator(
         gameId: string,
         spectatorId: string,
         callback: (spectator: Spectator) => Spectator
-    ): Spectator | undefined {
-        const spectator = this.findSpectator(gameId, spectatorId);
+    ): Promise<Spectator | undefined> {
+        const spectator = await this.findSpectator(gameId, spectatorId);
 
         if (!spectator) {
             return;
         } else if (typeof callback === 'function') {
-            return callback(spectator);
+            return await callback(spectator);
         }
 
         return spectator;
     }
 
-    createTurn(): Turn {
+    async createTurn(): Promise<Turn> {
         const turn = {
             turnId: uuidv4()
         };
 
         return turn;
     }
-    findTurn(gameId: string, turnId: string): Turn | undefined {
-        const game = this.findGame(gameId) || this.findGameWithCode(gameId);
+    async findTurn(gameId: string, turnId: string): Promise<Turn | undefined> {
+        const game =
+            (await this.findGame(gameId)) ||
+            (await this.findGameWithCode(gameId));
 
         if (!game) {
             return;
@@ -185,8 +214,10 @@ export class EphemeralDataStore implements DataStore {
 
         return game.turns.find((turn: Turn) => turn.turnId === turnId);
     }
-    currentTurn(gameId: string): Turn | undefined {
-        const game = this.findGame(gameId) || this.findGameWithCode(gameId);
+    async currentTurn(gameId: string): Promise<Turn | undefined> {
+        const game =
+            (await this.findGame(gameId)) ||
+            (await this.findGameWithCode(gameId));
 
         if (!game) {
             return;
@@ -196,30 +227,32 @@ export class EphemeralDataStore implements DataStore {
 
         return;
     }
-    editTurn(
+    async editTurn(
         gameId: string,
         turnId: string,
         callback: (turn: Turn) => Turn
-    ): Turn | undefined {
-        const turn = this.findTurn(gameId, turnId);
+    ): Promise<Turn | undefined> {
+        const turn = await this.findTurn(gameId, turnId);
 
         if (!turn) {
             return;
         } else if (typeof callback === 'function') {
-            return callback(turn);
+            return await callback(turn);
         }
 
         return turn;
     }
-    endTurn(gameId: string): void {
-        const game = this.findGame(gameId) || this.findGameWithCode(gameId);
+    async endTurn(gameId: string): Promise<void> {
+        const game =
+            (await this.findGame(gameId)) ||
+            (await this.findGameWithCode(gameId));
 
         if (!game) {
             return;
         }
 
         if (game && game.turns) {
-            game.turns.push(this.createTurn());
+            game.turns.push(await this.createTurn());
         }
 
         return;

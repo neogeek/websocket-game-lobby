@@ -27,7 +27,7 @@ export class WebSocketGameLobbyServer {
         this.wss = new WebSocketEventWrapper({
             port,
             server,
-            onConnect: (client: any, request: any): void => {
+            onConnect: async (client: any, request: any): Promise<void> => {
                 const { gameId, gameCode, playerId } = qs.parse(
                     request.url.replace(/^\//, ''),
                     {
@@ -38,7 +38,7 @@ export class WebSocketGameLobbyServer {
                 client.gameId = gameId || gameCode;
                 client.playerId = playerId;
 
-                this.sendUpdate(client);
+                await this.sendUpdate(client);
             }
         });
 
@@ -57,7 +57,7 @@ export class WebSocketGameLobbyServer {
         });
 
         this.wss.addEventListener(
-            (
+            async (
                 {
                     type,
                     gameId,
@@ -77,12 +77,12 @@ export class WebSocketGameLobbyServer {
                 }
 
                 let game =
-                    this.datastore.findGame(gameId) ||
-                    this.datastore.findGameWithCode(gameCode);
+                    (await this.datastore.findGame(gameId)) ||
+                    (await this.datastore.findGameWithCode(gameCode));
 
                 if (!game) {
                     try {
-                        game = this.datastore.createGame();
+                        game = await this.datastore.createGame();
                     } catch (e) {
                         this.wss.send({ error: e.message }, client);
 
@@ -92,8 +92,11 @@ export class WebSocketGameLobbyServer {
 
                 client.gameId = game.gameId;
 
-                let player = this.datastore.findPlayer(client.gameId, playerId);
-                let spectator = this.datastore.findSpectator(
+                let player = await this.datastore.findPlayer(
+                    client.gameId,
+                    playerId
+                );
+                let spectator = await this.datastore.findSpectator(
                     client.gameId,
                     playerId
                 );
@@ -103,30 +106,33 @@ export class WebSocketGameLobbyServer {
                 } else if (spectator) {
                     client.playerId = spectator.spectatorId;
                 } else if (!game.started) {
-                    player = this.datastore.createPlayer(playerId);
+                    player = await this.datastore.createPlayer(playerId);
 
                     client.playerId = player.playerId;
 
-                    this.datastore.joinGame(client.gameId, player);
+                    await this.datastore.joinGame(client.gameId, player);
                 } else {
-                    spectator = this.datastore.createSpectator(playerId);
+                    spectator = await this.datastore.createSpectator(playerId);
 
                     client.playerId = spectator.spectatorId;
 
-                    this.datastore.joinGame(client.gameId, spectator);
+                    await this.datastore.joinGame(client.gameId, spectator);
                 }
 
                 if (type === 'start') {
-                    this.datastore.startGame(client.gameId);
+                    await this.datastore.startGame(client.gameId);
                 } else if (type === 'leave') {
-                    this.datastore.leaveGame(client.gameId, client.playerId);
+                    await this.datastore.leaveGame(
+                        client.gameId,
+                        client.playerId
+                    );
 
                     client.gameId = '';
                     client.playerId = '';
 
                     this.wss.send({}, client);
                 } else if (type === 'end') {
-                    this.datastore.endGame(client.gameId);
+                    await this.datastore.endGame(client.gameId);
 
                     client.gameId = '';
                     client.playerId = '';
@@ -135,33 +141,34 @@ export class WebSocketGameLobbyServer {
                 }
 
                 if (type in this.listeners) {
-                    this.listeners[type].forEach(
-                        (callback: (client: any, datastore: DataStore) => {}) =>
-                            callback(
-                                {
-                                    type,
-                                    gameId: client.gameId,
-                                    playerId: client.playerId,
-                                    ...rest
-                                },
-                                this.datastore
-                            )
-                    );
+                    for (let i = 0; i < this.listeners[type].length; i += 1) {
+                        await this.listeners[type][i](
+                            {
+                                type,
+                                gameId: client.gameId,
+                                playerId: client.playerId,
+                                ...rest
+                            },
+                            this.datastore
+                        );
+                    }
                 }
 
-                this.broadcastUpdate(game.gameId);
+                await this.broadcastUpdate(game.gameId);
             }
         );
     }
 
-    addEventListener(type: string, callback: () => void): void {
+    addEventListener(type: string, callback: () => Promise<void>): void {
         if (!(type in this.listeners)) {
             this.listeners = Object.freeze({ ...this.listeners, [type]: [] });
         }
-        this.listeners[type].push(callback);
+        if (typeof callback === 'function') {
+            this.listeners[type].push(callback);
+        }
     }
 
-    removeEventListener(type: string, callback: () => void): void {
+    removeEventListener(type: string, callback: () => Promise<void>): void {
         if (type in this.listeners) {
             removeArrayItem(
                 this.listeners[type],
@@ -170,19 +177,19 @@ export class WebSocketGameLobbyServer {
         }
     }
 
-    sendUpdate(client: any): void {
+    async sendUpdate(client: any): Promise<void> {
         const game =
-            this.datastore.findGame(client.gameId) ||
-            this.datastore.findGameWithCode(client.gameId);
-        const player = this.datastore.findPlayer(
+            (await this.datastore.findGame(client.gameId)) ||
+            (await this.datastore.findGameWithCode(client.gameId));
+        const player = await this.datastore.findPlayer(
             client.gameId,
             client.playerId
         );
-        const spectator = this.datastore.findSpectator(
+        const spectator = await this.datastore.findSpectator(
             client.gameId,
             client.playerId
         );
-        const turn = this.datastore.currentTurn(client.gameId);
+        const turn = await this.datastore.currentTurn(client.gameId);
 
         if (game && (player || spectator)) {
             this.wss.send({ game, player, spectator, turn }, client);
@@ -194,9 +201,9 @@ export class WebSocketGameLobbyServer {
         }
     }
 
-    broadcastUpdate(gameId: string): void {
+    async broadcastUpdate(gameId: string): Promise<void> {
         this.wss.broadcast(
-            (client: any) => this.sendUpdate(client),
+            async (client: any) => await this.sendUpdate(client),
             (client: any) => client.gameId === gameId
         );
     }
