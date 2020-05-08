@@ -108,7 +108,10 @@ export class EphemeralDataStore implements DataStore {
         return game;
     }
     async endGame(gameId: string): Promise<void> {
-        removeArrayItem(data, (game: Game) => game.gameId === gameId);
+        removeArrayItem(
+            data,
+            (game: Game) => game.gameId === gameId || game.gameCode === gameId
+        );
         return;
     }
 
