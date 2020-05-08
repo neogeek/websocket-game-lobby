@@ -11,9 +11,9 @@ import { DataStore } from '../types';
 export class WebSocketGameLobbyServer {
     wss: any;
 
-    datastore: DataStore;
-
     listeners: any;
+
+    datastore: DataStore;
 
     constructor({
         port,
