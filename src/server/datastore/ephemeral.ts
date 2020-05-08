@@ -103,9 +103,7 @@ export class EphemeralDataStore implements DataStore {
             return;
         }
 
-        const turn = await this.createTurn();
-
-        game.turns.push(turn);
+        game.turns.push(await this.createTurn());
 
         game.started = true;
 
