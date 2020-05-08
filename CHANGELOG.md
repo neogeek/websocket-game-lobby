@@ -1,5 +1,14 @@
 # Changelog
 
+## [v2.1.0](https://github.com/neogeek/websocket-game-lobby/tree/v2.1.0)
+
+[Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v2.0.3...v2.1.0)
+
+**Merged pull requests:**
+
+- \[hotfix\] Simplified client listener handling. [\#20](https://github.com/neogeek/websocket-game-lobby/pull/20) ([neogeek](https://github.com/neogeek))
+- \[feat\] Converted datastore methods to run asynchronously. [\#19](https://github.com/neogeek/websocket-game-lobby/pull/19) ([neogeek](https://github.com/neogeek))
+
 ## [v2.0.3](https://github.com/neogeek/websocket-game-lobby/tree/v2.0.3) (2020-05-05)
 
 [Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v2.0.2...v2.0.3)
