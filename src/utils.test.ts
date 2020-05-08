@@ -3,7 +3,8 @@ import assert from 'assert';
 import {
     createUniqueGameCode,
     generateRandomString,
-    removeArrayItem
+    removeArrayItem,
+    removeArrayItemWithFilter
 } from './utils';
 
 describe('utils', () => {
@@ -54,7 +55,7 @@ describe('utils', () => {
 
             assert.equal(array.length, 3);
         });
-        it('remove item from array with function', () => {
+        it('remove item from array with filter function', () => {
             const array = [
                 { value: 1 },
                 { value: 2 },
@@ -64,7 +65,7 @@ describe('utils', () => {
 
             assert.equal(array.length, 4);
 
-            removeArrayItem(
+            removeArrayItemWithFilter(
                 array,
                 (item: { value: number }) => item.value === 2
             );

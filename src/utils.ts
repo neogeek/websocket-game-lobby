@@ -12,11 +12,21 @@ export const generateRandomString = (
         )
         .join('');
 
-export const removeArrayItem = (array: any[], filter: any): boolean => {
-    const itemIndex =
-        typeof filter === 'function'
-            ? array.findIndex(filter)
-            : array.indexOf(filter);
+export const removeArrayItem = (array: any[], item: any): boolean => {
+    const itemIndex = array.indexOf(item);
+
+    if (itemIndex !== -1) {
+        array.splice(itemIndex, 1);
+        return true;
+    }
+    return false;
+};
+
+export const removeArrayItemWithFilter = (
+    array: any[],
+    filter: (item: any) => boolean
+): boolean => {
+    const itemIndex = array.findIndex(filter);
 
     if (itemIndex !== -1) {
         array.splice(itemIndex, 1);

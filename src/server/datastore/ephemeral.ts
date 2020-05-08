@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { createUniqueGameCode, removeArrayItem } from '../../utils';
+import { createUniqueGameCode, removeArrayItemWithFilter } from '../../utils';
 
 import { DataStore, Game, Player, Spectator, Turn } from '../../types';
 
@@ -81,11 +81,11 @@ export class EphemeralDataStore implements DataStore {
             return;
         }
 
-        removeArrayItem(
+        removeArrayItemWithFilter(
             game.players,
             (player: Player) => player.playerId === playerId
         );
-        removeArrayItem(
+        removeArrayItemWithFilter(
             game.spectators,
             (spectator: Spectator) => spectator.spectatorId === playerId
         );
@@ -108,7 +108,7 @@ export class EphemeralDataStore implements DataStore {
         return game;
     }
     async endGame(gameId: string): Promise<void> {
-        removeArrayItem(
+        removeArrayItemWithFilter(
             data,
             (game: Game) => game.gameId === gameId || game.gameCode === gameId
         );

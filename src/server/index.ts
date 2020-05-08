@@ -170,10 +170,7 @@ export class WebSocketGameLobbyServer {
 
     removeEventListener(type: string, callback: () => Promise<void>): void {
         if (type in this.listeners) {
-            removeArrayItem(
-                this.listeners[type],
-                (item: any) => item === callback
-            );
+            removeArrayItem(this.listeners[type], callback);
         }
     }
 
