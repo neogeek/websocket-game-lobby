@@ -29,8 +29,6 @@ describe('game', () => {
 
         const game = await datastore.createGame();
 
-        assert.ok(game.gameId);
-
         await datastore.joinGame(
             game.gameId,
             await datastore.createPlayer(playerId)
@@ -72,7 +70,6 @@ describe('game', () => {
             return data;
         });
 
-        assert.equal(game.gameCode, gameCode);
         assert.equal(edited?.gameCode, gameCode);
     });
     it('join game as player', async () => {
@@ -247,7 +244,6 @@ describe('player', () => {
             }
         );
 
-        assert.equal(player?.name, name);
         assert.equal(edited?.name, name);
     });
 });
@@ -322,7 +318,6 @@ describe('spectator', () => {
             }
         );
 
-        assert.equal(spectator?.name, name);
         assert.equal(edited?.name, name);
     });
 });
@@ -388,7 +383,6 @@ describe('turn', () => {
             return data;
         });
 
-        assert.equal((turn as any)?.value, tempValue);
         assert.equal((edited as any)?.value, tempValue);
     });
     it('end turn', async () => {
