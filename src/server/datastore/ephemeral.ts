@@ -55,9 +55,7 @@ export class EphemeralDataStore implements DataStore {
 
         if (!game) {
             return;
-        }
-
-        if (
+        } else if (
             !game.started &&
             !(await this.findPlayer(gameId, (player as Player).playerId))
         ) {
