@@ -2,12 +2,14 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 
 import qs from 'qs';
 
-import { removeArrayItem } from '../utils';
+enum ListenerTypes {
+    open,
+    message,
+    close
+}
 
 export class WebSocketGameLobbyClient {
     wss: any;
-
-    listeners: any;
 
     constructor({
         port,
@@ -38,38 +40,17 @@ export class WebSocketGameLobbyClient {
             [],
             options
         );
-
-        this.listeners = Object.freeze({
-            open: [],
-            message: [],
-            close: []
-        });
-
-        Object.keys(this.listeners).map(type => {
-            this.wss.addEventListener(type, (message: any) => {
-                if (type in this.listeners) {
-                    this.listeners[
-                        type
-                    ].map((callback: (message: any) => void) =>
-                        callback(message)
-                    );
-                }
-            });
-        });
     }
 
     addEventListener(type: string, callback: () => void): void {
-        if (type in this.listeners) {
-            this.listeners[type].push(callback);
+        if (type in ListenerTypes) {
+            this.wss.addEventListener(type, callback);
         }
     }
 
     removeEventListener(type: string, callback: () => void): void {
-        if (type in this.listeners) {
-            removeArrayItem(
-                this.listeners[type],
-                (item: any) => item === callback
-            );
+        if (type in ListenerTypes) {
+            this.wss.removeEventListener(type, callback);
         }
     }
 
