@@ -117,12 +117,10 @@ export class EphemeralDataStore implements DataStore {
     }
 
     async createPlayer(playerId?: string): Promise<Player> {
-        const player = {
+        return {
             playerId: playerId || uuidv4(),
             name: ''
         };
-
-        return player;
     }
     async findPlayer(
         gameId: string,
@@ -157,12 +155,10 @@ export class EphemeralDataStore implements DataStore {
     }
 
     async createSpectator(spectatorId?: string): Promise<Spectator> {
-        const spectator = {
+        return {
             spectatorId: spectatorId || uuidv4(),
             name: ''
         };
-
-        return spectator;
     }
     async findSpectator(
         gameId: string,
@@ -197,11 +193,9 @@ export class EphemeralDataStore implements DataStore {
     }
 
     async createTurn(): Promise<Turn> {
-        const turn = {
+        return {
             turnId: uuidv4()
         };
-
-        return turn;
     }
     async findTurn(gameId: string, turnId: string): Promise<Turn | undefined> {
         const game =
