@@ -10,7 +10,7 @@ export class EphemeralDataStore implements DataStore {
     async createGame(): Promise<Game> {
         const game: Game = {
             gameId: uuidv4(),
-            gameCode: createUniqueGameCode(gameCode =>
+            gameCode: await createUniqueGameCode(async gameCode =>
                 Boolean(data.find((game: Game) => game.gameCode === gameCode))
             ),
             started: false,
