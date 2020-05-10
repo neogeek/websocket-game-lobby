@@ -76,18 +76,17 @@ export class WebSocketGameLobbyServer {
                     return;
                 }
 
-                let game =
+                const game =
                     (await this.datastore.findGame(gameId)) ||
-                    (await this.datastore.findGameWithCode(gameCode));
+                    (await this.datastore.findGameWithCode(gameCode)) ||
+                    (await this.datastore
+                        .createGame()
+                        .catch(e =>
+                            this.wss.send({ error: e.message }, client)
+                        ));
 
                 if (!game) {
-                    try {
-                        game = await this.datastore.createGame();
-                    } catch (e) {
-                        this.wss.send({ error: e.message }, client);
-
-                        return;
-                    }
+                    return;
                 }
 
                 client.gameId = game.gameId;

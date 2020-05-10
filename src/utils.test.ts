@@ -9,26 +9,24 @@ import {
 
 describe('utils', () => {
     describe('createUniqueGameCode', () => {
-        it('generate a unique game code', () => {
+        it('generate a unique game code', async () => {
             const gameCodes: string[] = [];
 
-            const generated = createUniqueGameCode(
-                gameCode => gameCodes.indexOf(gameCode) !== -1
+            const generated = await createUniqueGameCode(
+                async gameCode => gameCodes.indexOf(gameCode) !== -1
             );
 
             assert.ok(generated);
         });
-        it('fail to generate a unique game code', () => {
+        it('fail to generate a unique game code', async () => {
             const gameCodes: string[] = ['A'];
 
-            assert.throws(() => {
-                createUniqueGameCode(
-                    gameCode => gameCodes.indexOf(gameCode) !== -1,
-                    1,
-                    'A',
-                    1
-                );
-            }, Error);
+            await createUniqueGameCode(
+                async gameCode => gameCodes.indexOf(gameCode) !== -1,
+                1,
+                'A',
+                1
+            ).catch(e => expect(e.toString()).toMatch(/error/i));
         });
     });
     describe('generateRandomString', () => {

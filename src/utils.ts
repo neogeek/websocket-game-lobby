@@ -35,17 +35,17 @@ export const removeArrayItemWithFilter = (
     return false;
 };
 
-export const createUniqueGameCode = (
-    filter: (gameCode: string) => boolean,
+export const createUniqueGameCode = async (
+    filter: (gameCode: string) => Promise<boolean>,
     length = 4,
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
     iterations = 10
-): string => {
+): Promise<string> => {
     let gameCode = generateRandomString(length, characters);
 
     let iterationsRemaining = iterations;
 
-    while (typeof filter === 'function' && filter(gameCode)) {
+    while (typeof filter === 'function' && (await filter(gameCode))) {
         gameCode = generateRandomString(length, characters);
 
         iterationsRemaining -= 1;
