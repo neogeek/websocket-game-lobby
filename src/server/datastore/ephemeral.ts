@@ -1,6 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { createUniqueGameCode, removeArrayItemWithFilter } from '../../utils';
+import {
+    createUniqueGameCode,
+    removeArrayItemWithFilter,
+    isPlayer,
+    isSpectator
+} from '../../utils';
 
 import { DataStore, Game, Player, Spectator, Turn } from '../../types';
 
@@ -56,12 +61,12 @@ export class EphemeralDataStore implements DataStore {
         if (!game) {
             return;
         } else if (
-            !game.started &&
+            isPlayer(player) &&
             !(await this.findPlayer(gameId, (player as Player).playerId))
         ) {
             game.players.push(player as Player);
         } else if (
-            game.started &&
+            isSpectator(player) &&
             !(await this.findSpectator(
                 gameId,
                 (player as Spectator).spectatorId
