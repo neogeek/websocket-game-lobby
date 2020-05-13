@@ -63,12 +63,14 @@ export class WebSocketGameLobbyServer {
                     gameId,
                     gameCode,
                     playerId,
+                    forceSpectator,
                     ...rest
                 }: {
                     type: string;
                     gameId?: string;
                     gameCode?: string;
                     playerId: string;
+                    forceSpectator: boolean;
                 },
                 client: any
             ) => {
@@ -104,18 +106,18 @@ export class WebSocketGameLobbyServer {
                     client.playerId = player.playerId;
                 } else if (spectator) {
                     client.playerId = spectator.spectatorId;
-                } else if (!game.started) {
-                    player = await this.datastore.createPlayer(playerId);
-
-                    client.playerId = player.playerId;
-
-                    await this.datastore.joinGame(client.gameId, player);
-                } else {
+                } else if (game.started || forceSpectator) {
                     spectator = await this.datastore.createSpectator(playerId);
 
                     client.playerId = spectator.spectatorId;
 
                     await this.datastore.joinGame(client.gameId, spectator);
+                } else {
+                    player = await this.datastore.createPlayer(playerId);
+
+                    client.playerId = player.playerId;
+
+                    await this.datastore.joinGame(client.gameId, player);
                 }
 
                 if (type === 'start') {
