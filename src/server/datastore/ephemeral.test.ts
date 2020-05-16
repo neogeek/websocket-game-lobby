@@ -353,7 +353,8 @@ describe('ephemeral', () => {
 
             await datastore.startGame(game.gameId);
 
-            const turnId = game.turns[0].turnId;
+            const turnId =
+                (await datastore.findGame(game.gameId))?.turns[0].turnId || '';
 
             assert.equal(
                 (await datastore.findTurn(game.gameId, turnId))?.turnId,
@@ -367,7 +368,8 @@ describe('ephemeral', () => {
 
             await datastore.startGame(game.gameId);
 
-            const turnId = game.turns[0].turnId;
+            const turnId =
+                (await datastore.findGame(game.gameId))?.turns[0].turnId || '';
 
             assert.equal(
                 (await datastore.currentTurn(game.gameId))?.turnId,
@@ -381,7 +383,8 @@ describe('ephemeral', () => {
 
             await datastore.startGame(game.gameId);
 
-            const turnId = game.turns[0].turnId;
+            const turnId =
+                (await datastore.findGame(game.gameId))?.turns[0].turnId || '';
 
             const turn = await datastore.findTurn(game.gameId, turnId);
 
@@ -407,7 +410,8 @@ describe('ephemeral', () => {
 
             await datastore.startGame(game.gameId);
 
-            const turnId = game.turns[0].turnId;
+            const turnId =
+                (await datastore.findGame(game.gameId))?.turns[0].turnId || '';
 
             assert.equal(
                 (await datastore.currentTurn(game.gameId))?.turnId,
