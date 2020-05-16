@@ -51,18 +51,23 @@ export interface Game {
     players: Player[];
     spectators: Spectator[];
     turns: Turn[];
+    custom: object;
 }
 
 export interface Player {
     playerId: string;
     name: string;
+    custom: object;
 }
 
 export interface Spectator {
     spectatorId: string;
     name: string;
+    custom: object;
 }
 
 export interface Turn {
     turnId: string;
+    index: number;
+    custom: object;
 }

@@ -5,14 +5,19 @@ game:
   players: [player]
   spectators: [spectator]
   turns: [turn]
+  custom: object
 
 player:
   playerId: string
   name: string
+  custom: object
 
 spectator:
   spectatorId: string
   name: string
+  custom: object
 
 turn:
   turnId: string
+  index: number
+  custom: object

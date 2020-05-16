@@ -65,16 +65,16 @@ describe('ephemeral', () => {
 
             const game = await datastore.createGame();
 
-            const gameCode = 'FAKECODE';
+            const tempCustom = { value: 'example' };
 
-            assert.notEqual(game.gameCode, gameCode);
+            assert.notDeepEqual(game?.custom, tempCustom);
 
             const edited = await datastore.editGame(game.gameId, data => {
-                data.gameCode = gameCode;
+                data.custom = tempCustom;
                 return data;
             });
 
-            assert.equal(edited?.gameCode, gameCode);
+            assert.deepEqual(edited?.custom, tempCustom);
         });
         it('join game as player', async () => {
             const datastore = new DataStore();
@@ -243,18 +243,23 @@ describe('ephemeral', () => {
 
             const name = 'Scott';
 
+            const tempCustom = { value: 'example' };
+
             assert.notEqual(player?.name, name);
+            assert.notDeepEqual(player?.custom, tempCustom);
 
             const edited = await datastore.editPlayer(
                 game.gameId,
                 playerId,
                 data => {
                     data.name = name;
+                    data.custom = tempCustom;
                     return data;
                 }
             );
 
             assert.equal(edited?.name, name);
+            assert.deepEqual(edited?.custom, tempCustom);
         });
     });
 
@@ -317,18 +322,23 @@ describe('ephemeral', () => {
 
             const name = 'Scott';
 
+            const tempCustom = { value: 'example' };
+
             assert.notEqual(spectator?.name, name);
+            assert.notDeepEqual(spectator?.custom, tempCustom);
 
             const edited = await datastore.editSpectator(
                 game.gameId,
                 spectatorId,
                 data => {
                     data.name = name;
+                    data.custom = tempCustom;
                     return data;
                 }
             );
 
             assert.equal(edited?.name, name);
+            assert.deepEqual(edited?.custom, tempCustom);
         });
     });
 
@@ -389,20 +399,22 @@ describe('ephemeral', () => {
 
             const turn = await datastore.findTurn(game.gameId, turnId);
 
-            const tempValue = 'example';
+            const tempCustom = { value: 'example' };
 
-            assert.notEqual((turn as any)?.value, tempValue);
+            assert.notDeepEqual(turn?.custom, tempCustom);
 
             const edited = await datastore.editTurn(
                 game.gameId,
                 turnId,
                 data => {
-                    (data as any).value = tempValue;
+                    data.index = 1;
+                    data.custom = tempCustom;
                     return data;
                 }
             );
 
-            assert.equal((edited as any)?.value, tempValue);
+            assert.deepEqual(edited?.index, 1);
+            assert.deepEqual(edited?.custom, tempCustom);
         });
         it('end turn', async () => {
             const datastore = new DataStore();

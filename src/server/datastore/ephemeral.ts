@@ -21,7 +21,8 @@ export class EphemeralDataStore implements DataStore {
             started: false,
             players: [],
             spectators: [],
-            turns: []
+            turns: [],
+            custom: {}
         };
 
         data.push(game);
@@ -123,7 +124,8 @@ export class EphemeralDataStore implements DataStore {
     async createPlayer(playerId?: string): Promise<Player> {
         return {
             playerId: playerId || uuidv4(),
-            name: ''
+            name: '',
+            custom: {}
         };
     }
     async findPlayer(
@@ -161,7 +163,8 @@ export class EphemeralDataStore implements DataStore {
     async createSpectator(spectatorId?: string): Promise<Spectator> {
         return {
             spectatorId: spectatorId || uuidv4(),
-            name: ''
+            name: '',
+            custom: {}
         };
     }
     async findSpectator(
@@ -198,7 +201,9 @@ export class EphemeralDataStore implements DataStore {
 
     async createTurn(): Promise<Turn> {
         return {
-            turnId: uuidv4()
+            turnId: uuidv4(),
+            index: 0,
+            custom: {}
         };
     }
     async findTurn(gameId: string, turnId: string): Promise<Turn | undefined> {
