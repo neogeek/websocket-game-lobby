@@ -1,3 +1,1 @@
-import { EphemeralDataStore } from './ephemeral';
-
-export { EphemeralDataStore };
+export { EphemeralDataStore } from './ephemeral';
