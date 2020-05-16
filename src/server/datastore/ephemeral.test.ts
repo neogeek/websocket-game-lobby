@@ -13,6 +13,7 @@ describe('ephemeral', () => {
             const game = await datastore.createGame();
 
             assert.ok(game.gameId);
+            assert.ok(game.gameCode);
 
             assert.deepStrictEqual(
                 Object.keys(game),
