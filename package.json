@@ -9,10 +9,10 @@
   "types": "dist/index.d.ts",
   "license": "MIT",
   "dependencies": {
-    "websocket-event-wrapper": "1.0.0",
     "qs": "6.9.4",
     "reconnecting-websocket": "4.4.0",
-    "uuid": "8.0.0"
+    "uuid": "8.0.0",
+    "websocket-event-wrapper": "1.0.0"
   },
   "devDependencies": {
     "@types/jest": "25.2.2",
