@@ -3,11 +3,11 @@ import assert from 'assert';
 
 import { load as loadYaml } from 'js-yaml';
 
-import { EphemeralDataStore } from './ephemeral';
+import { EphemeralDataStore as DataStore } from './ephemeral';
 
 describe('game', () => {
     it('create new game', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const game = await datastore.createGame();
 
@@ -23,7 +23,7 @@ describe('game', () => {
         assert.equal(game.turns.length, 0);
     });
     it('create new game with one player using a specific playerId', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
@@ -37,7 +37,7 @@ describe('game', () => {
         assert.ok(await datastore.findPlayer(game.gameId, playerId));
     });
     it('find game with ID', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const game = await datastore.createGame();
 
@@ -47,7 +47,7 @@ describe('game', () => {
         );
     });
     it('find game with game code', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const game = await datastore.createGame();
 
@@ -57,7 +57,7 @@ describe('game', () => {
         );
     });
     it('edit game', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const game = await datastore.createGame();
 
@@ -73,7 +73,7 @@ describe('game', () => {
         assert.equal(edited?.gameCode, gameCode);
     });
     it('join game as player', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
@@ -89,7 +89,7 @@ describe('game', () => {
         assert.ok(await datastore.findPlayer(game.gameId, playerId));
     });
     it('join game as spectator', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const spectatorId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
@@ -111,7 +111,7 @@ describe('game', () => {
         assert.ok(await datastore.findSpectator(game.gameId, spectatorId));
     });
     it('leave game as player', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
@@ -129,7 +129,7 @@ describe('game', () => {
         assert.ok(!(await datastore.findPlayer(game.gameId, playerId)));
     });
     it('leave game as spectator', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const spectatorId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
@@ -151,7 +151,7 @@ describe('game', () => {
         assert.ok(!(await datastore.findSpectator(game.gameId, spectatorId)));
     });
     it('start game', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const game = await datastore.createGame();
 
@@ -164,7 +164,7 @@ describe('game', () => {
         assert.equal(game.turns.length, 1);
     });
     it('end game', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const game = await datastore.createGame();
 
@@ -178,7 +178,7 @@ describe('game', () => {
 
 describe('player', () => {
     it('create new player', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const player = await datastore.createPlayer();
 
@@ -192,14 +192,14 @@ describe('player', () => {
         );
     });
     it('create new player with falsy ID', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const player = await datastore.createPlayer('');
 
         assert.notEqual(player.playerId, '');
     });
     it('find player', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
@@ -218,7 +218,7 @@ describe('player', () => {
         );
     });
     it('edit player', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
@@ -250,7 +250,7 @@ describe('player', () => {
 
 describe('spectator', () => {
     it('create new spectator', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const spectator = await datastore.createSpectator();
 
@@ -264,14 +264,14 @@ describe('spectator', () => {
         );
     });
     it('create new spectator with falsy ID', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const spectator = await datastore.createSpectator('');
 
         assert.notEqual(spectator.spectatorId, '');
     });
     it('find spectator', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const spectatorId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
@@ -293,7 +293,7 @@ describe('spectator', () => {
         );
     });
     it('edit spectator', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const spectatorId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
@@ -324,7 +324,7 @@ describe('spectator', () => {
 
 describe('turn', () => {
     it('create new turn', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const turn = await datastore.createTurn();
 
@@ -336,7 +336,7 @@ describe('turn', () => {
         );
     });
     it('find turn', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const game = await datastore.createGame();
 
@@ -350,7 +350,7 @@ describe('turn', () => {
         );
     });
     it('get current turn', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const game = await datastore.createGame();
 
@@ -364,7 +364,7 @@ describe('turn', () => {
         );
     });
     it('edit turn', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const game = await datastore.createGame();
 
@@ -386,7 +386,7 @@ describe('turn', () => {
         assert.equal((edited as any)?.value, tempValue);
     });
     it('end turn', async () => {
-        const datastore = new EphemeralDataStore();
+        const datastore = new DataStore();
 
         const game = await datastore.createGame();
 
