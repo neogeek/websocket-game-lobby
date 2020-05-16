@@ -167,10 +167,10 @@ describe('ephemeral', () => {
             assert.notEqual(game.started, true);
             assert.notEqual(game.turns.length, 1);
 
-            await datastore.startGame(game.gameId);
+            const edited = await datastore.startGame(game.gameId);
 
-            assert.equal(game.started, true);
-            assert.equal(game.turns.length, 1);
+            assert.equal(edited?.started, true);
+            assert.equal(edited?.turns.length, 1);
         });
         it('end game', async () => {
             const datastore = new DataStore();
