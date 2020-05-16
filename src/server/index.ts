@@ -48,6 +48,8 @@ export class WebSocketGameLobbyServer {
             this.datastore = new EphemeralDataStore();
         }
 
+        this.datastore.setup();
+
         this.listeners = Object.freeze({
             create: [],
             join: [],
