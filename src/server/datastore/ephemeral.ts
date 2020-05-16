@@ -9,9 +9,13 @@ import {
 
 import { DataStore, Game, Player, Spectator, Turn } from '../../types';
 
-const data: Game[] = [];
+let data: Game[] = [];
 
 export class EphemeralDataStore implements DataStore {
+    async setup(): Promise<void> {
+        data = [];
+        return;
+    }
     async createGame(): Promise<Game> {
         const game: Game = {
             gameId: uuidv4(),

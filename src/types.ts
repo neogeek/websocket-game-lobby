@@ -1,4 +1,5 @@
 export interface DataStore {
+    setup(): Promise<void>;
     createGame(): Promise<Game>;
     findGame(gameId: string | undefined): Promise<Game | undefined>;
     findGameWithCode(gameCode: string | undefined): Promise<Game | undefined>;
