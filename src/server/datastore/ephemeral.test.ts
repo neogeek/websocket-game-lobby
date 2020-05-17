@@ -242,7 +242,6 @@ describe('ephemeral', () => {
             const player = await datastore.findPlayer(game.gameId, playerId);
 
             const name = 'Scott';
-
             const tempCustom = { value: 'example' };
 
             assert.notEqual(player?.name, name);
@@ -321,7 +320,6 @@ describe('ephemeral', () => {
             await datastore.joinGame(game.gameId, spectator);
 
             const name = 'Scott';
-
             const tempCustom = { value: 'example' };
 
             assert.notEqual(spectator?.name, name);
