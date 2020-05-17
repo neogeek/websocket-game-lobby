@@ -35,7 +35,8 @@ export class WebSocketGameLobbyServer {
                     }
                 );
 
-                client.gameId = gameId || gameCode;
+                client.gameId = gameId;
+                client.gameCode = gameCode;
                 client.playerId = playerId;
 
                 await this.sendUpdate(client);
@@ -180,7 +181,7 @@ export class WebSocketGameLobbyServer {
     async sendUpdate(client: any): Promise<void> {
         const game =
             (await this.datastore.findGame(client.gameId)) ||
-            (await this.datastore.findGameWithCode(client.gameId));
+            (await this.datastore.findGameWithCode(client.gameCode));
         const player = await this.datastore.findPlayer(
             client.gameId,
             client.playerId
