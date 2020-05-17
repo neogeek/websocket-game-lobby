@@ -399,6 +399,7 @@ describe('ephemeral', () => {
 
             const tempCustom = { value: 'example' };
 
+            assert.notEqual(turn?.index, 1);
             assert.notDeepEqual(turn?.custom, tempCustom);
 
             const edited = await datastore.editTurn(
@@ -411,7 +412,7 @@ describe('ephemeral', () => {
                 }
             );
 
-            assert.deepEqual(edited?.index, 1);
+            assert.equal(edited?.index, 1);
             assert.deepEqual(edited?.custom, tempCustom);
         });
         it('end turn', async () => {
