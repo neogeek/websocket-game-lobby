@@ -11,6 +11,8 @@ enum ListenerTypes {
 export class WebSocketGameLobbyClient {
     wss: any;
 
+    keepAliveInterval: any;
+
     constructor({
         port,
         options = {
@@ -18,13 +20,15 @@ export class WebSocketGameLobbyClient {
         },
         gameId,
         gameCode,
-        playerId
+        playerId,
+        keepAliveMilliseconds = 30000
     }: {
         port?: number | null;
         options?: any;
         gameId?: string;
         gameCode?: string;
         playerId?: string;
+        keepAliveMilliseconds?: number;
     }) {
         this.wss = new ReconnectingWebSocket(
             `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${
@@ -39,6 +43,11 @@ export class WebSocketGameLobbyClient {
             )}`,
             [],
             options
+        );
+
+        this.keepAliveInterval = setInterval(
+            () => this.wss.send('ping'),
+            keepAliveMilliseconds
         );
     }
 
