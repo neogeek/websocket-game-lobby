@@ -43,9 +43,7 @@ export class EphemeralDataStore implements DataStore {
         gameId: string,
         callback: (game: Game) => Game
     ): Promise<Game | undefined> {
-        const game =
-            (await this.findGame(gameId)) ||
-            (await this.findGameWithCode(gameId));
+        const game = await this.findGame(gameId);
 
         if (!game) {
             return;
@@ -59,9 +57,7 @@ export class EphemeralDataStore implements DataStore {
         gameId: string,
         player: Player | Spectator
     ): Promise<Game | undefined> {
-        const game =
-            (await this.findGame(gameId)) ||
-            (await this.findGameWithCode(gameId));
+        const game = await this.findGame(gameId);
 
         if (!game) {
             return;
@@ -83,9 +79,7 @@ export class EphemeralDataStore implements DataStore {
         return game;
     }
     async leaveGame(gameId: string, playerId: string): Promise<void> {
-        const game =
-            (await this.findGame(gameId)) ||
-            (await this.findGameWithCode(gameId));
+        const game = await this.findGame(gameId);
 
         if (!game) {
             return;
@@ -103,9 +97,7 @@ export class EphemeralDataStore implements DataStore {
         return;
     }
     async startGame(gameId: string): Promise<Game | undefined> {
-        const game =
-            (await this.findGame(gameId)) ||
-            (await this.findGameWithCode(gameId));
+        const game = await this.findGame(gameId);
 
         if (!game) {
             return;
@@ -118,10 +110,7 @@ export class EphemeralDataStore implements DataStore {
         return game;
     }
     async endGame(gameId: string): Promise<void> {
-        removeArrayItemWithFilter(
-            data,
-            (game: Game) => game.gameId === gameId || game.gameCode === gameId
-        );
+        removeArrayItemWithFilter(data, (game: Game) => game.gameId === gameId);
         return;
     }
 
@@ -136,9 +125,7 @@ export class EphemeralDataStore implements DataStore {
         gameId: string,
         playerId: string
     ): Promise<Player | undefined> {
-        const game =
-            (await this.findGame(gameId)) ||
-            (await this.findGameWithCode(gameId));
+        const game = await this.findGame(gameId);
 
         if (!game) {
             return;
@@ -175,9 +162,7 @@ export class EphemeralDataStore implements DataStore {
         gameId: string,
         spectatorId: string
     ): Promise<Spectator | undefined> {
-        const game =
-            (await this.findGame(gameId)) ||
-            (await this.findGameWithCode(gameId));
+        const game = await this.findGame(gameId);
 
         if (!game) {
             return;
@@ -211,9 +196,7 @@ export class EphemeralDataStore implements DataStore {
         };
     }
     async findTurn(gameId: string, turnId: string): Promise<Turn | undefined> {
-        const game =
-            (await this.findGame(gameId)) ||
-            (await this.findGameWithCode(gameId));
+        const game = await this.findGame(gameId);
 
         if (!game) {
             return;
@@ -222,9 +205,7 @@ export class EphemeralDataStore implements DataStore {
         return game.turns.find((turn: Turn) => turn.turnId === turnId);
     }
     async currentTurn(gameId: string): Promise<Turn | undefined> {
-        const game =
-            (await this.findGame(gameId)) ||
-            (await this.findGameWithCode(gameId));
+        const game = await this.findGame(gameId);
 
         if (!game) {
             return;
@@ -250,9 +231,7 @@ export class EphemeralDataStore implements DataStore {
         return turn;
     }
     async endTurn(gameId: string): Promise<void> {
-        const game =
-            (await this.findGame(gameId)) ||
-            (await this.findGameWithCode(gameId));
+        const game = await this.findGame(gameId);
 
         if (!game) {
             return;
