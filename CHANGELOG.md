@@ -1,6 +1,18 @@
 # Changelog
 
-## [v2.1.0](https://github.com/neogeek/websocket-game-lobby/tree/v2.1.0)
+## [v2.2.0](https://github.com/neogeek/websocket-game-lobby/tree/v2.2.0) (2020-05-17)
+
+[Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v2.1.0...v2.2.0)
+
+**Merged pull requests:**
+
+- \[hotfix\] Loss of connection on refresh [\#26](https://github.com/neogeek/websocket-game-lobby/pull/26) ([neogeek](https://github.com/neogeek))
+- \[feat\] Added keep alive feature. [\#25](https://github.com/neogeek/websocket-game-lobby/pull/25) ([neogeek](https://github.com/neogeek))
+- \[feat\] Added setup method to datastore. [\#24](https://github.com/neogeek/websocket-game-lobby/pull/24) ([neogeek](https://github.com/neogeek))
+- \[feat\] Added forceSpectator flag. [\#22](https://github.com/neogeek/websocket-game-lobby/pull/22) ([neogeek](https://github.com/neogeek))
+- \[feat\] Updated create game code logic to run asynchronously. [\#21](https://github.com/neogeek/websocket-game-lobby/pull/21) ([neogeek](https://github.com/neogeek))
+
+## [v2.1.0](https://github.com/neogeek/websocket-game-lobby/tree/v2.1.0) (2020-05-08)
 
 [Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v2.0.3...v2.1.0)
 
