@@ -39,7 +39,7 @@ export class WebSocketGameLobbyServer {
                 client.gameCode = gameCode;
                 client.playerId = playerId;
 
-                await this.sendUpdate(client);
+                this.wss.send(await this.sendUpdate(client), client);
             }
         });
 
@@ -178,7 +178,7 @@ export class WebSocketGameLobbyServer {
         }
     }
 
-    async sendUpdate(client: any): Promise<void> {
+    async sendUpdate(client: any): Promise<any> {
         const game =
             (await this.datastore.findGame(client.gameId)) ||
             (await this.datastore.findGameWithCode(client.gameCode));
@@ -193,13 +193,13 @@ export class WebSocketGameLobbyServer {
         const turn = await this.datastore.currentTurn(client.gameId);
 
         if (game && (player || spectator)) {
-            this.wss.send({ game, player, spectator, turn }, client);
-        } else {
-            client.gameId = '';
-            client.playerId = '';
-
-            this.wss.send({}, client);
+            return { game, player, spectator, turn };
         }
+
+        client.gameId = '';
+        client.playerId = '';
+
+        return {};
     }
 
     async broadcastUpdate(gameId: string): Promise<void> {
