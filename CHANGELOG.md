@@ -1,5 +1,17 @@
 # Changelog
 
+## [v2.2.1](https://github.com/neogeek/websocket-game-lobby/tree/v2.2.1)
+
+[Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v2.2.0...v2.2.1)
+
+**Fixed bugs:**
+
+- Empty packet returning before correct packet with data [\#27](https://github.com/neogeek/websocket-game-lobby/issues/27)
+
+**Merged pull requests:**
+
+- \[hotfix\] Fixed issue with broadcasting data to players [\#28](https://github.com/neogeek/websocket-game-lobby/pull/28) ([neogeek](https://github.com/neogeek))
+
 ## [v2.2.0](https://github.com/neogeek/websocket-game-lobby/tree/v2.2.0) (2020-05-17)
 
 [Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v2.1.0...v2.2.0)
