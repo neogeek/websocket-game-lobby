@@ -28,7 +28,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "prepublish": "make clean && npm run build",
+    "prepare": "make clean && npm run build",
     "lint": "eslint 'src/**/*.ts'",
     "test": "npm run lint && jest --verbose",
     "coverage": "jest --coverage"
