@@ -118,6 +118,7 @@ export class EphemeralDataStore implements DataStore {
         return {
             playerId: playerId || uuidv4(),
             name: '',
+            isAdmin: false,
             custom: {}
         };
     }

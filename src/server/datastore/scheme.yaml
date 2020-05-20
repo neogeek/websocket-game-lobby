@@ -10,6 +10,7 @@ game:
 player:
   playerId: string
   name: string
+  isAdmin: boolean
   custom: object
 
 spectator:

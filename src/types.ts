@@ -58,6 +58,7 @@ export interface Game {
 export interface Player {
     playerId: string;
     name: string;
+    isAdmin: boolean;
     custom: object;
 }
 
