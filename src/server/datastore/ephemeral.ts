@@ -66,6 +66,13 @@ export class EphemeralDataStore implements DataStore {
             !(await this.findPlayer(gameId, (player as Player).playerId))
         ) {
             game.players.push(player as Player);
+
+            if (game.players.length === 1) {
+                await this.editPlayer(gameId, player.playerId, player => {
+                    player.isAdmin = true;
+                    return player;
+                });
+            }
         } else if (
             isSpectator(player) &&
             !(await this.findSpectator(
