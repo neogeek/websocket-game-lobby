@@ -44,6 +44,7 @@ describe('utils', () => {
     describe('removeArrayItem', () => {
         it('remove item from array with primative', () => {
             const array = [1, 2, 3, 4];
+
             assert.equal(array.length, 4);
 
             removeArrayItem(array, 2);
@@ -72,6 +73,15 @@ describe('utils', () => {
             assert.deepEqual(array[1], { value: 3 });
 
             assert.equal(array.length, 3);
+        });
+        it('remove nothing if item does not exist in array', () => {
+            const array = [1, 2, 3, 4];
+
+            assert.equal(array.length, 4);
+
+            removeArrayItem(array, 5);
+
+            assert.equal(array.length, 4);
         });
     });
 });
