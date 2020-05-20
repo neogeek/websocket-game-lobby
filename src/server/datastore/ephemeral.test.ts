@@ -76,6 +76,28 @@ describe('ephemeral', () => {
 
             assert.deepEqual(edited?.custom, tempCustom);
         });
+        it('join game as player (admin)', async () => {
+            const datastore = new DataStore();
+
+            const game = await datastore.createGame();
+
+            const player1 = await datastore.createPlayer();
+            const player2 = await datastore.createPlayer();
+
+            await datastore.joinGame(game.gameId, player1);
+            await datastore.joinGame(game.gameId, player2);
+
+            assert.equal(
+                (await datastore.findPlayer(game.gameId, player1.playerId))
+                    ?.isAdmin,
+                true
+            );
+            assert.equal(
+                (await datastore.findPlayer(game.gameId, player2.playerId))
+                    ?.isAdmin,
+                false
+            );
+        });
         it('join game as player', async () => {
             const datastore = new DataStore();
 
