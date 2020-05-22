@@ -5,9 +5,9 @@ import {
     removeArrayItemWithFilter,
     isPlayer,
     isSpectator
-} from '../../utils';
+} from '../utils';
 
-import { DataStore, Game, Player, Spectator, Turn } from '../../types';
+import { DataStore, Game, Player, Spectator, Turn } from '../types';
 
 let data: Game[] = [];
 

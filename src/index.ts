@@ -1,6 +1,4 @@
-export { EphemeralDataStore } from './server/datastore';
-
-export { WebSocketGameLobbyClient } from './client';
+export { EphemeralDataStore } from './datastore';
 
 export { WebSocketGameLobbyServer } from './server';
 

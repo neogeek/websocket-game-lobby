@@ -12,11 +12,7 @@
 $ npm install websocket-game-lobby
 ```
 
-## Setup
-
-### Server
-
-The `WebSocketGameLobbyServer` class uses an ephemeral service as it's default datastore. You can replace it with your own by extending the datastore interface found in [src/types.ts](src/types.ts).
+## Example
 
 ```javascript
 const { WebSocketGameLobbyServer } = require('websocket-game-lobby');
@@ -27,24 +23,11 @@ gameLobby.addEventListener(
     'create',
     async ({ gameId, playerId }, datastore) => {
         await datastore.editGame(gameId, data => {
-            data.test = 'test';
+            data.custom = 'test';
+            return data;
         });
     }
 );
-```
-
-### Client
-
-```javascript
-import { WebSocketGameLobbyClient } from 'websocket-game-lobby';
-
-const gameLobby = new WebSocketGameLobbyClient({ port: 5000 });
-
-gameLobby.addEventListener('message', ({ data }) => {
-    console.log(JSON.parse(data));
-});
-
-buttonElem.addEventListener('click', () => gameLobby.send('create'));
 ```
 
 ## API
@@ -53,19 +36,23 @@ buttonElem.addEventListener('click', () => gameLobby.send('create'));
 
 #### Constructor
 
-WebSocket server is powered by <https://github.com/neogeek/websocket-event-wrapper> and <https://github.com/websockets/ws>.
+The `WebSocketGameLobbyServer` class uses an ephemeral service as it's default datastore. You can replace it with your own by extending the datastore interface found in [src/types.ts](src/types.ts).
 
 **NOTE:** Either a `port` or `server` is required for the `WebSocketGameLobbyClient` to start.
 
 ```javascript
-const gameLobby = new WebSocketGameLobbyServer({ port: 5000 });
+const gameLobby = new WebSocketGameLobbyServer({
+    port: 5000,
+    server: null,
+    datastore: new EphemeralDataStore()
+});
 ```
 
-| Name        | Description                                    | Default Value         |
-| ----------- | ---------------------------------------------- | --------------------- |
-| `port`      | Port to run WebSocket.                         | `null`                |
-| `server`    | The server to along with the WebSocket server. | Node.js HTTP/S Server |
-| `datastore` | When a websocket connection is lost.           | EphemeralDataStore    |
+| Name        | Description                                    | Default Value              |
+| ----------- | ---------------------------------------------- | -------------------------- |
+| `port`      | Port to run WebSocket.                         | `null`                     |
+| `server`    | The server to along with the WebSocket server. | Node.js HTTP/S Server      |
+| `datastore` | When a websocket connection is lost.           | `new EphemeralDataStore()` |
 
 #### Listeners
 
@@ -94,27 +81,3 @@ gameLobby.addEventListener(
     ({ gameId, playerId }, datastore) => {}
 );
 ```
-
-### WebSocketGameLobbyClient
-
-WebSocket client is powered by <https://github.com/pladaria/reconnecting-websocket>.
-
-#### Constructor
-
-```javascript
-const gameLobby = new WebSocketGameLobbyClient({ port: 5000 });
-```
-
-#### Listeners
-
-```javascript
-gameLobby.addEventListener('message', ({ data }) => {
-    console.log(JSON.parse(data));
-});
-```
-
-| Name      | Description                                  | Parameters |
-| --------- | -------------------------------------------- | ---------- |
-| `open`    | When a websocket connections is established. | `({data})` |
-| `message` | When a message is received.                  | `({data})` |
-| `close`   | When a websocket connection is lost.         | `({data})` |

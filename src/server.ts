@@ -4,9 +4,9 @@ import qs from 'qs';
 
 import { EphemeralDataStore } from './datastore';
 
-import { removeArrayItem } from '../utils';
+import { removeArrayItem } from './utils';
 
-import { DataStore } from '../types';
+import { DataStore } from './types';
 
 export class WebSocketGameLobbyServer {
     wss: any;
