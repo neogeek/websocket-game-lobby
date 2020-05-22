@@ -1,6 +1,14 @@
 # Changelog
 
-## [v2.3.0](https://github.com/neogeek/websocket-game-lobby/tree/v2.3.0)
+## [v3.0.0](https://github.com/neogeek/websocket-game-lobby/tree/v3.0.0)
+
+[Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v2.3.0...v3.0.0)
+
+**Merged pull requests:**
+
+- \[feat\] Remove client [\#30](https://github.com/neogeek/websocket-game-lobby/pull/30) ([neogeek](https://github.com/neogeek))
+
+## [v2.3.0](https://github.com/neogeek/websocket-game-lobby/tree/v2.3.0) (2020-05-20)
 
 [Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v2.2.1...v2.3.0)
 
