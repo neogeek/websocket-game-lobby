@@ -421,20 +421,20 @@ describe('ephemeral', () => {
 
             const tempCustom = { value: 'example' };
 
-            assert.notEqual(turn?.index, 1);
+            assert.notEqual(turn?.index, 2);
             assert.notDeepEqual(turn?.custom, tempCustom);
 
             const edited = await datastore.editTurn(
                 game.gameId,
                 turnId,
                 data => {
-                    data.index = 1;
+                    data.index = 2;
                     data.custom = tempCustom;
                     return data;
                 }
             );
 
-            assert.equal(edited?.index, 1);
+            assert.equal(edited?.index, 2);
             assert.deepEqual(edited?.custom, tempCustom);
         });
         it('end turn', async () => {

@@ -199,7 +199,7 @@ export class EphemeralDataStore implements DataStore {
     async createTurn(): Promise<Turn> {
         return {
             turnId: uuidv4(),
-            index: 0,
+            index: 1,
             custom: {}
         };
     }
