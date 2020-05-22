@@ -81,3 +81,11 @@ gameLobby.addEventListener(
     ({ gameId, playerId }, datastore) => {}
 );
 ```
+
+## Packages
+
+| Package                                                                                           | Description                                     | Version                                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------- | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [websocket-game-lobby-client](https://github.com/neogeek/websocket-game-lobby-client)             | Simple API for building games using WebSockets. | [![NPM Version](http://img.shields.io/npm/v/websocket-game-lobby-client.svg?style=flat)](https://www.npmjs.org/package/websocket-game-lobby-client)             |
+| [websocket-game-lobby-client-hooks](https://github.com/neogeek/websocket-game-lobby-client-hooks) | React hooks for use with `websocket-game-lobby` | [![NPM Version](http://img.shields.io/npm/v/websocket-game-lobby-client-hooks.svg?style=flat)](https://www.npmjs.org/package/websocket-game-lobby-client-hooks) |
+| [websocket-game-lobby-template](https://github.com/neogeek/websocket-game-lobby-template)         | Template built with `websocket-game-lobby`      |                                                                                                                                                                 |
