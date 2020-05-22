@@ -21,7 +21,7 @@ export class WebSocketGameLobbyServer {
         datastore
     }: {
         port: number;
-        server: object;
+        server: any;
         datastore: DataStore;
     }) {
         this.wss = new WebSocketEventWrapper({

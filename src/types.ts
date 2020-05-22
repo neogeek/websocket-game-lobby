@@ -52,24 +52,24 @@ export interface Game {
     players: Player[];
     spectators: Spectator[];
     turns: Turn[];
-    custom: object;
+    custom: any;
 }
 
 export interface Player {
     playerId: string;
     name: string;
     isAdmin: boolean;
-    custom: object;
+    custom: any;
 }
 
 export interface Spectator {
     spectatorId: string;
     name: string;
-    custom: object;
+    custom: any;
 }
 
 export interface Turn {
     turnId: string;
     index: number;
-    custom: object;
+    custom: any;
 }
