@@ -67,12 +67,11 @@ export class EphemeralDataStore implements DataStore {
         ) {
             game.players.push(player as Player);
 
-            if (game.players.length === 1) {
-                await this.editPlayer(gameId, player.playerId, player => {
-                    player.isAdmin = true;
-                    return player;
-                });
-            }
+            await this.editPlayer(gameId, player.playerId, player => {
+                player.gameId = gameId;
+                player.isAdmin = game.players.length === 1;
+                return player;
+            });
         } else if (
             isSpectator(player) &&
             !(await this.findSpectator(
@@ -81,6 +80,11 @@ export class EphemeralDataStore implements DataStore {
             ))
         ) {
             game.spectators.push(player as Spectator);
+
+            await this.editSpectator(gameId, player.spectatorId, spectator => {
+                spectator.gameId = gameId;
+                return spectator;
+            });
         }
 
         return game;
@@ -124,6 +128,7 @@ export class EphemeralDataStore implements DataStore {
     async createPlayer(playerId?: string): Promise<Player> {
         return {
             playerId: playerId || uuidv4(),
+            gameId: null,
             name: '',
             isAdmin: false,
             custom: {}
@@ -162,6 +167,7 @@ export class EphemeralDataStore implements DataStore {
     async createSpectator(spectatorId?: string): Promise<Spectator> {
         return {
             spectatorId: spectatorId || uuidv4(),
+            gameId: null,
             name: '',
             custom: {}
         };
@@ -199,6 +205,7 @@ export class EphemeralDataStore implements DataStore {
     async createTurn(gameId: string): Promise<Turn> {
         return {
             turnId: uuidv4(),
+            gameId,
             index: 1,
             custom: {}
         };
