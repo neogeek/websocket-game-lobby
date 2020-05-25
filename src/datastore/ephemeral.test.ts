@@ -459,5 +459,17 @@ describe('ephemeral', () => {
                 turnId
             );
         });
+        it('set index after each turn', async () => {
+            const datastore = new DataStore();
+
+            const game = await datastore.createGame();
+
+            await datastore.startGame(game.gameId);
+
+            await datastore.endTurn(game.gameId);
+            await datastore.endTurn(game.gameId);
+
+            assert.equal((await datastore.currentTurn(game.gameId))?.index, 3);
+        });
     });
 });

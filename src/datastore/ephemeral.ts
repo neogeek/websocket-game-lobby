@@ -246,7 +246,11 @@ export class EphemeralDataStore implements DataStore {
         }
 
         if (game && game.turns) {
-            game.turns.push(await this.createTurn());
+            const turn = await this.createTurn();
+
+            turn.index = game.turns.length + 1;
+
+            game.turns.push(turn);
         }
 
         return;
