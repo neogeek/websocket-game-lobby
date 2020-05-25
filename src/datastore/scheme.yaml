@@ -9,16 +9,19 @@ game:
 
 player:
   playerId: string
+  gameId: string
   name: string
   isAdmin: boolean
   custom: object
 
 spectator:
   spectatorId: string
+  gameId: string
   name: string
   custom: object
 
 turn:
   turnId: string
+  gameId: string
   index: number
   custom: object

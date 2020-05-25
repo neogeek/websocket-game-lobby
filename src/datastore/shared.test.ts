@@ -324,7 +324,9 @@ export default (datastore: DataStore): void => {
 
     describe('turn', () => {
         it('create new turn', async () => {
-            const turn = await datastore.createTurn();
+            const { gameId } = await datastore.createGame();
+
+            const turn = await datastore.createTurn(gameId);
 
             assert.ok(turn.turnId);
 
