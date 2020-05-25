@@ -34,7 +34,7 @@ export interface DataStore {
         callback: (spectator: Spectator) => Spectator
     ): Promise<Spectator | undefined>;
 
-    createTurn(): Promise<Turn>;
+    createTurn(gameId: string): Promise<Turn>;
     findTurn(gameId: string, turnId: string): Promise<Turn | undefined>;
     currentTurn(gameId: string): Promise<Turn | undefined>;
     editTurn(

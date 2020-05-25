@@ -110,7 +110,7 @@ export class EphemeralDataStore implements DataStore {
             return;
         }
 
-        game.turns.push(await this.createTurn());
+        game.turns.push(await this.createTurn(gameId));
 
         game.started = true;
 
@@ -196,7 +196,7 @@ export class EphemeralDataStore implements DataStore {
         return spectator;
     }
 
-    async createTurn(): Promise<Turn> {
+    async createTurn(gameId: string): Promise<Turn> {
         return {
             turnId: uuidv4(),
             index: 1,
@@ -246,7 +246,7 @@ export class EphemeralDataStore implements DataStore {
         }
 
         if (game && game.turns) {
-            const turn = await this.createTurn();
+            const turn = await this.createTurn(gameId);
 
             turn.index = game.turns.length + 1;
 
