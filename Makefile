@@ -6,3 +6,4 @@ changelog:
 
 clean:
 	rm -rf dist/
+	node_modules/.bin/jest --clearCache
