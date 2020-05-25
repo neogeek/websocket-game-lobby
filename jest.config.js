@@ -6,5 +6,6 @@ module.exports = {
         '^.+\\.tsx?$': 'ts-jest'
     },
     moduleFileExtensions: [...defaults.moduleFileExtensions, 'ts', 'tsx'],
+    coveragePathIgnorePatterns: ['shared'],
     testPathIgnorePatterns: ['shared']
 };
