@@ -7,11 +7,26 @@ import {
     isSpectator
 } from '../utils';
 
+import Listeners from '../listeners';
+
 import { DataStore, Game, Player, Spectator, Turn } from '../types';
 
 let data: Game[] = [];
 
-export class EphemeralDataStore implements DataStore {
+export class EphemeralDataStore extends Listeners implements DataStore {
+    constructor() {
+        super({
+            createGame: [],
+            joinGame: [],
+            leaveGame: [],
+            startGame: [],
+            createPlayer: [],
+            createSpectator: [],
+            createTurn: [],
+            endTurn: []
+        });
+    }
+
     async setup(): Promise<void> {
         data = [];
         return;
@@ -30,6 +45,8 @@ export class EphemeralDataStore implements DataStore {
         };
 
         data.push(game);
+
+        await this.runEventListener('createGame', game, this);
 
         return game;
     }
@@ -91,6 +108,8 @@ export class EphemeralDataStore implements DataStore {
             );
         }
 
+        await this.runEventListener('joinGame', game, this);
+
         return game;
     }
     async leaveGame(gameId: string, playerId: string): Promise<void> {
@@ -109,6 +128,8 @@ export class EphemeralDataStore implements DataStore {
             (spectator: Spectator) => spectator.spectatorId === playerId
         );
 
+        await this.runEventListener('leaveGame', game, this);
+
         return;
     }
     async startGame(gameId: string): Promise<Game | undefined> {
@@ -122,6 +143,8 @@ export class EphemeralDataStore implements DataStore {
 
         game.started = true;
 
+        await this.runEventListener('startGame', game, this);
+
         return game;
     }
     async endGame(gameId: string): Promise<void> {
@@ -130,13 +153,17 @@ export class EphemeralDataStore implements DataStore {
     }
 
     async createPlayer(playerId?: string): Promise<Player> {
-        return {
+        const player = {
             playerId: playerId || uuidv4(),
             gameId: null,
             name: '',
             isAdmin: false,
             custom: {}
         };
+
+        await this.runEventListener('createPlayer', player, this);
+
+        return player;
     }
     async findPlayer(
         gameId: string,
@@ -169,12 +196,16 @@ export class EphemeralDataStore implements DataStore {
     }
 
     async createSpectator(spectatorId?: string): Promise<Spectator> {
-        return {
+        const spectator = {
             spectatorId: spectatorId || uuidv4(),
             gameId: null,
             name: '',
             custom: {}
         };
+
+        await this.runEventListener('createSpectator', spectator, this);
+
+        return spectator;
     }
     async findSpectator(
         gameId: string,
@@ -207,12 +238,16 @@ export class EphemeralDataStore implements DataStore {
     }
 
     async createTurn(gameId: string): Promise<Turn> {
-        return {
+        const turn = {
             turnId: uuidv4(),
             gameId,
             index: 1,
             custom: {}
         };
+
+        await this.runEventListener('createTurn', turn, this);
+
+        return turn;
     }
     async findTurn(gameId: string, turnId: string): Promise<Turn | undefined> {
         const game = await this.findGame(gameId);
@@ -269,6 +304,11 @@ export class EphemeralDataStore implements DataStore {
         if (!game) {
             return;
         }
+
+        this.editCurrentTurn(gameId, async (turn: Turn) => {
+            await this.runEventListener('endTurn', turn, this);
+            return turn;
+        });
 
         if (game && game.turns) {
             const turn = await this.createTurn(gameId);

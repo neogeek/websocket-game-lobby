@@ -24,6 +24,16 @@ export default (datastore: DataStore): void => {
             assert.equal(game.spectators.length, 0);
             assert.equal(game.turns.length, 0);
         });
+        it('create new game with custom event listener', async () => {
+            datastore.addEventListener('createGame', game => {
+                game.custom.test = 'tested';
+                return game;
+            });
+
+            const game = await datastore.createGame();
+
+            assert.equal(game.custom.test, 'tested');
+        });
         it('create new game with one player using a specific playerId', async () => {
             const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
@@ -122,6 +132,23 @@ export default (datastore: DataStore): void => {
 
             assert.ok(await datastore.findSpectator(game.gameId, spectatorId));
         });
+        it('join game with custom event listener', async () => {
+            datastore.addEventListener('joinGame', game => {
+                game.custom.test = 'tested';
+                return game;
+            });
+
+            const game = await datastore.createGame();
+
+            assert.notEqual(game.custom.test, 'tested');
+
+            await datastore.joinGame(
+                game.gameId,
+                await datastore.createPlayer()
+            );
+
+            assert.equal(game.custom.test, 'tested');
+        });
         it('leave game as player', async () => {
             const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
 
@@ -162,6 +189,24 @@ export default (datastore: DataStore): void => {
                 !(await datastore.findSpectator(game.gameId, spectatorId))
             );
         });
+        it('leave game with custom event listener', async () => {
+            datastore.addEventListener('leaveGame', game => {
+                game.custom.test = 'tested';
+                return game;
+            });
+
+            const game = await datastore.createGame();
+
+            const player = await datastore.createPlayer();
+
+            await datastore.joinGame(game.gameId, player);
+
+            assert.notEqual(game.custom.test, 'tested');
+
+            await datastore.leaveGame(game.gameId, player.playerId);
+
+            assert.equal(game.custom.test, 'tested');
+        });
         it('start game', async () => {
             const game = await datastore.createGame();
 
@@ -172,6 +217,20 @@ export default (datastore: DataStore): void => {
 
             assert.equal(edited?.started, true);
             assert.equal(edited?.turns.length, 1);
+        });
+        it('start game with custom event listener', async () => {
+            datastore.addEventListener('startGame', game => {
+                game.custom.test = 'tested';
+                return game;
+            });
+
+            const game = await datastore.createGame();
+
+            assert.notEqual(game.custom.test, 'tested');
+
+            await datastore.startGame(game.gameId);
+
+            assert.equal(game.custom.test, 'tested');
         });
         it('end game', async () => {
             const game = await datastore.createGame();
@@ -201,6 +260,16 @@ export default (datastore: DataStore): void => {
             const player = await datastore.createPlayer('');
 
             assert.notEqual(player.playerId, '');
+        });
+        it('create player with custom event listener', async () => {
+            datastore.addEventListener('createPlayer', player => {
+                player.custom.test = 'tested';
+                return player;
+            });
+
+            const player = await datastore.createPlayer();
+
+            assert.equal(player.custom.test, 'tested');
         });
         it('find player', async () => {
             const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
@@ -269,6 +338,16 @@ export default (datastore: DataStore): void => {
             const spectator = await datastore.createSpectator('');
 
             assert.notEqual(spectator.spectatorId, '');
+        });
+        it('create spectator with custom event listener', async () => {
+            datastore.addEventListener('createSpectator', spectator => {
+                spectator.custom.test = 'tested';
+                return spectator;
+            });
+
+            const spectator = await datastore.createSpectator();
+
+            assert.equal(spectator.custom.test, 'tested');
         });
         it('find spectator', async () => {
             const spectatorId = '8ca2ad81-093d-4352-8b96-780899e09d69';
@@ -437,6 +516,29 @@ export default (datastore: DataStore): void => {
                 (await datastore.currentTurn(game.gameId))?.turnId,
                 turnId
             );
+        });
+        it('end turn with custom event listener', async () => {
+            datastore.addEventListener('endTurn', turn => {
+                turn.custom.test = 'tested';
+                return turn;
+            });
+
+            const game = await datastore.createGame();
+
+            await datastore.startGame(game.gameId);
+
+            const turn = await datastore.currentTurn(game.gameId);
+
+            assert.notEqual(turn?.custom.test, 'tested');
+
+            await datastore.endTurn(game.gameId);
+
+            const endedTurn = await datastore.findTurn(
+                game.gameId,
+                turn?.turnId || ''
+            );
+
+            assert.equal(endedTurn?.custom.test, 'tested');
         });
         it('set index after each turn', async () => {
             const game = await datastore.createGame();
