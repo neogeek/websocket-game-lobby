@@ -41,7 +41,7 @@ export class EphemeralDataStore implements DataStore {
     }
     async editGame(
         gameId: string,
-        callback: (game: Game) => Game
+        callback: (game: Game) => Promise<Game>
     ): Promise<Game | undefined> {
         const game = await this.findGame(gameId);
 
@@ -67,7 +67,7 @@ export class EphemeralDataStore implements DataStore {
         ) {
             game.players.push(player as Player);
 
-            await this.editPlayer(gameId, player.playerId, player => {
+            await this.editPlayer(gameId, player.playerId, async player => {
                 player.gameId = gameId;
                 player.isAdmin = game.players.length === 1;
                 return player;
@@ -81,10 +81,14 @@ export class EphemeralDataStore implements DataStore {
         ) {
             game.spectators.push(player as Spectator);
 
-            await this.editSpectator(gameId, player.spectatorId, spectator => {
-                spectator.gameId = gameId;
-                return spectator;
-            });
+            await this.editSpectator(
+                gameId,
+                player.spectatorId,
+                async spectator => {
+                    spectator.gameId = gameId;
+                    return spectator;
+                }
+            );
         }
 
         return game;
@@ -151,7 +155,7 @@ export class EphemeralDataStore implements DataStore {
     async editPlayer(
         gameId: string,
         playerId: string,
-        callback: (player: Player) => Player
+        callback: (player: Player) => Promise<Player>
     ): Promise<Player | undefined> {
         const player = await this.findPlayer(gameId, playerId);
 
@@ -189,7 +193,7 @@ export class EphemeralDataStore implements DataStore {
     async editSpectator(
         gameId: string,
         spectatorId: string,
-        callback: (spectator: Spectator) => Spectator
+        callback: (spectator: Spectator) => Promise<Spectator>
     ): Promise<Spectator | undefined> {
         const spectator = await this.findSpectator(gameId, spectatorId);
 
@@ -233,7 +237,7 @@ export class EphemeralDataStore implements DataStore {
     async editTurn(
         gameId: string,
         turnId: string,
-        callback: (turn: Turn) => Turn
+        callback: (turn: Turn) => Promise<Turn>
     ): Promise<Turn | undefined> {
         const turn = await this.findTurn(gameId, turnId);
 

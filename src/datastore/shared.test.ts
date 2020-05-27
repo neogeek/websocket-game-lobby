@@ -59,7 +59,7 @@ export default (datastore: DataStore): void => {
 
             assert.notDeepEqual(game?.custom, tempCustom);
 
-            const edited = await datastore.editGame(game.gameId, data => {
+            const edited = await datastore.editGame(game.gameId, async data => {
                 data.custom = tempCustom;
                 return data;
             });
@@ -240,7 +240,7 @@ export default (datastore: DataStore): void => {
             const edited = await datastore.editPlayer(
                 game.gameId,
                 playerId,
-                data => {
+                async data => {
                     data.name = name;
                     data.custom = tempCustom;
                     return data;
@@ -310,7 +310,7 @@ export default (datastore: DataStore): void => {
             const edited = await datastore.editSpectator(
                 game.gameId,
                 spectatorId,
-                data => {
+                async data => {
                     data.name = name;
                     data.custom = tempCustom;
                     return data;
@@ -381,7 +381,7 @@ export default (datastore: DataStore): void => {
             const edited = await datastore.editTurn(
                 game.gameId,
                 turnId,
-                data => {
+                async data => {
                     data.index = 2;
                     data.custom = tempCustom;
                     return data;
