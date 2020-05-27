@@ -1,4 +1,20 @@
-export interface DataStore {
+export interface Listeners {
+    addEventListener(
+        type: string,
+        callback: (data: any, datastore: DataStore) => Promise<void>
+    ): void;
+    removeEventListener(
+        type: string,
+        callback: (data: any, datastore: DataStore) => Promise<void>
+    ): void;
+    runEventListener(
+        type: string,
+        data: any,
+        datastore: DataStore
+    ): Promise<void>;
+}
+
+export interface DataStore extends Listeners {
     setup(): Promise<void>;
     createGame(): Promise<Game>;
     findGame(gameId: string | undefined): Promise<Game | undefined>;
