@@ -4,14 +4,12 @@ import qs from 'qs';
 
 import { EphemeralDataStore } from './datastore';
 
-import { removeArrayItem } from './utils';
+import Listeners from './listeners';
 
 import { DataStore } from './types';
 
-export class WebSocketGameLobbyServer {
+export class WebSocketGameLobbyServer extends Listeners {
     wss: any;
-
-    listeners: any;
 
     datastore: DataStore;
 
@@ -24,6 +22,14 @@ export class WebSocketGameLobbyServer {
         server: any;
         datastore: DataStore;
     }) {
+        super({
+            create: [],
+            join: [],
+            start: [],
+            leave: [],
+            end: []
+        });
+
         this.wss = new WebSocketEventWrapper({
             port,
             server,
@@ -50,14 +56,6 @@ export class WebSocketGameLobbyServer {
         }
 
         this.datastore.setup();
-
-        this.listeners = Object.freeze({
-            create: [],
-            join: [],
-            start: [],
-            leave: [],
-            end: []
-        });
 
         this.wss.addEventListener(
             async (
@@ -144,38 +142,20 @@ export class WebSocketGameLobbyServer {
                     this.wss.send({}, client);
                 }
 
-                if (type in this.listeners) {
-                    for (let i = 0; i < this.listeners[type].length; i += 1) {
-                        await this.listeners[type][i](
-                            {
-                                type,
-                                gameId: client.gameId,
-                                playerId: client.playerId,
-                                ...rest
-                            },
-                            this.datastore
-                        );
-                    }
-                }
+                await this.runEventListener(
+                    type,
+                    {
+                        type,
+                        gameId: client.gameId,
+                        playerId: client.playerId,
+                        ...rest
+                    },
+                    this.datastore
+                );
 
                 await this.broadcastUpdate(game.gameId);
             }
         );
-    }
-
-    addEventListener(type: string, callback: () => Promise<void>): void {
-        if (!(type in this.listeners)) {
-            this.listeners = Object.freeze({ ...this.listeners, [type]: [] });
-        }
-        if (typeof callback === 'function') {
-            this.listeners[type].push(callback);
-        }
-    }
-
-    removeEventListener(type: string, callback: () => Promise<void>): void {
-        if (type in this.listeners) {
-            removeArrayItem(this.listeners[type], callback);
-        }
     }
 
     async sendUpdate(client: any): Promise<any> {
