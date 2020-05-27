@@ -249,6 +249,20 @@ export class EphemeralDataStore implements DataStore {
 
         return turn;
     }
+    async editCurrentTurn(
+        gameId: string,
+        callback: (turn: Turn) => Promise<Turn>
+    ): Promise<Turn | undefined> {
+        const turn = await this.currentTurn(gameId);
+
+        if (!turn) {
+            return;
+        } else if (typeof callback === 'function') {
+            return await callback(turn);
+        }
+
+        return turn;
+    }
     async endTurn(gameId: string): Promise<void> {
         const game = await this.findGame(gameId);
 

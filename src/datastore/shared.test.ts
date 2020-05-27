@@ -391,6 +391,33 @@ export default (datastore: DataStore): void => {
             assert.equal(edited?.index, 2);
             assert.deepEqual(edited?.custom, tempCustom);
         });
+        it('edit current turn', async () => {
+            const game = await datastore.createGame();
+
+            await datastore.startGame(game.gameId);
+
+            const turnId =
+                (await datastore.findGame(game.gameId))?.turns[0].turnId || '';
+
+            const turn = await datastore.findTurn(game.gameId, turnId);
+
+            const tempCustom = { value: 'example' };
+
+            assert.notEqual(turn?.index, 2);
+            assert.notDeepEqual(turn?.custom, tempCustom);
+
+            const edited = await datastore.editCurrentTurn(
+                game.gameId,
+                async data => {
+                    data.index = 2;
+                    data.custom = tempCustom;
+                    return data;
+                }
+            );
+
+            assert.equal(edited?.index, 2);
+            assert.deepEqual(edited?.custom, tempCustom);
+        });
         it('end turn', async () => {
             const game = await datastore.createGame();
 

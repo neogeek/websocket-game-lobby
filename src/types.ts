@@ -42,6 +42,10 @@ export interface DataStore {
         turnId: string,
         callback: (turn: Turn) => Promise<Turn>
     ): Promise<Turn | undefined>;
+    editCurrentTurn(
+        gameId: string,
+        callback: (turn: Turn) => Promise<Turn>
+    ): Promise<Turn | undefined>;
     endTurn(gameId: string): Promise<void>;
 }
 
