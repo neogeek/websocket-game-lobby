@@ -59,26 +59,27 @@ export class EphemeralDataStore extends Listeners implements DataStore {
     async editGame(
         gameId: string,
         callback: (game: Game) => Promise<Game>
-    ): Promise<Game | undefined> {
+    ): Promise<Game> {
         const game = await this.findGame(gameId);
 
         if (!game) {
-            return;
-        } else if (typeof callback === 'function') {
+            throw new Error(`Game not found with id ${gameId}`);
+        }
+
+        if (typeof callback === 'function') {
             return await callback(game);
         }
 
         return game;
     }
-    async joinGame(
-        gameId: string,
-        player: Player | Spectator
-    ): Promise<Game | undefined> {
+    async joinGame(gameId: string, player: Player | Spectator): Promise<Game> {
         const game = await this.findGame(gameId);
 
         if (!game) {
-            return;
-        } else if (
+            throw new Error(`Game not found with id ${gameId}`);
+        }
+
+        if (
             isPlayer(player) &&
             !(await this.findPlayer(gameId, (player as Player).playerId))
         ) {
@@ -116,7 +117,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
         const game = await this.findGame(gameId);
 
         if (!game) {
-            return;
+            throw new Error(`Game not found with id ${gameId}`);
         }
 
         removeArrayItemWithFilter(
@@ -132,11 +133,11 @@ export class EphemeralDataStore extends Listeners implements DataStore {
 
         return;
     }
-    async startGame(gameId: string): Promise<Game | undefined> {
+    async startGame(gameId: string): Promise<Game> {
         const game = await this.findGame(gameId);
 
         if (!game) {
-            return;
+            throw new Error(`Game not found with id ${gameId}`);
         }
 
         game.turns.push(await this.createTurn(gameId));
@@ -172,7 +173,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
         const game = await this.findGame(gameId);
 
         if (!game) {
-            return;
+            throw new Error(`Game not found with id ${gameId}`);
         }
 
         return game.players.find(
@@ -183,12 +184,14 @@ export class EphemeralDataStore extends Listeners implements DataStore {
         gameId: string,
         playerId: string,
         callback: (player: Player) => Promise<Player>
-    ): Promise<Player | undefined> {
+    ): Promise<Player> {
         const player = await this.findPlayer(gameId, playerId);
 
         if (!player) {
-            return;
-        } else if (typeof callback === 'function') {
+            throw new Error(`Player not found with id ${playerId}`);
+        }
+
+        if (typeof callback === 'function') {
             return await callback(player);
         }
 
@@ -214,7 +217,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
         const game = await this.findGame(gameId);
 
         if (!game) {
-            return;
+            throw new Error(`Game not found with id ${gameId}`);
         }
 
         return game.spectators.find(
@@ -225,12 +228,14 @@ export class EphemeralDataStore extends Listeners implements DataStore {
         gameId: string,
         spectatorId: string,
         callback: (spectator: Spectator) => Promise<Spectator>
-    ): Promise<Spectator | undefined> {
+    ): Promise<Spectator> {
         const spectator = await this.findSpectator(gameId, spectatorId);
 
         if (!spectator) {
-            return;
-        } else if (typeof callback === 'function') {
+            throw new Error(`Player not found with id ${spectatorId}`);
+        }
+
+        if (typeof callback === 'function') {
             return await callback(spectator);
         }
 
@@ -253,17 +258,25 @@ export class EphemeralDataStore extends Listeners implements DataStore {
         const game = await this.findGame(gameId);
 
         if (!game) {
-            return;
+            throw new Error(`Game not found with id ${gameId}`);
         }
 
-        return game.turns.find((turn: Turn) => turn.turnId === turnId);
+        const turn = game.turns.find((turn: Turn) => turn.turnId === turnId);
+
+        if (!turn) {
+            throw new Error(`Turn with id ${turnId} not found!`);
+        }
+
+        return turn;
     }
     async currentTurn(gameId: string): Promise<Turn | undefined> {
         const game = await this.findGame(gameId);
 
         if (!game) {
-            return;
-        } else if (game.turns.length > 0) {
+            throw new Error(`Game not found with id ${gameId}`);
+        }
+
+        if (game.turns.length > 0) {
             return game.turns[game.turns.length - 1];
         }
 
@@ -273,12 +286,14 @@ export class EphemeralDataStore extends Listeners implements DataStore {
         gameId: string,
         turnId: string,
         callback: (turn: Turn) => Promise<Turn>
-    ): Promise<Turn | undefined> {
+    ): Promise<Turn> {
         const turn = await this.findTurn(gameId, turnId);
 
         if (!turn) {
-            return;
-        } else if (typeof callback === 'function') {
+            throw new Error(`Turn not found with id ${turnId}`);
+        }
+
+        if (typeof callback === 'function') {
             return await callback(turn);
         }
 
@@ -287,12 +302,16 @@ export class EphemeralDataStore extends Listeners implements DataStore {
     async editCurrentTurn(
         gameId: string,
         callback: (turn: Turn) => Promise<Turn>
-    ): Promise<Turn | undefined> {
+    ): Promise<Turn> {
         const turn = await this.currentTurn(gameId);
 
         if (!turn) {
-            return;
-        } else if (typeof callback === 'function') {
+            throw new Error(
+                `Current turn not found for game with id ${gameId}`
+            );
+        }
+
+        if (typeof callback === 'function') {
             return await callback(turn);
         }
 

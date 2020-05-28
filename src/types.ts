@@ -22,13 +22,10 @@ export interface DataStore extends Listeners {
     editGame(
         gameId: string,
         callback: (game: Game) => Promise<Game>
-    ): Promise<Game | undefined>;
-    joinGame(
-        gameId: string,
-        player: Player | Spectator
-    ): Promise<Game | undefined>;
+    ): Promise<Game>;
+    joinGame(gameId: string, player: Player | Spectator): Promise<Game>;
     leaveGame(gameId: string, playerId: string): Promise<void>;
-    startGame(gameId: string): Promise<Game | undefined>;
+    startGame(gameId: string): Promise<Game>;
     endGame(gameId: string): Promise<void>;
 
     createPlayer(playerId?: string): Promise<Player>;
@@ -37,7 +34,7 @@ export interface DataStore extends Listeners {
         gameId: string,
         playerId: string,
         callback: (player: Player) => Promise<Player>
-    ): Promise<Player | undefined>;
+    ): Promise<Player>;
 
     createSpectator(spectatorId?: string): Promise<Spectator>;
     findSpectator(
@@ -48,7 +45,7 @@ export interface DataStore extends Listeners {
         gameId: string,
         spectatorId: string,
         callback: (spectator: Spectator) => Promise<Spectator>
-    ): Promise<Spectator | undefined>;
+    ): Promise<Spectator>;
 
     createTurn(gameId: string): Promise<Turn>;
     findTurn(gameId: string, turnId: string): Promise<Turn | undefined>;
@@ -57,11 +54,11 @@ export interface DataStore extends Listeners {
         gameId: string,
         turnId: string,
         callback: (turn: Turn) => Promise<Turn>
-    ): Promise<Turn | undefined>;
+    ): Promise<Turn>;
     editCurrentTurn(
         gameId: string,
         callback: (turn: Turn) => Promise<Turn>
-    ): Promise<Turn | undefined>;
+    ): Promise<Turn>;
     endTurn(gameId: string): Promise<void>;
 }
 
