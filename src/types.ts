@@ -7,7 +7,8 @@ export interface Listeners {
         type: string,
         callback: (data: any, datastore: DataStore) => Promise<void>
     ): void;
-    runEventListener(
+    removeAllEventListeners(): void;
+    runEventListeners(
         type: string,
         data: any,
         datastore: DataStore

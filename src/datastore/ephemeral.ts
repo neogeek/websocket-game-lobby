@@ -45,7 +45,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
 
         data.push(game);
 
-        await this.runEventListener('createGame', game, this);
+        await this.runEventListeners('createGame', game, this);
 
         return game;
     }
@@ -87,7 +87,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
             (spectator: Spectator) => spectator.spectatorId === playerId
         );
 
-        await this.runEventListener('leaveGame', game, this);
+        await this.runEventListeners('leaveGame', game, this);
 
         return;
     }
@@ -102,7 +102,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
 
         game.started = true;
 
-        await this.runEventListener('startGame', game, this);
+        await this.runEventListeners('startGame', game, this);
 
         return game;
     }
@@ -128,7 +128,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
 
         game.players.push(player);
 
-        await this.runEventListener('createPlayer', player, this);
+        await this.runEventListeners('createPlayer', player, this);
 
         return player;
     }
@@ -183,7 +183,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
 
         game.spectators.push(spectator);
 
-        await this.runEventListener('createSpectator', spectator, this);
+        await this.runEventListeners('createSpectator', spectator, this);
 
         return spectator;
     }
@@ -227,7 +227,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
             custom: {}
         };
 
-        await this.runEventListener('createTurn', turn, this);
+        await this.runEventListeners('createTurn', turn, this);
 
         return turn;
     }
@@ -302,7 +302,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
         }
 
         this.editCurrentTurn(gameId, async (turn: Turn) => {
-            await this.runEventListener('endTurn', turn, this);
+            await this.runEventListeners('endTurn', turn, this);
             return turn;
         });
 

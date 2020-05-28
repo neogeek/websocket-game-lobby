@@ -7,7 +7,7 @@ describe('ephemeral', () => {
 
     beforeEach(() => {
         datastore.setup();
-        datastore.removeAllEventListener();
+        datastore.removeAllEventListeners();
     });
 
     shared(datastore);

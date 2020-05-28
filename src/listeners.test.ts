@@ -43,7 +43,7 @@ describe('listeners', () => {
             }
         );
 
-        example.runEventListener('test', {}, datastore);
+        example.runEventListeners('test', {}, datastore);
     });
     it('remove all methods', async () => {
         const example = new Listeners();
@@ -64,7 +64,7 @@ describe('listeners', () => {
 
         assert.equal(example.listeners['test'].length, 2);
 
-        example.removeAllEventListener();
+        example.removeAllEventListeners();
 
         assert.equal(example.listeners['test'].length, 0);
     });

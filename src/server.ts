@@ -143,7 +143,7 @@ export class WebSocketGameLobbyServer extends Listeners {
                     this.wss.send({}, client);
                 }
 
-                await this.runEventListener(
+                await this.runEventListeners(
                     type,
                     {
                         type,

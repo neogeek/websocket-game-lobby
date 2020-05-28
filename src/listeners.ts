@@ -32,13 +32,13 @@ export default class Listeners {
         }
     }
 
-    removeAllEventListener(): void {
+    removeAllEventListeners(): void {
         Object.keys(this.listeners).forEach(type => {
             this.listeners[type].splice(0, this.listeners[type].length);
         });
     }
 
-    async runEventListener(
+    async runEventListeners(
         type: string,
         data: any,
         datastore: DataStore
