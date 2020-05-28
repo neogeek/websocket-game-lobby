@@ -23,12 +23,11 @@ export interface DataStore extends Listeners {
         gameId: string,
         callback: (game: Game) => Promise<Game>
     ): Promise<Game>;
-    joinGame(gameId: string, player: Player | Spectator): Promise<Game>;
     leaveGame(gameId: string, playerId: string): Promise<void>;
     startGame(gameId: string): Promise<Game>;
     endGame(gameId: string): Promise<void>;
 
-    createPlayer(playerId?: string): Promise<Player>;
+    createPlayer(gameId: string, playerId?: string): Promise<Player>;
     findPlayer(gameId: string, playerId: string): Promise<Player | undefined>;
     editPlayer(
         gameId: string,
@@ -36,7 +35,7 @@ export interface DataStore extends Listeners {
         callback: (player: Player) => Promise<Player>
     ): Promise<Player>;
 
-    createSpectator(spectatorId?: string): Promise<Spectator>;
+    createSpectator(gameId: string, spectatorId?: string): Promise<Spectator>;
     findSpectator(
         gameId: string,
         spectatorId: string

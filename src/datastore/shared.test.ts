@@ -43,10 +43,7 @@ export default (datastore: DataStore): void => {
 
             assert.ok(game);
 
-            await datastore.joinGame(
-                game.gameId,
-                await datastore.createPlayer(playerId)
-            );
+            await datastore.createPlayer(game.gameId, playerId);
 
             assert.ok(await datastore.findPlayer(game.gameId, playerId));
         });
@@ -93,14 +90,11 @@ export default (datastore: DataStore): void => {
 
             assert.ok(game);
 
-            const player1 = await datastore.createPlayer();
-            const player2 = await datastore.createPlayer();
+            const player1 = await datastore.createPlayer(game.gameId);
+            const player2 = await datastore.createPlayer(game.gameId);
 
             assert.ok(player1);
             assert.ok(player2);
-
-            await datastore.joinGame(game.gameId, player1);
-            await datastore.joinGame(game.gameId, player2);
 
             const editedPlayer1 = await datastore.findPlayer(
                 game.gameId,
@@ -124,10 +118,7 @@ export default (datastore: DataStore): void => {
             assert.ok(game);
             assert.ok(!(await datastore.findPlayer(game.gameId, playerId)));
 
-            await datastore.joinGame(
-                game.gameId,
-                await datastore.createPlayer(playerId)
-            );
+            await datastore.createPlayer(game.gameId, playerId);
 
             assert.ok(await datastore.findPlayer(game.gameId, playerId));
         });
@@ -145,32 +136,10 @@ export default (datastore: DataStore): void => {
                 !(await datastore.findSpectator(game.gameId, spectatorId))
             );
 
-            await datastore.joinGame(
-                game.gameId,
-                await datastore.createSpectator(spectatorId)
-            );
+            await datastore.createSpectator(game.gameId, spectatorId);
 
             assert.ok(!(await datastore.findPlayer(game.gameId, spectatorId)));
             assert.ok(await datastore.findSpectator(game.gameId, spectatorId));
-        });
-        it('join game with custom event listener', async () => {
-            datastore.addEventListener('joinGame', game => {
-                game.custom.test = 'tested';
-                return game;
-            });
-
-            const game = await datastore.createGame();
-
-            assert.ok(game);
-            assert.notEqual(game.custom.test, 'tested');
-
-            const editedGame = await datastore.joinGame(
-                game.gameId,
-                await datastore.createPlayer()
-            );
-
-            assert.ok(editedGame);
-            assert.equal(editedGame.custom.test, 'tested');
         });
         it('leave game as player', async () => {
             const playerId = '8ca2ad81-093d-4352-8b96-780899e09d69';
@@ -179,10 +148,7 @@ export default (datastore: DataStore): void => {
 
             assert.ok(game);
 
-            await datastore.joinGame(
-                game.gameId,
-                await datastore.createPlayer(playerId)
-            );
+            await datastore.createPlayer(game.gameId, playerId);
 
             assert.ok(await datastore.findPlayer(game.gameId, playerId));
 
@@ -203,10 +169,7 @@ export default (datastore: DataStore): void => {
                 !(await datastore.findSpectator(game.gameId, spectatorId))
             );
 
-            await datastore.joinGame(
-                game.gameId,
-                await datastore.createSpectator(spectatorId)
-            );
+            await datastore.createSpectator(game.gameId, spectatorId);
 
             assert.ok(await datastore.findSpectator(game.gameId, spectatorId));
 
@@ -226,9 +189,7 @@ export default (datastore: DataStore): void => {
 
             assert.ok(game);
 
-            const player = await datastore.createPlayer();
-
-            await datastore.joinGame(game.gameId, player);
+            const player = await datastore.createPlayer(game.gameId);
 
             assert.notEqual(game.custom.test, 'tested');
 
@@ -282,7 +243,11 @@ export default (datastore: DataStore): void => {
 
     describe('player', () => {
         it('create new player', async () => {
-            const player = await datastore.createPlayer();
+            const game = await datastore.createGame();
+
+            assert.ok(game);
+
+            const player = await datastore.createPlayer(game.gameId);
 
             assert.ok(player.playerId);
 
@@ -294,7 +259,11 @@ export default (datastore: DataStore): void => {
             );
         });
         it('create new player with falsy ID', async () => {
-            const player = await datastore.createPlayer('');
+            const game = await datastore.createGame();
+
+            assert.ok(game);
+
+            const player = await datastore.createPlayer(game.gameId, '');
 
             assert.ok(player);
             assert.notEqual(player.playerId, '');
@@ -305,7 +274,11 @@ export default (datastore: DataStore): void => {
                 return player;
             });
 
-            const player = await datastore.createPlayer();
+            const game = await datastore.createGame();
+
+            assert.ok(game);
+
+            const player = await datastore.createPlayer(game.gameId);
 
             assert.ok(player);
             assert.equal(player.custom.test, 'tested');
@@ -317,10 +290,7 @@ export default (datastore: DataStore): void => {
 
             assert.ok(game);
 
-            await datastore.joinGame(
-                game.gameId,
-                await datastore.createPlayer(playerId)
-            );
+            await datastore.createPlayer(game.gameId, playerId);
 
             const editedPlayer = await datastore.findPlayer(
                 game.gameId,
@@ -338,10 +308,7 @@ export default (datastore: DataStore): void => {
 
             assert.ok(game);
 
-            await datastore.joinGame(
-                game.gameId,
-                await datastore.createPlayer(playerId)
-            );
+            await datastore.createPlayer(game.gameId, playerId);
 
             const player = await datastore.findPlayer(game.gameId, playerId);
 
@@ -370,7 +337,11 @@ export default (datastore: DataStore): void => {
 
     describe('spectator', () => {
         it('create new spectator', async () => {
-            const spectator = await datastore.createSpectator();
+            const game = await datastore.createGame();
+
+            assert.ok(game);
+
+            const spectator = await datastore.createSpectator(game.gameId);
 
             assert.ok(spectator.spectatorId);
 
@@ -382,7 +353,11 @@ export default (datastore: DataStore): void => {
             );
         });
         it('create new spectator with falsy ID', async () => {
-            const spectator = await datastore.createSpectator('');
+            const game = await datastore.createGame();
+
+            assert.ok(game);
+
+            const spectator = await datastore.createSpectator(game.gameId, '');
 
             assert.notEqual(spectator.spectatorId, '');
         });
@@ -392,7 +367,11 @@ export default (datastore: DataStore): void => {
                 return spectator;
             });
 
-            const spectator = await datastore.createSpectator();
+            const game = await datastore.createGame();
+
+            assert.ok(game);
+
+            const spectator = await datastore.createSpectator(game.gameId);
 
             assert.ok(spectator);
             assert.equal(spectator.custom.test, 'tested');
@@ -406,10 +385,7 @@ export default (datastore: DataStore): void => {
 
             await datastore.startGame(game.gameId);
 
-            await datastore.joinGame(
-                game.gameId,
-                await datastore.createSpectator(spectatorId)
-            );
+            await datastore.createSpectator(game.gameId, spectatorId);
 
             const spectator = await datastore.findSpectator(
                 game.gameId,
@@ -429,9 +405,10 @@ export default (datastore: DataStore): void => {
 
             await datastore.startGame(game.gameId);
 
-            const spectator = await datastore.createSpectator(spectatorId);
-
-            await datastore.joinGame(game.gameId, spectator);
+            const spectator = await datastore.createSpectator(
+                game.gameId,
+                spectatorId
+            );
 
             const name = 'Scott';
             const tempCustom = { value: 'example' };
@@ -532,14 +509,12 @@ export default (datastore: DataStore): void => {
                 game.gameId,
                 turnId,
                 async data => {
-                    data.index = 2;
                     data.custom = tempCustom;
                     return data;
                 }
             );
 
             assert.ok(editedTurn);
-            assert.equal(editedTurn.index, 2);
             assert.deepEqual(editedTurn.custom, tempCustom);
         });
         it('edit current turn', async () => {

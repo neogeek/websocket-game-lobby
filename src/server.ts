@@ -111,22 +111,10 @@ export class WebSocketGameLobbyServer extends Listeners {
                     spectator = await this.datastore.createSpectator(playerId);
 
                     client.playerId = spectator.spectatorId;
-
-                    await this.datastore
-                        .joinGame(client.gameId, spectator)
-                        .catch(e =>
-                            this.wss.send({ error: e.message }, client)
-                        );
                 } else {
                     player = await this.datastore.createPlayer(playerId);
 
                     client.playerId = player.playerId;
-
-                    await this.datastore
-                        .joinGame(client.gameId, player)
-                        .catch(e =>
-                            this.wss.send({ error: e.message }, client)
-                        );
                 }
 
                 if (type === 'start') {

@@ -17,7 +17,6 @@ export class EphemeralDataStore extends Listeners implements DataStore {
     constructor() {
         super({
             createGame: [],
-            joinGame: [],
             leaveGame: [],
             startGame: [],
             createPlayer: [],
@@ -72,47 +71,6 @@ export class EphemeralDataStore extends Listeners implements DataStore {
 
         return game;
     }
-    async joinGame(gameId: string, player: Player | Spectator): Promise<Game> {
-        const game = await this.findGame(gameId);
-
-        if (!game) {
-            throw new Error(`Game not found with id ${gameId}`);
-        }
-
-        if (
-            isPlayer(player) &&
-            !(await this.findPlayer(gameId, (player as Player).playerId))
-        ) {
-            game.players.push(player as Player);
-
-            await this.editPlayer(gameId, player.playerId, async player => {
-                player.gameId = gameId;
-                player.isAdmin = game.players.length === 1;
-                return player;
-            });
-        } else if (
-            isSpectator(player) &&
-            !(await this.findSpectator(
-                gameId,
-                (player as Spectator).spectatorId
-            ))
-        ) {
-            game.spectators.push(player as Spectator);
-
-            await this.editSpectator(
-                gameId,
-                player.spectatorId,
-                async spectator => {
-                    spectator.gameId = gameId;
-                    return spectator;
-                }
-            );
-        }
-
-        await this.runEventListener('joinGame', game, this);
-
-        return game;
-    }
     async leaveGame(gameId: string, playerId: string): Promise<void> {
         const game = await this.findGame(gameId);
 
@@ -153,14 +111,22 @@ export class EphemeralDataStore extends Listeners implements DataStore {
         return;
     }
 
-    async createPlayer(playerId?: string): Promise<Player> {
+    async createPlayer(gameId: string, playerId?: string): Promise<Player> {
+        const game = await this.findGame(gameId);
+
+        if (!game) {
+            throw new Error(`Game not found with id ${gameId}`);
+        }
+
         const player = {
             playerId: playerId || uuidv4(),
-            gameId: null,
+            gameId,
             name: '',
-            isAdmin: false,
+            isAdmin: game.players.length === 0,
             custom: {}
         };
+
+        game.players.push(player);
 
         await this.runEventListener('createPlayer', player, this);
 
@@ -198,13 +164,24 @@ export class EphemeralDataStore extends Listeners implements DataStore {
         return player;
     }
 
-    async createSpectator(spectatorId?: string): Promise<Spectator> {
+    async createSpectator(
+        gameId: string,
+        spectatorId?: string
+    ): Promise<Spectator> {
+        const game = await this.findGame(gameId);
+
+        if (!game) {
+            throw new Error(`Game not found with id ${gameId}`);
+        }
+
         const spectator = {
             spectatorId: spectatorId || uuidv4(),
-            gameId: null,
+            gameId,
             name: '',
             custom: {}
         };
+
+        game.spectators.push(spectator);
 
         await this.runEventListener('createSpectator', spectator, this);
 
