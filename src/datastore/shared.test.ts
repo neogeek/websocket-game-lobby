@@ -450,6 +450,23 @@ export default (datastore: DataStore): void => {
                 )
             );
         });
+        it('create turn with custom event listener', async () => {
+            datastore.addEventListener('createTurn', spectator => {
+                spectator.custom.test = 'tested';
+                return spectator;
+            });
+
+            const game = await datastore.createGame();
+
+            assert.ok(game);
+
+            await datastore.startGame(game.gameId);
+
+            const turn = await datastore.currentTurn(game.gameId);
+
+            assert.ok(turn);
+            assert.equal(turn.custom.test, 'tested');
+        });
         it('find turn', async () => {
             const game = await datastore.createGame();
 
