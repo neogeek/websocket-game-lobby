@@ -301,7 +301,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
             return;
         }
 
-        this.editCurrentTurn(gameId, async (turn: Turn) => {
+        await this.editCurrentTurn(gameId, async (turn: Turn) => {
             await this.runEventListeners('endTurn', turn, this);
             return turn;
         });
