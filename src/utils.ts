@@ -59,13 +59,3 @@ export const createUniqueGameCode = async (
 
     return gameCode;
 };
-
-export function isPlayer(player: Player | Spectator): player is Player {
-    return (player as Player).playerId !== undefined;
-}
-
-export function isSpectator(
-    spectator: Player | Spectator
-): spectator is Spectator {
-    return (spectator as Spectator).spectatorId !== undefined;
-}

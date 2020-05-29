@@ -1,11 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-    createUniqueGameCode,
-    removeArrayItemWithFilter,
-    isPlayer,
-    isSpectator
-} from '../utils';
+import { createUniqueGameCode, removeArrayItemWithFilter } from '../utils';
 
 import Listeners from '../listeners';
 
