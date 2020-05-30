@@ -169,18 +169,21 @@ export class WebSocketGameLobbyServer extends Listeners {
         const game =
             (await this.datastore.findGame(client.gameId)) ||
             (await this.datastore.findGameWithCode(client.gameCode));
-        const player = await this.datastore.findPlayer(
-            client.gameId,
-            client.playerId
-        );
-        const spectator = await this.datastore.findSpectator(
-            client.gameId,
-            client.playerId
-        );
-        const turn = await this.datastore.currentTurn(client.gameId);
 
-        if (game && (player || spectator)) {
-            return { game, player, spectator, turn };
+        if (game) {
+            const player = await this.datastore.findPlayer(
+                game.gameId,
+                client.playerId
+            );
+            const spectator = await this.datastore.findSpectator(
+                game.gameId,
+                client.playerId
+            );
+            const turn = await this.datastore.currentTurn(game.gameId);
+
+            if (game && (player || spectator)) {
+                return { game, player, spectator, turn };
+            }
         }
 
         client.gameId = '';
