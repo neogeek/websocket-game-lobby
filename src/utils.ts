@@ -1,5 +1,3 @@
-import { Player, Spectator } from './types';
-
 export const generateRandomString = (
     length = 4,
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
