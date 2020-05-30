@@ -79,74 +79,42 @@ export class WebSocketGameLobbyServer extends Listeners {
                     return;
                 }
 
-                const game =
-                    (await this.datastore.findGame(gameId)) ||
-                    (await this.datastore.findGameWithCode(gameCode)) ||
-                    (await this.datastore
-                        .createGame()
-                        .catch(e =>
-                            this.wss.send({ error: e.message }, client)
-                        ));
+                if (type === 'create' || type === 'join') {
+                    const game =
+                        (await this.datastore.findGame(gameId)) ||
+                        (await this.datastore.findGameWithCode(gameCode)) ||
+                        (await this.datastore.createGame());
 
-                if (!game) {
-                    return;
-                }
+                    if (!game) {
+                        return;
+                    }
 
-                client.gameId = game.gameId;
+                    client.gameId = game.gameId;
 
-                let player = await this.datastore.findPlayer(
-                    client.gameId,
-                    playerId
-                );
-                let spectator = await this.datastore.findSpectator(
-                    client.gameId,
-                    playerId
-                );
-
-                if (player) {
-                    client.playerId = player.playerId;
-                } else if (spectator) {
-                    client.playerId = spectator.spectatorId;
-                } else if (game.started || forceSpectator) {
-                    spectator = await this.datastore.createSpectator(
-                        client.gameId,
-                        playerId
-                    );
-
-                    client.playerId = spectator.spectatorId;
-                } else {
-                    player = await this.datastore.createPlayer(
-                        client.gameId,
-                        playerId
-                    );
-
-                    client.playerId = player.playerId;
-                }
-
-                if (type === 'start') {
-                    await this.datastore
-                        .startGame(client.gameId)
-                        .catch(e =>
-                            this.wss.send({ error: e.message }, client)
+                    if (game.started || forceSpectator) {
+                        const spectator = await this.datastore.createSpectator(
+                            client.gameId,
+                            playerId
                         );
+
+                        client.playerId = spectator.spectatorId;
+                    } else {
+                        const player = await this.datastore.createPlayer(
+                            client.gameId,
+                            playerId
+                        );
+
+                        client.playerId = player.playerId;
+                    }
+                } else if (type === 'start') {
+                    await this.datastore.startGame(client.gameId);
                 } else if (type === 'leave') {
-                    await this.datastore
-                        .leaveGame(client.gameId, client.playerId)
-                        .catch(e =>
-                            this.wss.send({ error: e.message }, client)
-                        );
-
-                    client.gameId = '';
-                    client.playerId = '';
-
-                    this.wss.send({}, client);
+                    await this.datastore.leaveGame(
+                        client.gameId,
+                        client.playerId
+                    );
                 } else if (type === 'end') {
                     await this.datastore.endGame(client.gameId);
-
-                    client.gameId = '';
-                    client.playerId = '';
-
-                    this.wss.send({}, client);
                 }
 
                 await this.runEventListeners(
@@ -160,7 +128,7 @@ export class WebSocketGameLobbyServer extends Listeners {
                     this.datastore
                 );
 
-                await this.broadcastUpdate(game.gameId);
+                await this.broadcastUpdate(client.gameId);
             }
         );
     }
