@@ -1,29 +1,42 @@
-export interface DataStore {
+export interface Listeners {
+    addEventListener(
+        type: string,
+        callback: (data: any, datastore: DataStore) => Promise<void>
+    ): void;
+    removeEventListener(
+        type: string,
+        callback: (data: any, datastore: DataStore) => Promise<void>
+    ): void;
+    removeAllEventListeners(): void;
+    runEventListeners(
+        type: string,
+        data: any,
+        datastore: DataStore
+    ): Promise<void>;
+}
+
+export interface DataStore extends Listeners {
     setup(): Promise<void>;
     createGame(): Promise<Game>;
     findGame(gameId: string | undefined): Promise<Game | undefined>;
     findGameWithCode(gameCode: string | undefined): Promise<Game | undefined>;
     editGame(
         gameId: string,
-        callback: (game: Game) => Game
-    ): Promise<Game | undefined>;
-    joinGame(
-        gameId: string,
-        player: Player | Spectator
-    ): Promise<Game | undefined>;
+        callback: (game: Game) => Promise<Game>
+    ): Promise<Game>;
     leaveGame(gameId: string, playerId: string): Promise<void>;
-    startGame(gameId: string): Promise<Game | undefined>;
+    startGame(gameId: string): Promise<Game>;
     endGame(gameId: string): Promise<void>;
 
-    createPlayer(playerId?: string): Promise<Player>;
+    createPlayer(gameId: string, playerId?: string): Promise<Player>;
     findPlayer(gameId: string, playerId: string): Promise<Player | undefined>;
     editPlayer(
         gameId: string,
         playerId: string,
-        callback: (player: Player) => Player
-    ): Promise<Player | undefined>;
+        callback: (player: Player) => Promise<Player>
+    ): Promise<Player>;
 
-    createSpectator(spectatorId?: string): Promise<Spectator>;
+    createSpectator(gameId: string, spectatorId?: string): Promise<Spectator>;
     findSpectator(
         gameId: string,
         spectatorId: string
@@ -31,8 +44,8 @@ export interface DataStore {
     editSpectator(
         gameId: string,
         spectatorId: string,
-        callback: (spectator: Spectator) => Spectator
-    ): Promise<Spectator | undefined>;
+        callback: (spectator: Spectator) => Promise<Spectator>
+    ): Promise<Spectator>;
 
     createTurn(gameId: string): Promise<Turn>;
     findTurn(gameId: string, turnId: string): Promise<Turn | undefined>;
@@ -40,8 +53,12 @@ export interface DataStore {
     editTurn(
         gameId: string,
         turnId: string,
-        callback: (turn: Turn) => Turn
-    ): Promise<Turn | undefined>;
+        callback: (turn: Turn) => Promise<Turn>
+    ): Promise<Turn>;
+    editCurrentTurn(
+        gameId: string,
+        callback: (turn: Turn) => Promise<Turn>
+    ): Promise<Turn>;
     endTurn(gameId: string): Promise<void>;
 }
 
@@ -75,4 +92,17 @@ export interface Turn {
     gameId: string | null;
     index: number;
     custom: any;
+}
+
+export interface Client {
+    gameId: string;
+    gameCode: string;
+    playerId: string;
+}
+
+export interface Response {
+    game: Game;
+    player: Player | undefined;
+    spectator: Spectator | undefined;
+    turn: Turn | undefined;
 }

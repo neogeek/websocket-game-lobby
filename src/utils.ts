@@ -1,5 +1,3 @@
-import { Player, Spectator } from './types';
-
 export const generateRandomString = (
     length = 4,
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -59,13 +57,3 @@ export const createUniqueGameCode = async (
 
     return gameCode;
 };
-
-export function isPlayer(player: Player | Spectator): player is Player {
-    return (player as Player).playerId !== undefined;
-}
-
-export function isSpectator(
-    spectator: Player | Spectator
-): spectator is Spectator {
-    return (spectator as Spectator).spectatorId !== undefined;
-}

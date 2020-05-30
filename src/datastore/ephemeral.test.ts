@@ -5,7 +5,10 @@ import shared from './shared.test';
 describe('ephemeral', () => {
     const datastore = new EphemeralDataStore();
 
-    beforeEach(() => datastore.setup());
+    beforeEach(() => {
+        datastore.setup();
+        datastore.removeAllEventListeners();
+    });
 
     shared(datastore);
 });
