@@ -10,8 +10,7 @@
     "types": ["node", "jest"]
   },
   "typedocOptions": {
-    "inputFiles": ["./src"],
-    "exclude": "./src/datastore",
+    "inputFiles": ["./src/"],
     "mode": "modules",
     "out": "docs"
   },
