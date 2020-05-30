@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-empty-function */
+
 import assert from 'assert';
 
 import Listeners from './listeners';
@@ -50,16 +53,12 @@ describe('listeners', () => {
 
         example.addEventListener(
             'test',
-            async (data: any, datastore: DataStore) => {
-                console.log(data);
-            }
+            async (data: any, datastore: DataStore) => {}
         );
 
         example.addEventListener(
             'test',
-            async (data: any, datastore: DataStore) => {
-                console.log(data);
-            }
+            async (data: any, datastore: DataStore) => {}
         );
 
         assert.equal(example.listeners['test'].length, 2);
