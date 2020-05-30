@@ -155,6 +155,24 @@ export interface DataStore extends Listeners {
     endCurrentTurn(gameId: string): Promise<void>;
 }
 
+export enum DatastoreEvents {
+    createGame = 'createGame',
+    leaveGame = 'leaveGame',
+    startGame = 'startGame',
+    createPlayer = 'createPlayer',
+    createSpectator = 'createSpectator',
+    createTurn = 'createTurn',
+    endCurrentTurn = 'endCurrentTurn'
+}
+
+export enum ServerEvents {
+    create = 'create',
+    join = 'join',
+    start = 'start',
+    leave = 'leave',
+    end = 'end'
+}
+
 export interface Game {
     /** A UUID representing a game. */
     gameId: string;
