@@ -17,7 +17,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
             createPlayer: [],
             createSpectator: [],
             createTurn: [],
-            endTurn: []
+            endCurrentTurn: []
         });
     }
 
@@ -289,7 +289,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
 
         return turn;
     }
-    async endTurn(gameId: string): Promise<void> {
+    async endCurrentTurn(gameId: string): Promise<void> {
         const game = await this.findGame(gameId);
 
         if (!game) {
@@ -297,7 +297,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
         }
 
         await this.editCurrentTurn(gameId, async (turn: Turn) => {
-            await this.runEventListeners('endTurn', turn, this);
+            await this.runEventListeners('endCurrentTurn', turn, this);
             return turn;
         });
 

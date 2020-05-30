@@ -567,7 +567,7 @@ export default (datastore: DataStore): void => {
             assert.ok(editedTurn);
             assert.deepEqual(editedTurn.custom, tempCustom);
         });
-        it('end turn', async () => {
+        it('end current turn', async () => {
             const game = await datastore.createGame();
 
             assert.ok(game);
@@ -584,15 +584,15 @@ export default (datastore: DataStore): void => {
 
             assert.equal(currentTurn.turnId, turnId);
 
-            await datastore.endTurn(game.gameId);
+            await datastore.endCurrentTurn(game.gameId);
 
             const nextTurn = await datastore.currentTurn(game.gameId);
 
             assert.ok(nextTurn);
             assert.notEqual(nextTurn.turnId, turnId);
         });
-        it('end turn with custom event listener', async () => {
-            datastore.addEventListener('endTurn', turn => {
+        it('end current turn with custom event listener', async () => {
+            datastore.addEventListener('endCurrentTurn', turn => {
                 turn.custom.test = 'tested';
                 return turn;
             });
@@ -608,7 +608,7 @@ export default (datastore: DataStore): void => {
             assert.ok(turn);
             assert.notEqual(turn.custom.test, 'tested');
 
-            await datastore.endTurn(game.gameId);
+            await datastore.endCurrentTurn(game.gameId);
 
             const endedTurn = await datastore.findTurn(
                 game.gameId,
@@ -625,8 +625,8 @@ export default (datastore: DataStore): void => {
 
             await datastore.startGame(game.gameId);
 
-            await datastore.endTurn(game.gameId);
-            await datastore.endTurn(game.gameId);
+            await datastore.endCurrentTurn(game.gameId);
+            await datastore.endCurrentTurn(game.gameId);
 
             const currentTurn = await datastore.currentTurn(game.gameId);
 

@@ -59,7 +59,7 @@ export interface DataStore extends Listeners {
         gameId: string,
         callback: (turn: Turn) => Promise<Turn>
     ): Promise<Turn>;
-    endTurn(gameId: string): Promise<void>;
+    endCurrentTurn(gameId: string): Promise<void>;
 }
 
 export interface Game {
