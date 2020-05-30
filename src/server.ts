@@ -6,7 +6,7 @@ import { EphemeralDataStore } from './datastore';
 
 import Listeners from './listeners';
 
-import { DataStore } from './types';
+import { Client, DataStore, Response } from './types';
 
 export class WebSocketGameLobbyServer extends Listeners {
     wss: any;
@@ -33,7 +33,7 @@ export class WebSocketGameLobbyServer extends Listeners {
         this.wss = new WebSocketEventWrapper({
             port,
             server,
-            onConnect: async (client: any, request: any): Promise<void> => {
+            onConnect: async (client: Client, request: any): Promise<void> => {
                 const { gameId, gameCode, playerId } = qs.parse(
                     request.url.replace(/^\//, ''),
                     {
@@ -73,7 +73,7 @@ export class WebSocketGameLobbyServer extends Listeners {
                     playerId: string;
                     forceSpectator: boolean;
                 },
-                client: any
+                client: Client
             ) => {
                 if (!(type in this.listeners)) {
                     return;
@@ -159,7 +159,7 @@ export class WebSocketGameLobbyServer extends Listeners {
         );
     }
 
-    async sendUpdate(client: any): Promise<any> {
+    async sendUpdate(client: Client): Promise<Partial<Response>> {
         const game =
             (await this.datastore.findGame(client.gameId)) ||
             (await this.datastore.findGameWithCode(client.gameCode));
@@ -185,8 +185,8 @@ export class WebSocketGameLobbyServer extends Listeners {
 
     async broadcastUpdate(gameId: string): Promise<void> {
         this.wss.broadcast(
-            async (client: any) => await this.sendUpdate(client),
-            (client: any) => client.gameId === gameId
+            async (client: Client) => await this.sendUpdate(client),
+            (client: Client) => client.gameId === gameId
         );
     }
 }

@@ -93,3 +93,16 @@ export interface Turn {
     index: number;
     custom: any;
 }
+
+export interface Client {
+    gameId: string;
+    gameCode: string;
+    playerId: string;
+}
+
+export interface Response {
+    game: Game;
+    player: Player | undefined;
+    spectator: Spectator | undefined;
+    turn: Turn | undefined;
+}
