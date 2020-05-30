@@ -108,11 +108,17 @@ export class WebSocketGameLobbyServer extends Listeners {
                 } else if (spectator) {
                     client.playerId = spectator.spectatorId;
                 } else if (game.started || forceSpectator) {
-                    spectator = await this.datastore.createSpectator(playerId);
+                    spectator = await this.datastore.createSpectator(
+                        client.gameId,
+                        playerId
+                    );
 
                     client.playerId = spectator.spectatorId;
                 } else {
-                    player = await this.datastore.createPlayer(playerId);
+                    player = await this.datastore.createPlayer(
+                        client.gameId,
+                        playerId
+                    );
 
                     client.playerId = player.playerId;
                 }
