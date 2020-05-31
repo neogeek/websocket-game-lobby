@@ -6,7 +6,7 @@ import Listeners from '../listeners';
 
 import {
     DataStore,
-    DatastoreEvents,
+    DataStoreEvents,
     Game,
     Player,
     Spectator,
@@ -15,9 +15,9 @@ import {
 
 let data: Game[] = [];
 
-export class EphemeralDataStore extends Listeners<DatastoreEvents>
+export class EphemeralDataStore extends Listeners<DataStoreEvents>
     implements DataStore {
-    listeners = Object.keys(DatastoreEvents).reduce((acc, curr) => {
+    listeners = Object.keys(DataStoreEvents).reduce((acc, curr) => {
         return {
             [curr]: [],
             ...acc
@@ -43,7 +43,7 @@ export class EphemeralDataStore extends Listeners<DatastoreEvents>
 
         data.push(game);
 
-        await this.runEventListeners(DatastoreEvents.createGame, game, this);
+        await this.runEventListeners(DataStoreEvents.createGame, game, this);
 
         return game;
     }
@@ -85,7 +85,7 @@ export class EphemeralDataStore extends Listeners<DatastoreEvents>
             (spectator: Spectator) => spectator.spectatorId === playerId
         );
 
-        await this.runEventListeners(DatastoreEvents.leaveGame, game, this);
+        await this.runEventListeners(DataStoreEvents.leaveGame, game, this);
 
         return;
     }
@@ -100,7 +100,7 @@ export class EphemeralDataStore extends Listeners<DatastoreEvents>
 
         game.started = true;
 
-        await this.runEventListeners(DatastoreEvents.startGame, game, this);
+        await this.runEventListeners(DataStoreEvents.startGame, game, this);
 
         return game;
     }
@@ -127,7 +127,7 @@ export class EphemeralDataStore extends Listeners<DatastoreEvents>
         game.players.push(player);
 
         await this.runEventListeners(
-            DatastoreEvents.createPlayer,
+            DataStoreEvents.createPlayer,
             player,
             this
         );
@@ -183,7 +183,7 @@ export class EphemeralDataStore extends Listeners<DatastoreEvents>
         game.spectators.push(spectator);
 
         await this.runEventListeners(
-            DatastoreEvents.createSpectator,
+            DataStoreEvents.createSpectator,
             spectator,
             this
         );
@@ -236,7 +236,7 @@ export class EphemeralDataStore extends Listeners<DatastoreEvents>
             custom: {}
         };
 
-        await this.runEventListeners(DatastoreEvents.createTurn, turn, this);
+        await this.runEventListeners(DataStoreEvents.createTurn, turn, this);
 
         return turn;
     }
@@ -308,7 +308,7 @@ export class EphemeralDataStore extends Listeners<DatastoreEvents>
 
         await this.editCurrentTurn(gameId, async (turn: Turn) => {
             await this.runEventListeners(
-                DatastoreEvents.endCurrentTurn,
+                DataStoreEvents.endCurrentTurn,
                 turn,
                 this
             );

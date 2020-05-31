@@ -6,7 +6,7 @@ import Listeners from '../listeners';
 
 import {
     DataStore,
-    DatastoreEvents,
+    DataStoreEvents,
     Game,
     Player,
     Spectator,
@@ -28,9 +28,9 @@ const formatValue = (value: any): any => {
     return `'${String(value).replace(/'/g, '&#39;')}'`;
 };
 
-export class PostgresDataStore extends Listeners<DatastoreEvents>
+export class PostgresDataStore extends Listeners<DataStoreEvents>
     implements DataStore {
-    listeners = Object.keys(DatastoreEvents).reduce((acc, curr) => {
+    listeners = Object.keys(DataStoreEvents).reduce((acc, curr) => {
         return {
             [curr]: [],
             ...acc
@@ -59,7 +59,7 @@ export class PostgresDataStore extends Listeners<DatastoreEvents>
 
         return await this.editGame(game.gameId, async game => {
             await this.runEventListeners(
-                DatastoreEvents.createGame,
+                DataStoreEvents.createGame,
                 game,
                 this
             );
@@ -126,7 +126,7 @@ export class PostgresDataStore extends Listeners<DatastoreEvents>
         );
 
         await this.editGame(game.gameId, async game => {
-            await this.runEventListeners(DatastoreEvents.leaveGame, game, this);
+            await this.runEventListeners(DataStoreEvents.leaveGame, game, this);
             return game;
         });
 
@@ -144,7 +144,7 @@ export class PostgresDataStore extends Listeners<DatastoreEvents>
         await this.createTurn(gameId);
 
         return await this.editGame(game.gameId, async game => {
-            await this.runEventListeners(DatastoreEvents.startGame, game, this);
+            await this.runEventListeners(DataStoreEvents.startGame, game, this);
             return game;
         });
     }
@@ -159,7 +159,7 @@ export class PostgresDataStore extends Listeners<DatastoreEvents>
 
         return await this.editPlayer(gameId, player.playerId, async player => {
             await this.runEventListeners(
-                DatastoreEvents.createPlayer,
+                DataStoreEvents.createPlayer,
                 player,
                 this
             );
@@ -221,7 +221,7 @@ export class PostgresDataStore extends Listeners<DatastoreEvents>
             spectator.spectatorId,
             async spectator => {
                 await this.runEventListeners(
-                    DatastoreEvents.createSpectator,
+                    DataStoreEvents.createSpectator,
                     spectator,
                     this
                 );
@@ -281,7 +281,7 @@ export class PostgresDataStore extends Listeners<DatastoreEvents>
 
         return await this.editTurn(gameId, turn.turnId, async turn => {
             await this.runEventListeners(
-                DatastoreEvents.createTurn,
+                DataStoreEvents.createTurn,
                 turn,
                 this
             );
@@ -354,7 +354,7 @@ export class PostgresDataStore extends Listeners<DatastoreEvents>
     async endCurrentTurn(gameId: string): Promise<void> {
         await this.editCurrentTurn(gameId, async (turn: Turn) => {
             await this.runEventListeners(
-                DatastoreEvents.endCurrentTurn,
+                DataStoreEvents.endCurrentTurn,
                 turn,
                 this
             );
