@@ -152,6 +152,7 @@ export class PostgresDataStore extends Listeners<DataStoreEvents>
         await client.query('SELECT * FROM endGame($1)', [gameId]);
         return;
     }
+
     async createPlayer(gameId: string): Promise<Player> {
         const player = (
             await client.query('SELECT * FROM createPlayer($1)', [gameId])
@@ -211,6 +212,7 @@ export class PostgresDataStore extends Listeners<DataStoreEvents>
 
         return player;
     }
+
     async createSpectator(gameId: string): Promise<Spectator> {
         const spectator = (
             await client.query('SELECT * FROM createSpectator($1)', [gameId])
@@ -274,6 +276,7 @@ export class PostgresDataStore extends Listeners<DataStoreEvents>
 
         return spectator;
     }
+
     async createTurn(gameId: string): Promise<Turn> {
         const turn = (
             await client.query('SELECT * FROM createTurn($1)', [gameId])
