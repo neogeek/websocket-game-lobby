@@ -226,10 +226,16 @@ export class EphemeralDataStore extends Listeners<DatastoreEvents>
     }
 
     async createTurn(gameId: string): Promise<Turn> {
+        const game = await this.findGame(gameId);
+
+        if (!game) {
+            throw new Error(`Game not found with id ${gameId}`);
+        }
+
         const turn = {
             turnId: uuidv4(),
             gameId,
-            index: 1,
+            index: game.turns.length + 1,
             custom: {}
         };
 
