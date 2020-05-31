@@ -104,6 +104,40 @@ gameLobby.removeAllEventListeners();
 
 ### DataStore
 
+There are two kinds of DataStore objects you can use; the default is `EphemeralDataStore`, which stores data in a temp JavaScript object, and the other is `PostgresDataStore`.
+
+#### EphemeralDataStore
+
+```javascript
+const { EphemeralDataStore } = require('websocket-game-lobby');
+
+const datastore = new EphemeralDataStore();
+```
+
+#### PostgresDataStore
+
+To connect to your database, add the following into an `.env` file in your project and setup the ENV variables on your server.
+
+```
+PGHOST=localhost
+PGPORT=5432
+PGUSER=postgres
+PGPASSWORD=password
+PGDATABASE=travis_ci_test
+```
+
+Then install [dotenv](https://www.npmjs.com/package/dotenv) and import it into your project. This will parse the variables in your `.env` expose them to your project for reading.
+
+```javascript
+require('dotenv').config();
+
+const { PostgresDataStore } = require('websocket-game-lobby');
+
+const datastore = new PostgresDataStore();
+```
+
+#### Event types
+
 Event types for use with the DataStore are as follows:
 
 | Name              | Description                              |
