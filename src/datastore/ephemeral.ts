@@ -303,7 +303,7 @@ export class EphemeralDataStore extends Listeners<DataStoreEvents>
         const game = await this.findGame(gameId);
 
         if (!game) {
-            return;
+            throw new Error(`Game not found with id ${gameId}`);
         }
 
         await this.editCurrentTurn(gameId, async (turn: Turn) => {
