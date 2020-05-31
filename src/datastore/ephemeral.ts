@@ -4,22 +4,25 @@ import { createUniqueGameCode, removeArrayItemWithFilter } from '../utils';
 
 import Listeners from '../listeners';
 
-import { DataStore, Game, Player, Spectator, Turn } from '../types';
+import {
+    DataStore,
+    DatastoreEvents,
+    Game,
+    Player,
+    Spectator,
+    Turn
+} from '../types';
 
 let data: Game[] = [];
 
-export class EphemeralDataStore extends Listeners implements DataStore {
-    constructor() {
-        super({
-            createGame: [],
-            leaveGame: [],
-            startGame: [],
-            createPlayer: [],
-            createSpectator: [],
-            createTurn: [],
-            endTurn: []
-        });
-    }
+export class EphemeralDataStore extends Listeners<DatastoreEvents>
+    implements DataStore {
+    listeners = Object.keys(DatastoreEvents).reduce((acc, curr) => {
+        return {
+            [curr]: [],
+            ...acc
+        };
+    }, {});
 
     async setup(): Promise<void> {
         data = [];
@@ -40,7 +43,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
 
         data.push(game);
 
-        await this.runEventListeners('createGame', game, this);
+        await this.runEventListeners(DatastoreEvents.createGame, game, this);
 
         return game;
     }
@@ -82,7 +85,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
             (spectator: Spectator) => spectator.spectatorId === playerId
         );
 
-        await this.runEventListeners('leaveGame', game, this);
+        await this.runEventListeners(DatastoreEvents.leaveGame, game, this);
 
         return;
     }
@@ -97,7 +100,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
 
         game.started = true;
 
-        await this.runEventListeners('startGame', game, this);
+        await this.runEventListeners(DatastoreEvents.startGame, game, this);
 
         return game;
     }
@@ -123,7 +126,11 @@ export class EphemeralDataStore extends Listeners implements DataStore {
 
         game.players.push(player);
 
-        await this.runEventListeners('createPlayer', player, this);
+        await this.runEventListeners(
+            DatastoreEvents.createPlayer,
+            player,
+            this
+        );
 
         return player;
     }
@@ -178,7 +185,11 @@ export class EphemeralDataStore extends Listeners implements DataStore {
 
         game.spectators.push(spectator);
 
-        await this.runEventListeners('createSpectator', spectator, this);
+        await this.runEventListeners(
+            DatastoreEvents.createSpectator,
+            spectator,
+            this
+        );
 
         return spectator;
     }
@@ -222,7 +233,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
             custom: {}
         };
 
-        await this.runEventListeners('createTurn', turn, this);
+        await this.runEventListeners(DatastoreEvents.createTurn, turn, this);
 
         return turn;
     }
@@ -289,7 +300,7 @@ export class EphemeralDataStore extends Listeners implements DataStore {
 
         return turn;
     }
-    async endTurn(gameId: string): Promise<void> {
+    async endCurrentTurn(gameId: string): Promise<void> {
         const game = await this.findGame(gameId);
 
         if (!game) {
@@ -297,7 +308,11 @@ export class EphemeralDataStore extends Listeners implements DataStore {
         }
 
         await this.editCurrentTurn(gameId, async (turn: Turn) => {
-            await this.runEventListeners('endTurn', turn, this);
+            await this.runEventListeners(
+                DatastoreEvents.endCurrentTurn,
+                turn,
+                this
+            );
             return turn;
         });
 

@@ -27,13 +27,6 @@ describe('listeners', () => {
 
         assert.equal(example.listeners['test'].length, 0);
     });
-    it('create class with default listeners', async () => {
-        const example = new Listeners({
-            test: []
-        });
-
-        assert.ok(example.listeners['test']);
-    });
     it('run method', async done => {
         const example = new Listeners();
 
