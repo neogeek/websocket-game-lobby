@@ -1,5 +1,7 @@
 coverage/
 
+docs/
+
 src/
 
 .eslintignore
