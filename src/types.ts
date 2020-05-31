@@ -148,7 +148,7 @@ export interface DataStore extends Listeners {
         gameId: string,
         callback: (turn: Turn) => Promise<Turn>
     ): Promise<Turn>;
-    /** Creates a new turn in a game.
+    /** Ends current turn and then creates a new turn in a game.
      * > **NOTE:** Calling this function will also run any events with the name endCurrentTurn.
      * @param gameId - A UUID representing the game in which to end the current turn.
      */
