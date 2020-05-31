@@ -250,7 +250,7 @@ export class PostgresDataStore extends Listeners<DataStoreEvents>
         const spectator = await this.findSpectator(gameId, spectatorId);
 
         if (!spectator) {
-            throw new Error(`Player not found with id ${spectatorId}`);
+            throw new Error(`Spectator not found with id ${spectatorId}`);
         }
 
         if (typeof callback === 'function') {
