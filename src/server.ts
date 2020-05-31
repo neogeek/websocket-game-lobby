@@ -8,7 +8,7 @@ import Listeners from './listeners';
 
 import { Client, DataStore, Response, ServerEvents } from './types';
 
-export class WebSocketGameLobbyServer extends Listeners {
+export class WebSocketGameLobbyServer extends Listeners<ServerEvents> {
     listeners: any = Object.keys(ServerEvents).reduce((acc, curr) => {
         return {
             [curr]: [],
@@ -68,7 +68,7 @@ export class WebSocketGameLobbyServer extends Listeners {
                     forceSpectator,
                     ...rest
                 }: {
-                    type: string;
+                    type: ServerEvents;
                     gameId?: string;
                     gameCode?: string;
                     playerId: string;

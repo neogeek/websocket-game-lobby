@@ -2,11 +2,11 @@ import { removeArrayItem } from './utils';
 
 import { DataStore } from './types';
 
-export default class Listeners {
+export default class Listeners<T> {
     listeners: any = {};
 
     addEventListener(
-        type: string,
+        type: T,
         callback: (data: any, datastore: DataStore) => Promise<void>
     ): void {
         if (!this.listeners[type]) {
@@ -18,7 +18,7 @@ export default class Listeners {
     }
 
     removeEventListener(
-        type: string,
+        type: T,
         callback: (data: any, datastore: DataStore) => Promise<void>
     ): void {
         if (this.listeners[type]) {
@@ -33,7 +33,7 @@ export default class Listeners {
     }
 
     async runEventListeners(
-        type: string,
+        type: T,
         data: any,
         datastore: DataStore
     ): Promise<void> {

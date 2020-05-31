@@ -15,7 +15,8 @@ import {
 
 let data: Game[] = [];
 
-export class EphemeralDataStore extends Listeners implements DataStore {
+export class EphemeralDataStore extends Listeners<DatastoreEvents>
+    implements DataStore {
     listeners = Object.keys(DatastoreEvents).reduce((acc, curr) => {
         return {
             [curr]: [],
