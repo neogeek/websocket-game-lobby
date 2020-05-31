@@ -125,7 +125,7 @@ BEGIN
 END; $$ LANGUAGE 'plpgsql';
 
 DROP FUNCTION IF EXISTS createPlayer;
-CREATE FUNCTION createPlayer (_gameId UUID, _playerId UUID)
+CREATE FUNCTION createPlayer (_gameId UUID)
     RETURNS TABLE (
         "playerId" UUID,
         "gameId" UUID,
@@ -135,7 +135,7 @@ CREATE FUNCTION createPlayer (_gameId UUID, _playerId UUID)
 )
 AS $$
 BEGIN
-    INSERT INTO "player" ("playerId", "gameId", "isAdmin") VALUES (_playerId, _gameId, (SELECT COUNT("id") = 0 FROM "player" WHERE "player"."gameId" = _gameId));
+    INSERT INTO "player" ("gameId", "isAdmin") VALUES (_gameId, (SELECT COUNT("id") = 0 FROM "player" WHERE "player"."gameId" = _gameId));
     RETURN QUERY
     SELECT * FROM findPlayer(_gameId, (SELECT "player"."playerId" FROM "player" WHERE "player"."id" = LASTVAL()));
 END; $$ LANGUAGE 'plpgsql';
@@ -158,7 +158,7 @@ BEGIN
 END; $$ LANGUAGE 'plpgsql';
 
 DROP FUNCTION IF EXISTS createSpectator;
-CREATE FUNCTION createSpectator (_gameId UUID, _spectatorId UUID)
+CREATE FUNCTION createSpectator (_gameId UUID)
     RETURNS TABLE (
         "spectatorId" UUID,
         "gameId" UUID,
@@ -167,7 +167,7 @@ CREATE FUNCTION createSpectator (_gameId UUID, _spectatorId UUID)
 )
 AS $$
 BEGIN
-    INSERT INTO "spectator" ("spectatorId", "gameId") VALUES (_spectatorId, _gameId);
+    INSERT INTO "spectator" ("gameId") VALUES (_gameId);
     RETURN QUERY
     SELECT * FROM findSpectator(_gameId, (SELECT "spectator"."spectatorId" FROM "spectator" WHERE "spectator"."id" = LASTVAL()));
 END; $$ LANGUAGE 'plpgsql';

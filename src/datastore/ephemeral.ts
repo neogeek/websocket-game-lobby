@@ -109,7 +109,7 @@ export class EphemeralDataStore extends Listeners<DatastoreEvents>
         return;
     }
 
-    async createPlayer(gameId: string, playerId?: string): Promise<Player> {
+    async createPlayer(gameId: string): Promise<Player> {
         const game = await this.findGame(gameId);
 
         if (!game) {
@@ -117,7 +117,7 @@ export class EphemeralDataStore extends Listeners<DatastoreEvents>
         }
 
         const player = {
-            playerId: playerId || uuidv4(),
+            playerId: uuidv4(),
             gameId,
             name: '',
             isAdmin: game.players.length === 0,
@@ -166,10 +166,7 @@ export class EphemeralDataStore extends Listeners<DatastoreEvents>
         return player;
     }
 
-    async createSpectator(
-        gameId: string,
-        spectatorId?: string
-    ): Promise<Spectator> {
+    async createSpectator(gameId: string): Promise<Spectator> {
         const game = await this.findGame(gameId);
 
         if (!game) {
@@ -177,7 +174,7 @@ export class EphemeralDataStore extends Listeners<DatastoreEvents>
         }
 
         const spectator = {
-            spectatorId: spectatorId || uuidv4(),
+            spectatorId: uuidv4(),
             gameId,
             name: '',
             custom: {}

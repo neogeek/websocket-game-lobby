@@ -1,7 +1,5 @@
 import { Client } from 'pg';
 
-import { v4 as uuidv4 } from 'uuid';
-
 import { createUniqueGameCode } from '../utils';
 
 import Listeners from '../listeners';
@@ -154,15 +152,9 @@ export class PostgresDataStore extends Listeners<DatastoreEvents>
         await client.query('SELECT * FROM endGame($1)', [gameId]);
         return;
     }
-    async createPlayer(
-        gameId: string,
-        playerId?: string | undefined
-    ): Promise<Player> {
+    async createPlayer(gameId: string): Promise<Player> {
         const player = (
-            await client.query('SELECT * FROM createPlayer($1, $2)', [
-                gameId,
-                playerId || uuidv4()
-            ])
+            await client.query('SELECT * FROM createPlayer($1)', [gameId])
         ).rows.find((row: Player | undefined) => row);
 
         return await this.editPlayer(gameId, player.playerId, async player => {
@@ -219,15 +211,9 @@ export class PostgresDataStore extends Listeners<DatastoreEvents>
 
         return player;
     }
-    async createSpectator(
-        gameId: string,
-        spectatorId?: string | undefined
-    ): Promise<Spectator> {
+    async createSpectator(gameId: string): Promise<Spectator> {
         const spectator = (
-            await client.query('SELECT * FROM createSpectator($1, $2)', [
-                gameId,
-                spectatorId || uuidv4()
-            ])
+            await client.query('SELECT * FROM createSpectator($1)', [gameId])
         ).rows.find((row: Spectator | undefined) => row);
 
         return await this.editSpectator(
