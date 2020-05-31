@@ -179,10 +179,10 @@ export enum ServerEvents {
     create = 'create',
     /** Event fired when game is joined. */
     join = 'join',
-    /** Event fired when game is started. */
-    start = 'start',
     /** Event fired when game is left. */
     leave = 'leave',
+    /** Event fired when game is started. */
+    start = 'start',
     /** Event fired when game is ended. */
     end = 'end'
 }
