@@ -312,9 +312,7 @@ export class PostgresDataStore extends Listeners<DataStoreEvents>
         const turn = await this.findTurn(gameId, turnId);
 
         if (!turn) {
-            throw new Error(
-                `Current turn not found for game with id ${gameId}`
-            );
+            throw new Error(`Turn not found for game with id ${turnId}`);
         }
 
         if (typeof callback === 'function') {
