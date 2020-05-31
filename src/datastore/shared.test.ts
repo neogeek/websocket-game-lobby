@@ -61,7 +61,7 @@ export default (datastore: DataStore): void => {
 
             const tempCustom = { value: 'example' };
 
-            assert.notDeepEqual(game.custom, tempCustom);
+            assert.notDeepStrictEqual(game.custom, tempCustom);
 
             const editedGame = await datastore.editGame(
                 game.gameId,
@@ -72,7 +72,7 @@ export default (datastore: DataStore): void => {
             );
 
             assert.ok(editedGame);
-            assert.deepEqual(editedGame.custom, tempCustom);
+            assert.deepStrictEqual(editedGame.custom, tempCustom);
         });
         it('join game as player (admin)', async () => {
             const game = await datastore.createGame();
@@ -278,7 +278,7 @@ export default (datastore: DataStore): void => {
 
             assert.ok(player);
             assert.notEqual(player.name, name);
-            assert.notDeepEqual(player.custom, tempCustom);
+            assert.notDeepStrictEqual(player.custom, tempCustom);
 
             const editedPlayer = await datastore.editPlayer(
                 game.gameId,
@@ -292,7 +292,7 @@ export default (datastore: DataStore): void => {
 
             assert.ok(editedPlayer);
             assert.equal(editedPlayer.name, name);
-            assert.deepEqual(editedPlayer.custom, tempCustom);
+            assert.deepStrictEqual(editedPlayer.custom, tempCustom);
         });
     });
 
@@ -362,7 +362,7 @@ export default (datastore: DataStore): void => {
 
             assert.ok(spectator);
             assert.notEqual(spectator.name, name);
-            assert.notDeepEqual(spectator.custom, tempCustom);
+            assert.notDeepStrictEqual(spectator.custom, tempCustom);
 
             const editedSpectator = await datastore.editSpectator(
                 game.gameId,
@@ -376,7 +376,7 @@ export default (datastore: DataStore): void => {
 
             assert.ok(editedSpectator);
             assert.equal(editedSpectator.name, name);
-            assert.deepEqual(editedSpectator.custom, tempCustom);
+            assert.deepStrictEqual(editedSpectator.custom, tempCustom);
         });
     });
 
@@ -467,7 +467,7 @@ export default (datastore: DataStore): void => {
             const tempCustom = { value: 'example' };
 
             assert.ok(turn);
-            assert.notDeepEqual(turn.custom, tempCustom);
+            assert.notDeepStrictEqual(turn.custom, tempCustom);
 
             const editedTurn = await datastore.editTurn(
                 game.gameId,
@@ -479,7 +479,7 @@ export default (datastore: DataStore): void => {
             );
 
             assert.ok(editedTurn);
-            assert.deepEqual(editedTurn.custom, tempCustom);
+            assert.deepStrictEqual(editedTurn.custom, tempCustom);
         });
         it('edit current turn', async () => {
             const game = await datastore.createGame();
@@ -500,7 +500,7 @@ export default (datastore: DataStore): void => {
 
             assert.ok(turn);
             assert.notEqual(turn.index, 2);
-            assert.notDeepEqual(turn.custom, tempCustom);
+            assert.notDeepStrictEqual(turn.custom, tempCustom);
 
             const editedTurn = await datastore.editCurrentTurn(
                 game.gameId,
@@ -512,7 +512,7 @@ export default (datastore: DataStore): void => {
             );
 
             assert.ok(editedTurn);
-            assert.deepEqual(editedTurn.custom, tempCustom);
+            assert.deepStrictEqual(editedTurn.custom, tempCustom);
         });
         it('end current turn', async () => {
             const game = await datastore.createGame();
