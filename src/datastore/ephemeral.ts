@@ -300,11 +300,7 @@ export class EphemeralDataStore extends Listeners<DatastoreEvents>
             );
         }
 
-        if (typeof callback === 'function') {
-            return await callback(turn);
-        }
-
-        return turn;
+        return await this.editTurn(gameId, turn.turnId, callback);
     }
     async endCurrentTurn(gameId: string): Promise<void> {
         const game = await this.findGame(gameId);
