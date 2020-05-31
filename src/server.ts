@@ -95,15 +95,13 @@ export class WebSocketGameLobbyServer extends Listeners<ServerEvents> {
                     if (!client.playerId) {
                         if (game.started || forceSpectator) {
                             const spectator = await this.datastore.createSpectator(
-                                client.gameId,
-                                playerId
+                                client.gameId
                             );
 
                             client.playerId = spectator.spectatorId;
                         } else {
                             const player = await this.datastore.createPlayer(
-                                client.gameId,
-                                playerId
+                                client.gameId
                             );
 
                             client.playerId = player.playerId;

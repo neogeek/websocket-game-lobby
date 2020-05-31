@@ -78,9 +78,10 @@ export interface DataStore extends Listeners {
 
     /** Creates a player in a game. Player will be assigned as admin if they are the first in the game.
      * > **NOTE:** Calling this function will also run any events with the name createPlayer.
+     * @param gameId - A UUID representing the game to create a player for.
      * @private
      */
-    createPlayer(gameId: string, playerId?: string): Promise<Player>;
+    createPlayer(gameId: string): Promise<Player>;
     /**
      * Find player in a game using a UUID.
      * @param gameId - A UUID representing the game to look up.
@@ -100,9 +101,10 @@ export interface DataStore extends Listeners {
 
     /** Creates a spectator in a game.
      * > **NOTE:** Calling this function will also run any events with the name createSpectator.
+     * @param gameId - A UUID representing the game to create a spectator for.
      * @private
      */
-    createSpectator(gameId: string, spectatorId?: string): Promise<Spectator>;
+    createSpectator(gameId: string): Promise<Spectator>;
     /**
      * Find spectator in a game using a UUID.
      * @param gameId - A UUID representing the game to look up.
