@@ -1,6 +1,22 @@
 # Changelog
 
-## [v3.0.0](https://github.com/neogeek/websocket-game-lobby/tree/v3.0.0)
+## [Unreleased](https://github.com/neogeek/websocket-game-lobby/tree/HEAD)
+
+[Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v3.0.0...HEAD)
+
+**Merged pull requests:**
+
+- \[hotifx\] Removed custom player and spectator UUID. [\#38](https://github.com/neogeek/websocket-game-lobby/pull/38) ([neogeek](https://github.com/neogeek))
+- \[hotfix\] Fixed issue where game can be started multiple times with an invalid turn index. [\#37](https://github.com/neogeek/websocket-game-lobby/pull/37) ([neogeek](https://github.com/neogeek))
+- \[hotfix\] Fixed issue where game can be joined multiple times by the same player. [\#36](https://github.com/neogeek/websocket-game-lobby/pull/36) ([neogeek](https://github.com/neogeek))
+- \[feat\] Documentation [\#35](https://github.com/neogeek/websocket-game-lobby/pull/35) ([neogeek](https://github.com/neogeek))
+- \[feat\] Extracted listener logic into extendable class. [\#34](https://github.com/neogeek/websocket-game-lobby/pull/34) ([neogeek](https://github.com/neogeek))
+- \[feat\] Added gameId to structs [\#33](https://github.com/neogeek/websocket-game-lobby/pull/33) ([neogeek](https://github.com/neogeek))
+- \[feat\] Moved datastore tests to a shared file. [\#32](https://github.com/neogeek/websocket-game-lobby/pull/32) ([neogeek](https://github.com/neogeek))
+- \[hotfix\] Added missing turn index [\#31](https://github.com/neogeek/websocket-game-lobby/pull/31) ([neogeek](https://github.com/neogeek))
+- \[feat\] Postgres Datastore [\#23](https://github.com/neogeek/websocket-game-lobby/pull/23) ([neogeek](https://github.com/neogeek))
+
+## [v3.0.0](https://github.com/neogeek/websocket-game-lobby/tree/v3.0.0) (2020-05-22)
 
 [Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v2.3.0...v3.0.0)
 
