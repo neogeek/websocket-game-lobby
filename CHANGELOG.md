@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- \[hotfix\] Fixed spelling mistake of type. [\#39](https://github.com/neogeek/websocket-game-lobby/pull/39) ([neogeek](https://github.com/neogeek))
 - \[hotifx\] Removed custom player and spectator UUID. [\#38](https://github.com/neogeek/websocket-game-lobby/pull/38) ([neogeek](https://github.com/neogeek))
 - \[hotfix\] Fixed issue where game can be started multiple times with an invalid turn index. [\#37](https://github.com/neogeek/websocket-game-lobby/pull/37) ([neogeek](https://github.com/neogeek))
 - \[hotfix\] Fixed issue where game can be joined multiple times by the same player. [\#36](https://github.com/neogeek/websocket-game-lobby/pull/36) ([neogeek](https://github.com/neogeek))
