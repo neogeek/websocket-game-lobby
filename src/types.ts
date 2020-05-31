@@ -168,7 +168,7 @@ export interface DataStore extends Listeners {
 }
 
 /** Types to be used with event listeners attached to {@link DataStore} objects. */
-export enum DatastoreEvents {
+export enum DataStoreEvents {
     /** Event fired when game is created. */
     createGame = 'createGame',
     /** Event fired when player or spectator leaves game. */
