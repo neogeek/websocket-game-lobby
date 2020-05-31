@@ -2,7 +2,7 @@ build: clean
 	npm run build
 
 changelog:
-	github_changelog_generator --user neogeek --project websocket-game-lobby --future-release $(future-release)
+	github_changelog_generator --user neogeek --project websocket-game-lobby
 
 postgres-setup:
 	psql -c 'drop database if exists travis_ci_test;' -U postgres || true
