@@ -64,14 +64,12 @@ export class WebSocketGameLobbyServer extends Listeners<ServerEvents> {
                     type,
                     gameId,
                     gameCode,
-                    playerId,
                     forceSpectator,
                     ...rest
                 }: {
                     type: ServerEvents;
                     gameId?: string;
                     gameCode?: string;
-                    playerId: string;
                     forceSpectator: boolean;
                 },
                 client: Client
