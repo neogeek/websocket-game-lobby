@@ -92,20 +92,22 @@ export class WebSocketGameLobbyServer extends Listeners<ServerEvents> {
 
                     client.gameId = game.gameId;
 
-                    if (game.started || forceSpectator) {
-                        const spectator = await this.datastore.createSpectator(
-                            client.gameId,
-                            playerId
-                        );
+                    if (!client.playerId) {
+                        if (game.started || forceSpectator) {
+                            const spectator = await this.datastore.createSpectator(
+                                client.gameId,
+                                playerId
+                            );
 
-                        client.playerId = spectator.spectatorId;
-                    } else {
-                        const player = await this.datastore.createPlayer(
-                            client.gameId,
-                            playerId
-                        );
+                            client.playerId = spectator.spectatorId;
+                        } else {
+                            const player = await this.datastore.createPlayer(
+                                client.gameId,
+                                playerId
+                            );
 
-                        client.playerId = player.playerId;
+                            client.playerId = player.playerId;
+                        }
                     }
                 } else if (type === 'start') {
                     await this.datastore.startGame(client.gameId);
