@@ -4,6 +4,11 @@ node_js:
 branches:
     only:
         - master
+services:
+    - postgresql
+before_script:
+    - psql --version
+    - make postgres-setup
 script:
     - node --version
     - npm --version

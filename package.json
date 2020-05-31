@@ -9,6 +9,7 @@
   "types": "dist/index.d.ts",
   "license": "MIT",
   "dependencies": {
+    "pg": "8.2.1",
     "qs": "6.9.4",
     "uuid": "8.1.0",
     "websocket-event-wrapper": "1.1.0"

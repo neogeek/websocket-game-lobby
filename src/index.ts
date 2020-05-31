@@ -1,4 +1,4 @@
-export { EphemeralDataStore } from './datastore';
+export { EphemeralDataStore, PostgresDataStore } from './datastore';
 
 export { WebSocketGameLobbyServer } from './server';
 
