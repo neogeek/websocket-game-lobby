@@ -16,7 +16,7 @@ $ npm install websocket-game-lobby
 
 The following example starts a WebSocket server and a single page application using [http-single-serve](https://www.npmjs.org/package/http-single-serve).
 
-Without any additional code, this server can be connected to and a game `created`, `joined`, `started`, `left`, and `ended`. This can be done using either the [websocket-game-lobby-client](https://github.com/neogeek/websocket-game-lobby-client) or the React library [websocket-game-lobby-client-hooks](https://github.com/neogeek/websocket-game-lobby-client-hooks).
+Without any additional code this server can be connected to, and then a game can be `created`, `joined`, `started`, `left`, and `ended`. This can be done using either the [websocket-game-lobby-client](https://github.com/neogeek/websocket-game-lobby-client) or the React hook [websocket-game-lobby-client-hooks](https://github.com/neogeek/websocket-game-lobby-client-hooks).
 
 ```javascript
 const http = require('http-single-serve');
@@ -62,7 +62,7 @@ gameLobby.addEventListener(
 
 ### WebSocketGameLobbyServer
 
-Event types for use with the WebSocketGameLobbyServer as as follows:
+Event types for use with the WebSocketGameLobbyServer are as follows:
 
 | Name     | Description                         |
 | -------- | ----------------------------------- |
@@ -104,7 +104,7 @@ gameLobby.removeAllEventListeners();
 
 ### DataStore
 
-Event types for use with the DataStore as as follows:
+Event types for use with the DataStore are as follows:
 
 | Name              | Description                              |
 | ----------------- | ---------------------------------------- |
