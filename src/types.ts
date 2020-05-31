@@ -9,13 +9,13 @@ export interface Listeners {
     ): void;
     /** Remove an existing event callback method.
      * @param type - An event type.
-     * @param callback - An asynchronous callback method used to make edits directly to data sources.
+     * @param callback - Reference to an asynchronous callback method used to make edits directly to data sources.
      */
     removeEventListener(
         type: string,
         callback: (data: any, datastore: DataStore) => Promise<void>
     ): void;
-    /** Remove all an existing event callback methods. */
+    /** Remove all existing event callback methods. */
     removeAllEventListeners(): void;
     /** Run all existing event callback methods for a specific event type.
      * @param type - An event type.
