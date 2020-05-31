@@ -1,7 +1,7 @@
 export interface Listeners {
     /** Add a new event callback method for an existing or new event type.
      * @param type - An event type.
-     * @param callback - An asynchronous callback method used to make edits directly to data sources.
+     * @param callback - An asynchronous callback method used to make edits directly to a data source.
      */
     addEventListener(
         type: string,
@@ -9,7 +9,7 @@ export interface Listeners {
     ): void;
     /** Remove an existing event callback method.
      * @param type - An event type.
-     * @param callback - Reference to an asynchronous callback method used to make edits directly to data sources.
+     * @param callback - Reference to an asynchronous callback method used to make edits directly to a data source.
      */
     removeEventListener(
         type: string,
@@ -36,7 +36,7 @@ export interface DataStore extends Listeners {
      */
     setup(): Promise<void>;
     /** Creates a game.
-     * > **NOTE:** Calling this function will also run any events with the name createGame.
+     * > **NOTE:** Calling this function will also run any events with the type createGame.
      * @private
      */
     createGame(): Promise<Game>;
@@ -58,14 +58,14 @@ export interface DataStore extends Listeners {
         callback: (game: Game) => Promise<Game>
     ): Promise<Game>;
     /** Leave game.
-     * > **NOTE:** Calling this function will also run any events with the name leaveGame.
+     * > **NOTE:** Calling this function will also run any events with the type leaveGame.
      * @param gameId - A UUID representing the game to leave.
-     * @param playerId - A UUID representing the player to leave.
+     * @param playerId - A UUID representing the player or spectator to leave.
      * @private
      */
     leaveGame(gameId: string, playerId: string): Promise<void>;
     /** Start game.
-     * > **NOTE:** Calling this function will also run any events with the name startGame.
+     * > **NOTE:** Calling this function will also run any events with the type startGame.
      * @param gameId - A UUID representing the game to start.
      * @private
      */
@@ -77,7 +77,7 @@ export interface DataStore extends Listeners {
     endGame(gameId: string): Promise<void>;
 
     /** Creates a player in a game. Player will be assigned as admin if they are the first in the game.
-     * > **NOTE:** Calling this function will also run any events with the name createPlayer.
+     * > **NOTE:** Calling this function will also run any events with the type createPlayer.
      * @param gameId - A UUID representing the game to create a player for.
      * @private
      */
@@ -89,8 +89,8 @@ export interface DataStore extends Listeners {
      */
     findPlayer(gameId: string, playerId: string): Promise<Player | undefined>;
     /** Edit player data.
-     * @param gameId - A UUID representing the game to edit.
-     * @param playerId - A UUID representing the player to look up.
+     * @param gameId - A UUID representing the game to look up.
+     * @param playerId - A UUID representing the player to edit.
      * @param callback - An asynchronous callback method used to make edits directly to the player and other data sources.
      */
     editPlayer(
@@ -100,7 +100,7 @@ export interface DataStore extends Listeners {
     ): Promise<Player>;
 
     /** Creates a spectator in a game.
-     * > **NOTE:** Calling this function will also run any events with the name createSpectator.
+     * > **NOTE:** Calling this function will also run any events with the type createSpectator.
      * @param gameId - A UUID representing the game to create a spectator for.
      * @private
      */
@@ -115,8 +115,8 @@ export interface DataStore extends Listeners {
         spectatorId: string
     ): Promise<Spectator | undefined>;
     /** Edit player data.
-     * @param gameId - A UUID representing the game to edit.
-     * @param spectatorId - A UUID representing the spectator to look up.
+     * @param gameId - A UUID representing the game to look up.
+     * @param spectatorId - A UUID representing the spectator to edit.
      * @param callback - An asynchronous callback method used to make edits directly to the spectator and other data sources.
      */
     editSpectator(
@@ -126,7 +126,7 @@ export interface DataStore extends Listeners {
     ): Promise<Spectator>;
 
     /** Creates a new turn in a game.
-     * > **NOTE:** Calling this function will also run any events with the name createTurn.
+     * > **NOTE:** Calling this function will also run any events with the type createTurn.
      * @param gameId - A UUID representing the game in which to create a turn.
      * @private
      */
@@ -143,8 +143,8 @@ export interface DataStore extends Listeners {
      */
     currentTurn(gameId: string): Promise<Turn | undefined>;
     /** Edit turn data.
-     * @param gameId - A UUID representing the game to edit.
-     * @param turnId - A UUID representing the turn to look up.
+     * @param gameId - A UUID representing the game to look up.
+     * @param turnId - A UUID representing the turn to edit.
      * @param callback - An asynchronous callback method used to make edits directly to the turn and other data sources.
      */
     editTurn(
@@ -153,15 +153,15 @@ export interface DataStore extends Listeners {
         callback: (turn: Turn) => Promise<Turn>
     ): Promise<Turn>;
     /** Edit current turn data.
-     * @param gameId - A UUID representing the game to edit.
-     * @param callback - An asynchronous callback method used to make edits directly to the turn and other data sources.
+     * @param gameId - A UUID representing the game to look up.
+     * @param callback - An asynchronous callback method used to make edits directly to the current turn and other data sources.
      */
     editCurrentTurn(
         gameId: string,
         callback: (turn: Turn) => Promise<Turn>
     ): Promise<Turn>;
-    /** Ends current turn and then creates a new turn in a game.
-     * > **NOTE:** Calling this function will also run any events with the name endCurrentTurn.
+    /** Ends current turn and creates a new turn in a game.
+     * > **NOTE:** Calling this function will also run any events with the type endCurrentTurn.
      * @param gameId - A UUID representing the game in which to end the current turn.
      */
     endCurrentTurn(gameId: string): Promise<void>;
@@ -185,7 +185,7 @@ export enum DataStoreEvents {
     endCurrentTurn = 'endCurrentTurn'
 }
 
-/** Types to be used with event listeners attached to the websocket {@link WebSocketGameLobbyServer}. */
+/** Types to be used with event listeners attached to the {@link WebSocketGameLobbyServer}. */
 export enum ServerEvents {
     /** Event fired when game is created. */
     create = 'create',
