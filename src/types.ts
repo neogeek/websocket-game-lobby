@@ -21,6 +21,7 @@ export interface Listeners {
      * @param type - An event type.
      * @param data - Data specific to the event type.
      * @param datastore - Reference to the current datastore.
+     * @private
      */
     runEventListeners(
         type: string,
@@ -30,10 +31,13 @@ export interface Listeners {
 }
 
 export interface DataStore extends Listeners {
-    /** Run setup on datastore. */
+    /** Run setup on datastore.
+     * @private
+     */
     setup(): Promise<void>;
     /** Creates a game.
      * > **NOTE:** Calling this function will also run any events with the name createGame.
+     * @private
      */
     createGame(): Promise<Game>;
     /**
@@ -57,20 +61,24 @@ export interface DataStore extends Listeners {
      * > **NOTE:** Calling this function will also run any events with the name leaveGame.
      * @param gameId - A UUID representing the game to leave.
      * @param playerId - A UUID representing the player to leave.
+     * @private
      */
     leaveGame(gameId: string, playerId: string): Promise<void>;
     /** Start game.
      * > **NOTE:** Calling this function will also run any events with the name startGame.
      * @param gameId - A UUID representing the game to start.
+     * @private
      */
     startGame(gameId: string): Promise<Game>;
     /** End game.
      * @param gameId - A UUID representing the game to end.
+     * @private
      */
     endGame(gameId: string): Promise<void>;
 
     /** Creates a player in a game. Player will be assigned as admin if they are the first in the game.
      * > **NOTE:** Calling this function will also run any events with the name createPlayer.
+     * @private
      */
     createPlayer(gameId: string, playerId?: string): Promise<Player>;
     /**
@@ -92,6 +100,7 @@ export interface DataStore extends Listeners {
 
     /** Creates a spectator in a game.
      * > **NOTE:** Calling this function will also run any events with the name createSpectator.
+     * @private
      */
     createSpectator(gameId: string, spectatorId?: string): Promise<Spectator>;
     /**
@@ -117,6 +126,7 @@ export interface DataStore extends Listeners {
     /** Creates a new turn in a game.
      * > **NOTE:** Calling this function will also run any events with the name createTurn.
      * @param gameId - A UUID representing the game in which to create a turn.
+     * @private
      */
     createTurn(gameId: string): Promise<Turn>;
     /**
