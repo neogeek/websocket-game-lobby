@@ -6,9 +6,16 @@ import { EphemeralDataStore } from './datastore';
 
 import Listeners from './listeners';
 
-import { Client, DataStore, Response } from './types';
+import { Client, DataStore, Response, ServerEvents } from './types';
 
 export class WebSocketGameLobbyServer extends Listeners {
+    listeners: any = Object.keys(ServerEvents).reduce((acc, curr) => {
+        return {
+            [curr]: [],
+            ...acc
+        };
+    }, {});
+
     wss: any;
 
     datastore: DataStore;
@@ -22,13 +29,7 @@ export class WebSocketGameLobbyServer extends Listeners {
         server: any;
         datastore: DataStore;
     }) {
-        super({
-            create: [],
-            join: [],
-            start: [],
-            leave: [],
-            end: []
-        });
+        super();
 
         this.wss = new WebSocketEventWrapper({
             port,
@@ -75,7 +76,7 @@ export class WebSocketGameLobbyServer extends Listeners {
                 },
                 client: Client
             ) => {
-                if (!(type in this.listeners)) {
+                if (!this.listeners[type]) {
                     return;
                 }
 

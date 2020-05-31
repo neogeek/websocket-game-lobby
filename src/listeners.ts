@@ -5,18 +5,12 @@ import { DataStore } from './types';
 export default class Listeners {
     listeners: any = {};
 
-    constructor(defaultListeners?: any) {
-        if (defaultListeners) {
-            this.listeners = Object.freeze(defaultListeners);
-        }
-    }
-
     addEventListener(
         type: string,
         callback: (data: any, datastore: DataStore) => Promise<void>
     ): void {
-        if (!(type in this.listeners)) {
-            this.listeners = Object.freeze({ ...this.listeners, [type]: [] });
+        if (!this.listeners[type]) {
+            this.listeners[type] = [];
         }
         if (typeof callback === 'function') {
             this.listeners[type].push(callback);
@@ -27,7 +21,7 @@ export default class Listeners {
         type: string,
         callback: (data: any, datastore: DataStore) => Promise<void>
     ): void {
-        if (type in this.listeners) {
+        if (this.listeners[type]) {
             removeArrayItem(this.listeners[type], callback);
         }
     }
@@ -43,7 +37,7 @@ export default class Listeners {
         data: any,
         datastore: DataStore
     ): Promise<void> {
-        if (type in this.listeners) {
+        if (this.listeners[type]) {
             for (let i = 0; i < this.listeners[type].length; i += 1) {
                 await this.listeners[type][i](data, datastore);
             }
