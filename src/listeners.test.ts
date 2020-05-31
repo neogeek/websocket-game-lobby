@@ -13,9 +13,7 @@ describe('listeners', () => {
     it('add/remove method', async () => {
         const example = new Listeners();
 
-        const method = async (data: any, datastore: DataStore) => {
-            console.log(data);
-        };
+        const method = async (data: any, datastore: DataStore) => {};
 
         assert.ok(!example.listeners['test']);
 
