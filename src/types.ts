@@ -155,21 +155,35 @@ export interface DataStore extends Listeners {
     endCurrentTurn(gameId: string): Promise<void>;
 }
 
+/** Types to be used with event listeners attached to {@link DataStore} objects. */
 export enum DatastoreEvents {
+    /** Event fired when game is created. */
     createGame = 'createGame',
+    /** Event fired when player or spectator leaves game. */
     leaveGame = 'leaveGame',
+    /** Event fired when game is started. */
     startGame = 'startGame',
+    /** Event fired when player is created. */
     createPlayer = 'createPlayer',
+    /** Event fired when spectator is created. */
     createSpectator = 'createSpectator',
+    /** Event fired when turn is created. */
     createTurn = 'createTurn',
+    /** Event fired when current turn is ended. */
     endCurrentTurn = 'endCurrentTurn'
 }
 
+/** Types to be used with event listeners attached to the websocket {@link WebSocketGameLobbyServer}. */
 export enum ServerEvents {
+    /** Event fired when game is created. */
     create = 'create',
+    /** Event fired when game is joined. */
     join = 'join',
+    /** Event fired when game is started. */
     start = 'start',
+    /** Event fired when game is left. */
     leave = 'leave',
+    /** Event fired when game is ended. */
     end = 'end'
 }
 
