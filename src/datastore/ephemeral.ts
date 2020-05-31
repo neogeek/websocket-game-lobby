@@ -96,9 +96,9 @@ export class EphemeralDataStore extends Listeners<DataStoreEvents>
             throw new Error(`Game not found with id ${gameId}`);
         }
 
-        game.turns.push(await this.createTurn(gameId));
-
         game.started = true;
+
+        game.turns.push(await this.createTurn(gameId));
 
         await this.runEventListeners(DataStoreEvents.startGame, game, this);
 
