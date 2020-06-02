@@ -6,7 +6,7 @@ import { EphemeralDataStore } from './datastore';
 
 import Listeners from './listeners';
 
-import { Client, DataStore, Response, ServerEvents } from './types';
+import { Client, IDataStore, Response, ServerEvents } from './types';
 
 export class WebSocketGameLobbyServer extends Listeners<ServerEvents> {
     listeners: any = Object.keys(ServerEvents).reduce((acc, curr) => {
@@ -18,7 +18,7 @@ export class WebSocketGameLobbyServer extends Listeners<ServerEvents> {
 
     wss: any;
 
-    datastore: DataStore;
+    datastore: IDataStore;
 
     constructor({
         port,
@@ -27,7 +27,7 @@ export class WebSocketGameLobbyServer extends Listeners<ServerEvents> {
     }: {
         port: number;
         server: any;
-        datastore: DataStore;
+        datastore: IDataStore;
     }) {
         super();
 

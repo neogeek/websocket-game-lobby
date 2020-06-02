@@ -5,7 +5,7 @@ import { createUniqueGameCode } from '../utils';
 import Listeners from '../listeners';
 
 import {
-    DataStore,
+    IDataStore,
     DataStoreEvents,
     Game,
     Player,
@@ -29,7 +29,7 @@ const formatValue = (value: any): any => {
 };
 
 export class PostgresDataStore extends Listeners<DataStoreEvents>
-    implements DataStore {
+    implements IDataStore {
     listeners = Object.keys(DataStoreEvents).reduce((acc, curr) => {
         return {
             [curr]: [],
