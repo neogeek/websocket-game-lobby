@@ -1,8 +1,8 @@
 import { removeArrayItem } from './utils';
 
-import { IDataStore } from './types';
+import { IDataStore, IListeners } from './types';
 
-export default class Listeners<T> {
+export default class Listeners<T> implements IListeners<T> {
     listeners: any = {};
 
     addEventListener(
