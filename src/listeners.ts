@@ -1,13 +1,13 @@
 import { removeArrayItem } from './utils';
 
-import { DataStore } from './types';
+import { IDataStore } from './types';
 
 export default class Listeners<T> {
     listeners: any = {};
 
     addEventListener(
         type: T,
-        callback: (data: any, datastore: DataStore) => Promise<void>
+        callback: (data: any, datastore: IDataStore) => Promise<void>
     ): void {
         if (!this.listeners[type]) {
             this.listeners[type] = [];
@@ -19,7 +19,7 @@ export default class Listeners<T> {
 
     removeEventListener(
         type: T,
-        callback: (data: any, datastore: DataStore) => Promise<void>
+        callback: (data: any, datastore: IDataStore) => Promise<void>
     ): void {
         if (this.listeners[type]) {
             removeArrayItem(this.listeners[type], callback);
@@ -35,7 +35,7 @@ export default class Listeners<T> {
     async runEventListeners(
         type: T,
         data: any,
-        datastore: DataStore
+        datastore: IDataStore
     ): Promise<void> {
         if (this.listeners[type]) {
             for (let i = 0; i < this.listeners[type].length; i += 1) {

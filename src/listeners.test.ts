@@ -7,13 +7,13 @@ import Listeners from './listeners';
 
 import { EphemeralDataStore } from './datastore';
 
-import { DataStore } from './types';
+import { IDataStore } from './types';
 
 describe('listeners', () => {
     it('add/remove method', async () => {
         const example = new Listeners();
 
-        const method = async (data: any, datastore: DataStore) => {};
+        const method = async (data: any, datastore: IDataStore) => {};
 
         assert.ok(!example.listeners['test']);
 
@@ -32,7 +32,7 @@ describe('listeners', () => {
 
         example.addEventListener(
             'test',
-            async (data: any, datastore: DataStore) => {
+            async (data: any, datastore: IDataStore) => {
                 done();
             }
         );
@@ -44,12 +44,12 @@ describe('listeners', () => {
 
         example.addEventListener(
             'test',
-            async (data: any, datastore: DataStore) => {}
+            async (data: any, datastore: IDataStore) => {}
         );
 
         example.addEventListener(
             'test',
-            async (data: any, datastore: DataStore) => {}
+            async (data: any, datastore: IDataStore) => {}
         );
 
         assert.equal(example.listeners['test'].length, 2);

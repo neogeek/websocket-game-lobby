@@ -5,7 +5,7 @@ import { createUniqueGameCode, removeArrayItemWithFilter } from '../utils';
 import Listeners from '../listeners';
 
 import {
-    DataStore,
+    IDataStore,
     DataStoreEvents,
     Game,
     Player,
@@ -16,7 +16,7 @@ import {
 let data: Game[] = [];
 
 export class EphemeralDataStore extends Listeners<DataStoreEvents>
-    implements DataStore {
+    implements IDataStore {
     listeners = Object.keys(DataStoreEvents).reduce((acc, curr) => {
         return {
             [curr]: [],

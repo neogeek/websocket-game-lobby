@@ -3,9 +3,9 @@ import assert from 'assert';
 
 import { load as loadYaml } from 'js-yaml';
 
-import { DataStore } from '../types';
+import { IDataStore } from '../types';
 
-export default (datastore: DataStore): void => {
+export default (datastore: IDataStore): void => {
     describe('game', () => {
         it('create new game', async () => {
             const game = await datastore.createGame();
