@@ -3,7 +3,7 @@ import assert from 'assert';
 
 import { load as loadYaml } from 'js-yaml';
 
-import { IDataStore } from '../types';
+import { DataStoreEvents, IDataStore } from '../types';
 
 export default (datastore: IDataStore): void => {
     describe('game', () => {
@@ -26,7 +26,7 @@ export default (datastore: IDataStore): void => {
             assert.equal(game.turns.length, 0);
         });
         it('create new game with custom event listener', async () => {
-            datastore.addEventListener('createGame', game => {
+            datastore.addEventListener(DataStoreEvents.createGame, game => {
                 game.custom.test = 'tested';
                 return game;
             });
@@ -143,7 +143,7 @@ export default (datastore: IDataStore): void => {
             );
         });
         it('leave game with custom event listener', async () => {
-            datastore.addEventListener('leaveGame', game => {
+            datastore.addEventListener(DataStoreEvents.leaveGame, game => {
                 game.custom.test = 'tested';
                 return game;
             });
@@ -177,7 +177,7 @@ export default (datastore: IDataStore): void => {
             assert.equal(editedGame.turns.length, 1);
         });
         it('start game with custom event listener', async () => {
-            datastore.addEventListener('startGame', game => {
+            datastore.addEventListener(DataStoreEvents.startGame, game => {
                 game.custom.test = 'tested';
                 return game;
             });
@@ -222,7 +222,7 @@ export default (datastore: IDataStore): void => {
             );
         });
         it('create player with custom event listener', async () => {
-            datastore.addEventListener('createPlayer', player => {
+            datastore.addEventListener(DataStoreEvents.createPlayer, player => {
                 player.custom.test = 'tested';
                 return player;
             });
@@ -297,10 +297,13 @@ export default (datastore: IDataStore): void => {
             );
         });
         it('create spectator with custom event listener', async () => {
-            datastore.addEventListener('createSpectator', spectator => {
-                spectator.custom.test = 'tested';
-                return spectator;
-            });
+            datastore.addEventListener(
+                DataStoreEvents.createSpectator,
+                spectator => {
+                    spectator.custom.test = 'tested';
+                    return spectator;
+                }
+            );
 
             const game = await datastore.createGame();
 
@@ -380,10 +383,13 @@ export default (datastore: IDataStore): void => {
             );
         });
         it('create turn with custom event listener', async () => {
-            datastore.addEventListener('createTurn', spectator => {
-                spectator.custom.test = 'tested';
-                return spectator;
-            });
+            datastore.addEventListener(
+                DataStoreEvents.createTurn,
+                spectator => {
+                    spectator.custom.test = 'tested';
+                    return spectator;
+                }
+            );
 
             const game = await datastore.createGame();
 
@@ -501,7 +507,7 @@ export default (datastore: IDataStore): void => {
             assert.notEqual(nextTurn.turnId, currentTurn.turnId);
         });
         it('end current turn with custom event listener', async () => {
-            datastore.addEventListener('endCurrentTurn', turn => {
+            datastore.addEventListener(DataStoreEvents.endCurrentTurn, turn => {
                 turn.custom.test = 'tested';
                 return turn;
             });
