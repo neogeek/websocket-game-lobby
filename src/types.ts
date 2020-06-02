@@ -1,10 +1,10 @@
-export interface IListeners {
+export interface IListeners<T> {
     /** Add a new event callback method for an existing or new event type.
      * @param type - An event type.
      * @param callback - An asynchronous callback method used to make edits directly to a data source.
      */
     addEventListener(
-        type: string,
+        type: T,
         callback: (data: any, datastore: IDataStore) => Promise<void>
     ): void;
     /** Remove an existing event callback method.
@@ -12,7 +12,7 @@ export interface IListeners {
      * @param callback - Reference to an asynchronous callback method used to make edits directly to a data source.
      */
     removeEventListener(
-        type: string,
+        type: T,
         callback: (data: any, datastore: IDataStore) => Promise<void>
     ): void;
     /** Remove all existing event callback methods. */
@@ -23,14 +23,10 @@ export interface IListeners {
      * @param datastore - Reference to the current datastore.
      * @private
      */
-    runEventListeners(
-        type: string,
-        data: any,
-        datastore: IDataStore
-    ): Promise<void>;
+    runEventListeners(type: T, data: any, datastore: IDataStore): Promise<void>;
 }
 
-export interface IDataStore extends IListeners {
+export interface IDataStore extends IListeners<any> {
     /** Run setup on datastore.
      * @private
      */
