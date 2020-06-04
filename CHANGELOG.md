@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/neogeek/websocket-game-lobby/tree/HEAD)
+## [v4.0.0](https://github.com/neogeek/websocket-game-lobby/tree/v4.0.0)
 
-[Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v3.0.0...HEAD)
+[Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v3.0.0...v4.0.0)
 
 **Merged pull requests:**
 
