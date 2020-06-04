@@ -12,11 +12,11 @@
 $ npm install websocket-game-lobby
 ```
 
-## Example
+## Quick Start
 
-The following example starts a WebSocket server and a single page application using [http-single-serve](https://www.npmjs.org/package/http-single-serve).
+The following example starts a WebSocket server and a single page HTTP server using [http-single-serve](https://www.npmjs.org/package/http-single-serve).
 
-Without any additional code this server can be connected to, and then a game can be `created`, `joined`, `started`, `left`, and `ended`. This can be done using either the [websocket-game-lobby-client](https://github.com/neogeek/websocket-game-lobby-client) or the React hook [websocket-game-lobby-client-hooks](https://github.com/neogeek/websocket-game-lobby-client-hooks).
+Without any additional code, this server can be connected to, and then a game can be `created`, `joined`, `started`, `left`, and `ended`. This can be done using either the [websocket-game-lobby-client](https://github.com/neogeek/websocket-game-lobby-client) package or the React hook [websocket-game-lobby-client-hooks](https://github.com/neogeek/websocket-game-lobby-client-hooks) package.
 
 ```javascript
 const http = require('http-single-serve');
@@ -25,16 +25,14 @@ const { WebSocketGameLobbyServer } = require('websocket-game-lobby');
 
 const gameLobby = new WebSocketGameLobbyServer({
     server: http({
-        port: process.env.PORT || 5000
+        port: 5000
     })
 });
 ```
 
-Custom events can be added to the server by way of event listeners on either the server or the datastore.
+Custom events can be added by using event listeners on either the server or the datastore.
 
-For example a custom event can be added to the server to set a custom flag when a game is created.
-
-In the following example, a property is added to the custom property of the game object (available on all data types) with the key of `color` and the value `purple`. This event occurs when a game is created.
+For example, a custom event can be added to the server to set a property when a game is created. In the following example, a custom property with the key of `color` will be added with a value of `purple` when a game is created.
 
 ```javascript
 const http = require('http-single-serve');
@@ -43,7 +41,7 @@ const { WebSocketGameLobbyServer } = require('websocket-game-lobby');
 
 const gameLobby = new WebSocketGameLobbyServer({
     server: http({
-        port: process.env.PORT || 5000
+        port: 5000
     })
 });
 
@@ -56,6 +54,61 @@ gameLobby.addEventListener(
         });
     }
 );
+```
+
+You can also create custom events, in addition to the built-in events, that can be called in the same way from the client.
+
+```javascript
+const http = require('http-single-serve');
+
+const { WebSocketGameLobbyServer } = require('websocket-game-lobby');
+
+const gameLobby = new WebSocketGameLobbyServer({
+    server: http({
+        port: 5000
+    })
+});
+
+gameLobby.addEventListener(
+    'card-played',
+    async ({ gameId, playerId, turnId, playedCard }, datastore) => {
+        await datastore.editTurn(gameId, turnId, async turn => {
+            if (!turn.custom.playedCards) {
+                turn.custom.playedCards = [];
+            }
+            turn.custom.playedCards.push({
+                playerId,
+                playedCard
+            });
+            return turn;
+        });
+    }
+);
+```
+
+You can even set custom events directly on the datastore. In this example, we are manually creating a datastore and attaching an event. When a game is created, a custom property with the key of `createdDate` will be added with a value of `Date.now()`.
+
+```javascript
+const http = require('http-single-serve');
+
+const {
+    WebSocketGameLobbyServer,
+    EphemeralDataStore
+} = require('websocket-game-lobby');
+
+const datastore = new EphemeralDataStore();
+
+datastore.addEventListener('createGame', async (game, datastore) => {
+    game.custom.createdDate = Date.now();
+    return game;
+});
+
+const gameLobby = new WebSocketGameLobbyServer({
+    server: http({
+        port: 5000
+    }),
+    datastore
+});
 ```
 
 ## API
@@ -96,7 +149,7 @@ gameLobby.removeEventListener('create', createHandler);
 
 #### removeAllEventListeners
 
-Remove an existing event callback method.
+Remove all existing event callback methods.
 
 ```javascript
 gameLobby.removeAllEventListeners();
@@ -104,7 +157,7 @@ gameLobby.removeAllEventListeners();
 
 ### DataStore
 
-There are two kinds of DataStore objects you can use; the default is `EphemeralDataStore`, which stores data in a temp JavaScript object, and the other is `PostgresDataStore`.
+There are two kinds of DataStore objects you can use; the default is `EphemeralDataStore`, which stores data in a temporary JavaScript object, and the other is `PostgresDataStore`.
 
 #### EphemeralDataStore
 
@@ -118,6 +171,8 @@ const datastore = new EphemeralDataStore();
 
 To connect to your database, add the following into an `.env` file in your project and setup the ENV variables on your server.
 
+> WARNING: Make sure an add `.env` to your `.gitignore` file to prevent committing passwords to your git repository.
+
 ```
 PGHOST=localhost
 PGPORT=5432
@@ -126,7 +181,7 @@ PGPASSWORD=password
 PGDATABASE=travis_ci_test
 ```
 
-Then install [dotenv](https://www.npmjs.com/package/dotenv) and import it into your project. This will parse the variables in your `.env` expose them to your project for reading.
+Then install [dotenv](https://www.npmjs.com/package/dotenv) and import it into your project. This will parse the variables in your `.env` file and expose them to your project for reading via the `process.env` object.
 
 ```javascript
 require('dotenv').config();
@@ -174,7 +229,7 @@ datastore.removeEventListener('gameCreated', gameCreatedHandler);
 
 #### removeAllEventListeners
 
-Remove an existing event callback method.
+Remove all existing event callback methods.
 
 ```javascript
 datastore.removeAllEventListeners();
