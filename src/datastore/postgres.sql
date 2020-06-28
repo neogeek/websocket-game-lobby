@@ -37,7 +37,7 @@ CREATE TABLE "turn" (
     "custom" JSONB NOT NULL DEFAULT '{}'::jsonb
 );
 
-DROP FUNCTION IF EXISTS createGame;
+DROP FUNCTION IF EXISTS createGame (_gameCode VARCHAR(4));
 CREATE FUNCTION createGame (_gameCode VARCHAR(4))
     RETURNS TABLE (
         "gameId" UUID,
@@ -55,7 +55,7 @@ BEGIN
     SELECT * FROM findGame((SELECT "game"."gameId" FROM "game" WHERE "game"."id" = LASTVAL()));
 END; $$ LANGUAGE 'plpgsql';
 
-DROP FUNCTION IF EXISTS findGame;
+DROP FUNCTION IF EXISTS findGame (_gameId UUID);
 CREATE FUNCTION findGame (_gameId UUID)
     RETURNS TABLE (
         "gameId" UUID,
@@ -78,7 +78,7 @@ BEGIN
     WHERE "game"."gameId" = _gameId;
 END; $$ LANGUAGE 'plpgsql';
 
-DROP FUNCTION IF EXISTS findGameWithCode;
+DROP FUNCTION IF EXISTS findGameWithCode (_gameCode VARCHAR(4));
 CREATE FUNCTION findGameWithCode (_gameCode VARCHAR(4))
     RETURNS TABLE (
         "gameId" UUID,
@@ -95,7 +95,7 @@ BEGIN
     SELECT * FROM findGame((SELECT "game"."gameId" FROM "game" WHERE "game"."gameCode" = _gameCode));
 END; $$ LANGUAGE 'plpgsql';
 
-DROP FUNCTION IF EXISTS startGame;
+DROP FUNCTION IF EXISTS startGame (_gameId UUID);
 CREATE FUNCTION startGame (_gameId UUID)
     RETURNS TABLE (
         "gameId" UUID,
@@ -113,7 +113,7 @@ BEGIN
     SELECT * FROM findGame(_gameId);
 END; $$ LANGUAGE 'plpgsql';
 
-DROP FUNCTION IF EXISTS endGame;
+DROP FUNCTION IF EXISTS endGame (_gameId UUID);
 CREATE FUNCTION endGame (_gameId UUID)
     RETURNS void
 AS $$
@@ -124,7 +124,7 @@ BEGIN
     DELETE FROM "turn" WHERE "turn"."gameId" = _gameId;
 END; $$ LANGUAGE 'plpgsql';
 
-DROP FUNCTION IF EXISTS createPlayer;
+DROP FUNCTION IF EXISTS createPlayer (_gameId UUID);
 CREATE FUNCTION createPlayer (_gameId UUID)
     RETURNS TABLE (
         "playerId" UUID,
@@ -140,7 +140,7 @@ BEGIN
     SELECT * FROM findPlayer(_gameId, (SELECT "player"."playerId" FROM "player" WHERE "player"."id" = LASTVAL()));
 END; $$ LANGUAGE 'plpgsql';
 
-DROP FUNCTION IF EXISTS findPlayer;
+DROP FUNCTION IF EXISTS findPlayer (_gameId UUID, _playerId UUID);
 CREATE FUNCTION findPlayer (_gameId UUID, _playerId UUID)
     RETURNS TABLE (
         "playerId" UUID,
@@ -157,7 +157,7 @@ BEGIN
     WHERE "player"."playerId" = _playerId AND "player"."gameId" = _gameId;
 END; $$ LANGUAGE 'plpgsql';
 
-DROP FUNCTION IF EXISTS createSpectator;
+DROP FUNCTION IF EXISTS createSpectator (_gameId UUID);
 CREATE FUNCTION createSpectator (_gameId UUID)
     RETURNS TABLE (
         "spectatorId" UUID,
@@ -172,7 +172,7 @@ BEGIN
     SELECT * FROM findSpectator(_gameId, (SELECT "spectator"."spectatorId" FROM "spectator" WHERE "spectator"."id" = LASTVAL()));
 END; $$ LANGUAGE 'plpgsql';
 
-DROP FUNCTION IF EXISTS findSpectator;
+DROP FUNCTION IF EXISTS findSpectator (_gameId UUID, _spectatorId UUID);
 CREATE FUNCTION findSpectator (_gameId UUID, _spectatorId UUID)
     RETURNS TABLE (
         "spectatorId" UUID,
@@ -188,7 +188,7 @@ BEGIN
     WHERE "spectator"."spectatorId" = _spectatorId AND "spectator"."gameId" = _gameId;
 END; $$ LANGUAGE 'plpgsql';
 
-DROP FUNCTION IF EXISTS createTurn;
+DROP FUNCTION IF EXISTS createTurn (_gameId UUID);
 CREATE FUNCTION createTurn (_gameId UUID)
     RETURNS TABLE (
         "turnId" UUID,
@@ -203,7 +203,7 @@ BEGIN
     SELECT * FROM findTurn(_gameId, (SELECT "turn"."turnId" FROM "turn" WHERE "turn"."id" = LASTVAL()));
 END; $$ LANGUAGE 'plpgsql';
 
-DROP FUNCTION IF EXISTS findTurn;
+DROP FUNCTION IF EXISTS findTurn (_gameId UUID, _turnId UUID);
 CREATE FUNCTION findTurn (_gameId UUID, _turnId UUID)
     RETURNS TABLE (
         "turnId" UUID,
@@ -219,7 +219,7 @@ BEGIN
     WHERE "turn"."turnId" = _turnId AND "turn"."gameId" = _gameId;
 END; $$ LANGUAGE 'plpgsql';
 
-DROP FUNCTION IF EXISTS currentTurn;
+DROP FUNCTION IF EXISTS currentTurn (_gameId UUID);
 CREATE FUNCTION currentTurn (_gameId UUID)
     RETURNS TABLE (
         "turnId" UUID,
