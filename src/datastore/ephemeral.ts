@@ -110,7 +110,11 @@ export class EphemeralDataStore
         return;
     }
 
-    async createPlayer(gameId: string): Promise<Player> {
+    async createPlayer(
+        gameId: string,
+        name?: string,
+        avatar?: string
+    ): Promise<Player> {
         const game = await this.findGame(gameId);
 
         if (!game) {
@@ -120,7 +124,8 @@ export class EphemeralDataStore
         const player = {
             playerId: uuidv4(),
             gameId,
-            name: '',
+            name,
+            avatar,
             isAdmin: game.players.length === 0,
             custom: {}
         };

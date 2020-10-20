@@ -98,6 +98,22 @@ export default (datastore: IDataStore): void => {
             assert.ok(!(await datastore.findSpectator(game.gameId, playerId)));
             assert.ok(await datastore.findPlayer(game.gameId, playerId));
         });
+        it('join game as player with name and avatar', async () => {
+            const game = await datastore.createGame();
+
+            assert.ok(game);
+
+            const { playerId, name, avatar } = await datastore.createPlayer(
+                game.gameId,
+                'guest',
+                'default'
+            );
+
+            assert.ok(!(await datastore.findSpectator(game.gameId, playerId)));
+            assert.ok(await datastore.findPlayer(game.gameId, playerId));
+            assert.strictEqual(name, 'guest');
+            assert.strictEqual(avatar, 'default');
+        });
         it('join game as spectator', async () => {
             const game = await datastore.createGame();
 
