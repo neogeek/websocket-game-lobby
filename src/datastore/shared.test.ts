@@ -21,9 +21,9 @@ export default (datastore: IDataStore): void => {
                 )
             );
 
-            assert.equal(game.players.length, 0);
-            assert.equal(game.spectators.length, 0);
-            assert.equal(game.turns.length, 0);
+            assert.strictEqual(game.players.length, 0);
+            assert.strictEqual(game.spectators.length, 0);
+            assert.strictEqual(game.turns.length, 0);
         });
         it('create new game with custom event listener', async () => {
             datastore.addEventListener(DataStoreEvents.createGame, game => {
@@ -34,13 +34,13 @@ export default (datastore: IDataStore): void => {
             const game = await datastore.createGame();
 
             assert.ok(game);
-            assert.equal(game.custom.test, 'tested');
+            assert.strictEqual(game.custom.test, 'tested');
         });
         it('find game with ID', async () => {
             const game = await datastore.createGame();
 
             assert.ok(game);
-            assert.equal(
+            assert.strictEqual(
                 (await datastore.findGame(game.gameId))?.gameId,
                 game.gameId
             );
@@ -49,7 +49,7 @@ export default (datastore: IDataStore): void => {
             const game = await datastore.createGame();
 
             assert.ok(game);
-            assert.equal(
+            assert.strictEqual(
                 (await datastore.findGameWithCode(game.gameCode))?.gameId,
                 game.gameId
             );
@@ -85,8 +85,8 @@ export default (datastore: IDataStore): void => {
             assert.ok(player1);
             assert.ok(player2);
 
-            assert.equal(player1.isAdmin, true);
-            assert.equal(player2.isAdmin, false);
+            assert.strictEqual(player1.isAdmin, true);
+            assert.strictEqual(player2.isAdmin, false);
         });
         it('join game as player', async () => {
             const game = await datastore.createGame();
@@ -154,27 +154,27 @@ export default (datastore: IDataStore): void => {
 
             const player = await datastore.createPlayer(game.gameId);
 
-            assert.notEqual(game.custom.test, 'tested');
+            assert.notStrictEqual(game.custom.test, 'tested');
 
             await datastore.leaveGame(game.gameId, player.playerId);
 
             const editedGame = await datastore.findGame(game.gameId);
 
             assert.ok(editedGame);
-            assert.equal(editedGame.custom.test, 'tested');
+            assert.strictEqual(editedGame.custom.test, 'tested');
         });
         it('start game', async () => {
             const game = await datastore.createGame();
 
             assert.ok(game);
-            assert.notEqual(game.started, true);
-            assert.notEqual(game.turns.length, 1);
+            assert.notStrictEqual(game.started, true);
+            assert.notStrictEqual(game.turns.length, 1);
 
             const editedGame = await datastore.startGame(game.gameId);
 
             assert.ok(editedGame);
-            assert.equal(editedGame.started, true);
-            assert.equal(editedGame.turns.length, 1);
+            assert.strictEqual(editedGame.started, true);
+            assert.strictEqual(editedGame.turns.length, 1);
         });
         it('start game with custom event listener', async () => {
             datastore.addEventListener(DataStoreEvents.startGame, game => {
@@ -185,12 +185,12 @@ export default (datastore: IDataStore): void => {
             const game = await datastore.createGame();
 
             assert.ok(game);
-            assert.notEqual(game.custom.test, 'tested');
+            assert.notStrictEqual(game.custom.test, 'tested');
 
             const editedGame = await datastore.startGame(game.gameId);
 
             assert.ok(editedGame);
-            assert.equal(editedGame.custom.test, 'tested');
+            assert.strictEqual(editedGame.custom.test, 'tested');
         });
         it('end game', async () => {
             const game = await datastore.createGame();
@@ -234,7 +234,7 @@ export default (datastore: IDataStore): void => {
             const player = await datastore.createPlayer(game.gameId);
 
             assert.ok(player);
-            assert.equal(player.custom.test, 'tested');
+            assert.strictEqual(player.custom.test, 'tested');
         });
         it('find player', async () => {
             const game = await datastore.createGame();
@@ -247,7 +247,7 @@ export default (datastore: IDataStore): void => {
 
             assert.ok(!(await datastore.findSpectator(game.gameId, playerId)));
             assert.ok(player);
-            assert.equal(player.playerId, playerId);
+            assert.strictEqual(player.playerId, playerId);
         });
         it('edit player', async () => {
             const game = await datastore.createGame();
@@ -260,7 +260,7 @@ export default (datastore: IDataStore): void => {
             const tempCustom = { value: 'example' };
 
             assert.ok(player);
-            assert.notEqual(player.name, name);
+            assert.notStrictEqual(player.name, name);
             assert.notDeepStrictEqual(player.custom, tempCustom);
 
             const editedPlayer = await datastore.editPlayer(
@@ -274,7 +274,7 @@ export default (datastore: IDataStore): void => {
             );
 
             assert.ok(editedPlayer);
-            assert.equal(editedPlayer.name, name);
+            assert.strictEqual(editedPlayer.name, name);
             assert.deepStrictEqual(editedPlayer.custom, tempCustom);
         });
     });
@@ -312,7 +312,7 @@ export default (datastore: IDataStore): void => {
             const spectator = await datastore.createSpectator(game.gameId);
 
             assert.ok(spectator);
-            assert.equal(spectator.custom.test, 'tested');
+            assert.strictEqual(spectator.custom.test, 'tested');
         });
         it('find spectator', async () => {
             const game = await datastore.createGame();
@@ -330,7 +330,7 @@ export default (datastore: IDataStore): void => {
 
             assert.ok(!(await datastore.findPlayer(game.gameId, spectatorId)));
             assert.ok(spectator);
-            assert.equal(spectator.spectatorId, spectatorId);
+            assert.strictEqual(spectator.spectatorId, spectatorId);
         });
         it('edit spectator', async () => {
             const game = await datastore.createGame();
@@ -343,7 +343,7 @@ export default (datastore: IDataStore): void => {
             const tempCustom = { value: 'example' };
 
             assert.ok(spectator);
-            assert.notEqual(spectator.name, name);
+            assert.notStrictEqual(spectator.name, name);
             assert.notDeepStrictEqual(spectator.custom, tempCustom);
 
             const editedSpectator = await datastore.editSpectator(
@@ -357,7 +357,7 @@ export default (datastore: IDataStore): void => {
             );
 
             assert.ok(editedSpectator);
-            assert.equal(editedSpectator.name, name);
+            assert.strictEqual(editedSpectator.name, name);
             assert.deepStrictEqual(editedSpectator.custom, tempCustom);
         });
     });
@@ -400,7 +400,7 @@ export default (datastore: IDataStore): void => {
             const turn = await datastore.currentTurn(game.gameId);
 
             assert.ok(turn);
-            assert.equal(turn.custom.test, 'tested');
+            assert.strictEqual(turn.custom.test, 'tested');
         });
         it('find turn', async () => {
             const game = await datastore.createGame();
@@ -418,7 +418,7 @@ export default (datastore: IDataStore): void => {
             const turn = await datastore.findTurn(game.gameId, turnId);
 
             assert.ok(turn);
-            assert.equal(turn.turnId, turnId);
+            assert.strictEqual(turn.turnId, turnId);
         });
         it('get current turn', async () => {
             const game = await datastore.createGame();
@@ -435,7 +435,7 @@ export default (datastore: IDataStore): void => {
 
             const turnId = startedGame.turns[0].turnId;
 
-            assert.equal(currentTurn.turnId, turnId);
+            assert.strictEqual(currentTurn.turnId, turnId);
         });
         it('edit turn', async () => {
             const game = await datastore.createGame();
@@ -504,7 +504,7 @@ export default (datastore: IDataStore): void => {
             const nextTurn = await datastore.currentTurn(game.gameId);
 
             assert.ok(nextTurn);
-            assert.notEqual(nextTurn.turnId, currentTurn.turnId);
+            assert.notStrictEqual(nextTurn.turnId, currentTurn.turnId);
         });
         it('end current turn with custom event listener', async () => {
             datastore.addEventListener(DataStoreEvents.endCurrentTurn, turn => {
@@ -521,7 +521,7 @@ export default (datastore: IDataStore): void => {
             const turn = await datastore.currentTurn(game.gameId);
 
             assert.ok(turn);
-            assert.notEqual(turn.custom.test, 'tested');
+            assert.notStrictEqual(turn.custom.test, 'tested');
 
             await datastore.endCurrentTurn(game.gameId);
 
@@ -531,7 +531,7 @@ export default (datastore: IDataStore): void => {
             );
 
             assert.ok(endedTurn);
-            assert.equal(endedTurn.custom.test, 'tested');
+            assert.strictEqual(endedTurn.custom.test, 'tested');
         });
         it('auto-increment index after each turn', async () => {
             const game = await datastore.createGame();
@@ -546,7 +546,7 @@ export default (datastore: IDataStore): void => {
             const currentTurn = await datastore.currentTurn(game.gameId);
 
             assert.ok(currentTurn);
-            assert.equal(currentTurn.index, 3);
+            assert.strictEqual(currentTurn.index, 3);
         });
     });
 };
