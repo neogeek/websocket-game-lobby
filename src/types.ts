@@ -75,9 +75,15 @@ export interface IDataStore extends IListeners<any> {
     /** Creates a player in a game. Player will be assigned as admin if they are the first in the game.
      * > **NOTE:** Calling this function will also run any events with the type createPlayer.
      * @param gameId - A UUID representing the game to create a player for.
+     * @param name - Optional name for player.
+     * @param avatar - Optional avatar ID or URL for player.
      * @private
      */
-    createPlayer(gameId: string): Promise<Player>;
+    createPlayer(
+        gameId: string,
+        name?: string,
+        avatar?: string
+    ): Promise<Player>;
     /**
      * Find player in a game using a UUID.
      * @param gameId - A UUID representing the game to look up.
@@ -218,7 +224,9 @@ export interface Player {
     /** A UUID representing a game. */
     gameId: string | null;
     /** Name of the player. */
-    name: string;
+    name: string | undefined;
+    /** Avatar ID or URL of the player. */
+    avatar: string | undefined;
     /** A flag indicating if the player is the admin.
      * This is true if they are the first player to join the game.
      */

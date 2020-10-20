@@ -11,6 +11,7 @@ player:
   playerId: string
   gameId: string
   name: string
+  avatar: string
   isAdmin: boolean
   custom: object
 

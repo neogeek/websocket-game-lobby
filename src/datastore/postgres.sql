@@ -15,6 +15,7 @@ CREATE TABLE "player" (
     "playerId" UUID DEFAULT uuid_generate_v4() UNIQUE,
     "gameId" UUID NOT NULL,
     "name" TEXT,
+    "avatar" TEXT,
     "isAdmin" BOOLEAN DEFAULT false,
     "custom" JSONB NOT NULL DEFAULT '{}'::jsonb
 );
@@ -124,18 +125,19 @@ BEGIN
     DELETE FROM "turn" WHERE "turn"."gameId" = _gameId;
 END; $$ LANGUAGE 'plpgsql';
 
-DROP FUNCTION IF EXISTS createPlayer (_gameId UUID);
-CREATE FUNCTION createPlayer (_gameId UUID)
+DROP FUNCTION IF EXISTS createPlayer (_gameId UUID, _name TEXT, _avatar TEXT);
+CREATE FUNCTION createPlayer (_gameId UUID, _name TEXT, _avatar TEXT)
     RETURNS TABLE (
         "playerId" UUID,
         "gameId" UUID,
         "name" TEXT,
+        "avatar" TEXT,
         "isAdmin" BOOLEAN,
         "custom" JSONB
 )
 AS $$
 BEGIN
-    INSERT INTO "player" ("gameId", "isAdmin") VALUES (_gameId, (SELECT COUNT("id") = 0 FROM "player" WHERE "player"."gameId" = _gameId));
+    INSERT INTO "player" ("gameId", "name", "avatar", "isAdmin") VALUES (_gameId, _name, _avatar, (SELECT COUNT("id") = 0 FROM "player" WHERE "player"."gameId" = _gameId));
     RETURN QUERY
     SELECT * FROM findPlayer(_gameId, (SELECT "player"."playerId" FROM "player" WHERE "player"."id" = LASTVAL()));
 END; $$ LANGUAGE 'plpgsql';
@@ -146,13 +148,14 @@ CREATE FUNCTION findPlayer (_gameId UUID, _playerId UUID)
         "playerId" UUID,
         "gameId" UUID,
         "name" TEXT,
+        "avatar" TEXT,
         "isAdmin" BOOLEAN,
         "custom" JSONB
 )
 AS $$
 BEGIN
     RETURN QUERY
-    SELECT "player"."playerId", "player"."gameId", "player"."name", "player"."isAdmin", COALESCE("player"."custom", '{}'::JSONB) as "custom"
+    SELECT "player"."playerId", "player"."gameId", "player"."name", "player"."avatar", "player"."isAdmin", COALESCE("player"."custom", '{}'::JSONB) as "custom"
     FROM "player"
     WHERE "player"."playerId" = _playerId AND "player"."gameId" = _gameId;
 END; $$ LANGUAGE 'plpgsql';

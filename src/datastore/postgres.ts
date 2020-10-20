@@ -154,9 +154,17 @@ export class PostgresDataStore
         return;
     }
 
-    async createPlayer(gameId: string): Promise<Player> {
+    async createPlayer(
+        gameId: string,
+        name?: string,
+        avatar?: string
+    ): Promise<Player> {
         const player = (
-            await client.query('SELECT * FROM createPlayer($1)', [gameId])
+            await client.query('SELECT * FROM createPlayer($1, $2, $3)', [
+                gameId,
+                name,
+                avatar
+            ])
         ).rows.find((row: Player | undefined) => row);
 
         return await this.editPlayer(gameId, player.playerId, async player => {
@@ -196,7 +204,10 @@ export class PostgresDataStore
             return (
                 await client.query(
                     `UPDATE "player" SET ${Object.keys(edited)
-                        .filter(key => ['name', 'custom'].indexOf(key) !== -1)
+                        .filter(
+                            key =>
+                                ['name', 'avatar', 'custom'].indexOf(key) !== -1
+                        )
                         .map(
                             key =>
                                 `"${key}" = ${formatValue(
@@ -205,7 +216,7 @@ export class PostgresDataStore
                         )
                         .join(
                             ', '
-                        )} WHERE "gameId" = $1 and "playerId" = $2 RETURNING "playerId", "gameId", "name", "isAdmin", "custom"`,
+                        )} WHERE "gameId" = $1 and "playerId" = $2 RETURNING "playerId", "gameId", "name", "avatar", "isAdmin", "custom"`,
                     [gameId, playerId]
                 )
             ).rows.find((row: Player | undefined) => row);
