@@ -59,12 +59,14 @@ export class WebSocketGameLobbyServer extends Listeners<ServerEvents> {
                     gameCode,
                     forceSpectator,
                     ...rest
-                }: {
-                    type: ServerEvents;
-                    gameId?: string;
-                    gameCode?: string;
-                    forceSpectator: boolean;
-                },
+                }:
+                    | {
+                          type: ServerEvents;
+                          gameId?: string;
+                          gameCode?: string;
+                          forceSpectator: boolean;
+                      }
+                    | any,
                 client: Client
             ) => {
                 if (!this.listeners[type]) {
@@ -92,7 +94,9 @@ export class WebSocketGameLobbyServer extends Listeners<ServerEvents> {
                             client.playerId = spectator.spectatorId;
                         } else {
                             const player = await this.datastore.createPlayer(
-                                client.gameId
+                                client.gameId,
+                                rest.name,
+                                rest.avatar
                             );
 
                             client.playerId = player.playerId;
