@@ -28,7 +28,8 @@ const formatValue = (value: any): any => {
     return `'${String(value).replace(/'/g, '&#39;')}'`;
 };
 
-export class PostgresDataStore extends Listeners<DataStoreEvents>
+export class PostgresDataStore
+    extends Listeners<DataStoreEvents>
     implements IDataStore {
     listeners = Object.keys(DataStoreEvents).reduce((acc, curr) => {
         return {
