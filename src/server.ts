@@ -1,7 +1,5 @@
 import WebSocketEventWrapper from 'websocket-event-wrapper';
 
-import qs from 'qs';
-
 import { EphemeralDataStore } from './datastore';
 
 import Listeners from './listeners';
@@ -35,16 +33,11 @@ export class WebSocketGameLobbyServer extends Listeners<ServerEvents> {
             port,
             server,
             onConnect: async (client: Client, request: any): Promise<void> => {
-                const { gameId, gameCode, playerId } = qs.parse(
-                    request.url.replace(/^\//, ''),
-                    {
-                        ignoreQueryPrefix: true
-                    }
-                );
+                const params = new URLSearchParams(request.url.substring(1));
 
-                client.gameId = gameId;
-                client.gameCode = gameCode;
-                client.playerId = playerId;
+                client.gameId = params.get('gameId') || '';
+                client.gameCode = params.get('gameCode') || '';
+                client.playerId = params.get('playerId') || '';
 
                 this.wss.send(await this.sendUpdate(client), client);
             }
