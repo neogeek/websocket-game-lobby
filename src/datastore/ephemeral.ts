@@ -15,6 +15,9 @@ import {
 
 let data: Game[] = [];
 
+const testForExistingGameCode = async (gameCode?: string): Promise<boolean> =>
+    Boolean(data.find((game: Game) => game.gameCode === gameCode));
+
 export class EphemeralDataStore
     extends Listeners<DataStoreEvents>
     implements IDataStore {
@@ -29,12 +32,13 @@ export class EphemeralDataStore
         data = [];
         return;
     }
-    async createGame(): Promise<Game> {
+    async createGame(gameCode?: string): Promise<Game> {
         const game: Game = {
             gameId: uuidv4(),
-            gameCode: await createUniqueGameCode(async gameCode =>
-                Boolean(data.find((game: Game) => game.gameCode === gameCode))
-            ),
+            gameCode:
+                gameCode && !(await testForExistingGameCode(gameCode))
+                    ? gameCode
+                    : await createUniqueGameCode(testForExistingGameCode),
             started: false,
             players: [],
             spectators: [],

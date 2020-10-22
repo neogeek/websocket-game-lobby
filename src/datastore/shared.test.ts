@@ -36,6 +36,12 @@ export default (datastore: IDataStore): void => {
             assert.ok(game);
             assert.strictEqual(game.custom.test, 'tested');
         });
+        it('create new game with custom game code', async () => {
+            const game = await datastore.createGame('BEES');
+
+            assert.ok(game);
+            assert.strictEqual(game.gameCode, 'BEES');
+        });
         it('find game with ID', async () => {
             const game = await datastore.createGame();
 

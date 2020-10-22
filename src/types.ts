@@ -35,7 +35,7 @@ export interface IDataStore extends IListeners<any> {
      * > **NOTE:** Calling this function will also run any events with the type createGame.
      * @private
      */
-    createGame(): Promise<Game>;
+    createGame(gameCode?: string): Promise<Game>;
     /**
      * Find a game using a UUID.
      * @param gameId - A UUID representing the game to look up.
