@@ -1,5 +1,11 @@
 # Changelog
 
+## [v4.1.1](https://github.com/neogeek/websocket-game-lobby/tree/v4.1.1) - (2020-12-01)
+
+[Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v4.1.0...v4.1.1)
+
+- [hotfix] Pass game code to createGame call. [#50](https://github.com/neogeek/websocket-game-lobby/pull/50)
+
 ## [v4.1.0](https://github.com/neogeek/websocket-game-lobby/tree/v4.1.0) - (2020-12-01)
 
 [Full Changelog](https://github.com/neogeek/websocket-game-lobby/compare/v4.0.0...v4.1.0)
