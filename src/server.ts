@@ -77,7 +77,7 @@ export class WebSocketGameLobbyServer extends Listeners<ServerEvents> {
                     const game =
                         (await this.datastore.findGame(gameId)) ||
                         (await this.datastore.findGameWithCode(gameCode)) ||
-                        (await this.datastore.createGame());
+                        (await this.datastore.createGame(gameCode));
 
                     if (!game) {
                         return;
