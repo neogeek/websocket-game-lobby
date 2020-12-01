@@ -28,6 +28,16 @@ const formatValue = (value: any): any => {
     return `'${String(value).replace(/'/g, '&#39;')}'`;
 };
 
+const testForExistingGameCode = async (gameCode?: string): Promise<boolean> =>
+    Boolean(
+        (
+            await client.query(
+                'SELECT COUNT("gameCode") FROM "game" WHERE "gameCode" = $1 LIMIT 1',
+                [gameCode]
+            )
+        ).rows.find((row: any) => row).count > 0
+    );
+
 export class PostgresDataStore
     extends Listeners<DataStoreEvents>
     implements IDataStore {
@@ -42,17 +52,11 @@ export class PostgresDataStore
         await client.connect();
         return;
     }
-    async createGame(): Promise<Game> {
-        const code = await createUniqueGameCode(async gameCode =>
-            Boolean(
-                (
-                    await client.query(
-                        'SELECT COUNT("gameCode") FROM "game" WHERE "gameCode" = $1 LIMIT 1',
-                        [gameCode]
-                    )
-                ).rows.find((row: any) => row).count > 0
-            )
-        );
+    async createGame(gameCode?: string): Promise<Game> {
+        const code =
+            gameCode && !(await testForExistingGameCode(gameCode))
+                ? gameCode
+                : await createUniqueGameCode(testForExistingGameCode);
 
         const game = (
             await client.query('SELECT * FROM createGame($1)', [code])
