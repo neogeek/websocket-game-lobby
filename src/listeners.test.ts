@@ -25,7 +25,7 @@ describe('listeners', () => {
 
         assert.equal(example.listeners['test'].length, 0);
     });
-    it('run method', async done => {
+    it('run method', done => {
         const example = new Listeners();
 
         const datastore = new EphemeralDataStore();
